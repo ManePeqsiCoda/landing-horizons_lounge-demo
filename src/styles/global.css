@@ -60,6 +60,14 @@ body {
   letter-spacing: 0.1em;
 }
 
+/* Menu focus: blur + dim the reel while hovering the navigation */
+#reel-main {
+  transition: filter 0.5s ease;
+}
+#reel-main.menu-blur {
+  filter: blur(6px) brightness(0.8);
+}
+
 /* Loader pulse */
 @keyframes horizons-pulse {
   0%,

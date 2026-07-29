@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavLink {
   label: string;
@@ -15,89 +16,51 @@ const LINKS: NavLink[] = [
   { label: 'CONTACT', href: '#footer' },
 ];
 
+const REEL_MAIN_ID = 'reel-main';
+
+/** Blurs / restores the reel content sitting behind the menu. */
+function setReelBlur(on: boolean) {
+  document.getElementById(REEL_MAIN_ID)?.classList.toggle('menu-blur', on);
+}
+
 /**
- * Zara-style sticky navigation.
- * Hidden during the Hero frame; fades in after the first 100vh.
- * No background, large serif type, aggressive text-shadow contrast.
+ * Zara-style navigation.
+ * - Desktop: vertical column at the right edge, smaller serif type, closer
+ *   to the top without touching it. Always visible.
+ * - Mobile: hamburger button (large hit area) opens a full-screen curtain.
  */
 export default function StickyMenu() {
-  const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.85);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+    setReelBlur(open);
+    return () => setReelBlur(false);
+  }, [open]);
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-700 ${
-          visible ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-4 opacity-0'
-        }`}
+      {/* Brand mark (top-left) */}
+      <a
+        href="#hero"
+        className="text-contrast fixed left-6 top-5 z-50 font-serif text-xl tracking-[0.25em] text-white md:left-12 md:text-2xl"
       >
-        <nav className="flex items-center justify-between px-6 py-5 md:px-12">
-          <a
-            href="#hero"
-            className="text-contrast font-serif text-xl tracking-[0.25em] text-white md:text-2xl"
-          >
-            HORIZONS
-          </a>
+        HORIZONS
+      </a>
 
-          {/* Desktop */}
-          <ul className="hidden items-center gap-10 md:flex">
-            {LINKS.map((link) => (
-              <li key={link.label}>
-                <a
-                  href={link.href}
-                  className={`nav-link text-contrast font-serif text-lg tracking-wider ${
-                    link.accent ? 'text-sunset-yellow' : 'text-white'
-                  }`}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          {/* Mobile trigger */}
-          <button
-            type="button"
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-            className="text-contrast text-white md:hidden"
-          >
-            <Menu size={28} strokeWidth={1.5} />
-          </button>
-        </nav>
-      </header>
-
-      {/* Mobile curtain menu */}
-      <div
-        className={`fixed inset-0 z-[60] flex flex-col bg-night/95 backdrop-blur-sm transition-opacity duration-500 md:hidden ${
-          open ? 'opacity-100' : 'pointer-events-none opacity-0'
-        }`}
+      {/* Right-side vertical menu (desktop) — always visible, compact top */}
+      <nav
+        aria-label="Primary"
+        onMouseEnter={() => setReelBlur(true)}
+        onMouseLeave={() => setReelBlur(false)}
+        className="fixed right-6 top-20 z-50 hidden md:right-12 md:block lg:top-24"
       >
-        <div className="flex justify-end px-6 py-5">
-          <button
-            type="button"
-            aria-label="Close menu"
-            onClick={() => setOpen(false)}
-            className="text-white"
-          >
-            <X size={32} strokeWidth={1.5} />
-          </button>
-        </div>
-        <ul className="flex flex-1 flex-col items-center justify-center gap-10">
+        <ul className="flex flex-col items-end gap-4 lg:gap-5">
           {LINKS.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
-                onClick={() => setOpen(false)}
-                className={`font-serif text-4xl tracking-wider ${
-                  link.accent ? 'text-sunset-yellow' : 'text-white'
+                className={`nav-link text-contrast font-serif text-xl tracking-wider text-white lg:text-2xl ${
+                  link.accent ? 'text-sunset-yellow' : ''
                 }`}
               >
                 {link.label}
@@ -105,7 +68,63 @@ export default function StickyMenu() {
             </li>
           ))}
         </ul>
-      </div>
+      </nav>
+
+      {/* Mobile trigger — large, clearly clickable */}
+      <button
+        type="button"
+        aria-label="Open menu"
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
+        className="text-contrast fixed right-4 top-4 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation md:hidden"
+      >
+        <span className="text-[10px] font-medium tracking-[0.25em] uppercase">
+          Menu
+        </span>
+        <Menu size={22} strokeWidth={1.5} />
+      </button>
+
+      {/* Mobile curtain menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-[60] flex flex-col bg-night md:hidden"
+          >
+            <div className="flex justify-end px-4 py-4">
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setOpen(false)}
+                className="flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation"
+              >
+                <span className="text-[10px] font-medium tracking-[0.25em] uppercase">
+                  Close
+                </span>
+                <X size={22} strokeWidth={1.5} />
+              </button>
+            </div>
+            <ul className="flex flex-1 flex-col items-center justify-center gap-8 px-6 pb-12">
+              {LINKS.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className={`font-serif text-3xl tracking-wider ${
+                      link.accent ? 'text-sunset-yellow' : 'text-white'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

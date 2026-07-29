@@ -2,7 +2,8 @@
 /**
  * Horizons brand loader.
  * Full-screen logo with a breathing pulse while the page hydrates.
- * Fades out once the window finishes loading.
+ * Always dismisses exactly 2s after mount (inline script: no dependency
+ * on bundled JS or the window "load" event, so it can never get stuck).
  */
 ---
 
@@ -20,20 +21,15 @@
   />
 </div>
 
-<script>
-  const loader = document.getElementById('horizons-loader');
-
-  const dismiss = () => {
-    if (!loader) return;
-    loader.classList.add('opacity-0', 'pointer-events-none');
-    window.setTimeout(() => loader.remove(), 750);
-  };
-
-  if (document.readyState === 'complete') {
-    window.setTimeout(dismiss, 900);
-  } else {
-    window.addEventListener('load', () => window.setTimeout(dismiss, 900), {
-      once: true,
-    });
-  }
+<script is:inline>
+  (function () {
+    window.setTimeout(function () {
+      var loader = document.getElementById('horizons-loader');
+      if (!loader) return;
+      loader.classList.add('opacity-0', 'pointer-events-none');
+      window.setTimeout(function () {
+        loader.remove();
+      }, 750);
+    }, 2000);
+  })();
 </script>
