@@ -1,0 +1,39 @@
+---
+/**
+ * Horizons brand loader.
+ * Full-screen logo with a breathing pulse while the page hydrates.
+ * Fades out once the window finishes loading.
+ */
+---
+
+<div
+  id="horizons-loader"
+  class="fixed inset-0 z-[100] flex items-center justify-center bg-white transition-opacity duration-700"
+  role="status"
+  aria-label="Loading Horizons Lounge"
+>
+  <img
+    src="/images/horizons-logo.svg"
+    alt="Horizons Lounge Aruba"
+    class="loader-pulse w-[78vw] max-w-3xl select-none"
+    draggable="false"
+  />
+</div>
+
+<script>
+  const loader = document.getElementById('horizons-loader');
+
+  const dismiss = () => {
+    if (!loader) return;
+    loader.classList.add('opacity-0', 'pointer-events-none');
+    window.setTimeout(() => loader.remove(), 750);
+  };
+
+  if (document.readyState === 'complete') {
+    window.setTimeout(dismiss, 900);
+  } else {
+    window.addEventListener('load', () => window.setTimeout(dismiss, 900), {
+      once: true,
+    });
+  }
+</script>

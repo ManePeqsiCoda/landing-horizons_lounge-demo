@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img" aria-label="Horizons">
+  <!-- Sun -->
+  <circle cx="628" cy="148" r="78" fill="#FFD700"/>
+
+  <!-- Main wordmark: HORIZO in black, NS in white over the sun -->
+  <text x="66" y="182" font-family="Montserrat, 'Century Gothic', Arial, sans-serif" font-weight="300" font-size="88" letter-spacing="8" fill="#111111">HORIZO</text>
+  <text x="552" y="182" font-family="Montserrat, 'Century Gothic', Arial, sans-serif" font-weight="300" font-size="88" letter-spacing="8" fill="#FFFFFF">NS</text>
+
+  <!-- Horizon line -->
+  <line x1="28" y1="232" x2="772" y2="192" stroke="#111111" stroke-width="2"/>
+
+  <!-- Ocean reflection -->
+  <g transform="translate(0 478) scale(1 -1)">
+    <text x="66" y="182" font-family="Montserrat, 'Century Gothic', Arial, sans-serif" font-weight="300" font-size="88" letter-spacing="8" fill="#2AA9E0">HORIZONS</text>
+  </g>
+</svg>

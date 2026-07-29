@@ -1,0 +1,43 @@
+---
+/**
+ * Reel section wrapper: exactly 100vh x 100vw with scroll-snap lock.
+ * Temporary monochrome placeholder with an overlaid white title,
+ * ready to be swapped for the final photography.
+ */
+interface Props {
+  id: string;
+  title: string;
+  kicker?: string;
+  tone?: 'a' | 'b';
+}
+
+const { id, title, kicker, tone = 'a' } = Astro.props;
+
+const tones = {
+  a: 'from-neutral-800 via-neutral-900 to-black',
+  b: 'from-zinc-800 via-neutral-900 to-neutral-950',
+};
+---
+
+<section id={id} class="snap-section flex items-center justify-center">
+  <!-- Temporary monochrome placeholder (replaced by final photography) -->
+  <div
+    class={`absolute inset-0 bg-gradient-to-b ${tones[tone]} grayscale`}
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative z-10 px-6 text-center">
+    {
+      kicker && (
+        <p class="text-contrast mb-4 text-xs font-medium tracking-[0.35em] text-sunset-yellow uppercase">
+          {kicker}
+        </p>
+      )
+    }
+    <h2 class="text-contrast font-serif text-5xl text-white md:text-7xl">
+      {title}
+    </h2>
+    <slot />
+  </div>
+</section>

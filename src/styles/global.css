@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Brand typography */
+@import "@fontsource/playfair-display/400.css";
+@import "@fontsource/playfair-display/500.css";
+@import "@fontsource/playfair-display/700.css";
+@import "@fontsource/montserrat/300.css";
+@import "@fontsource/montserrat/400.css";
+@import "@fontsource/montserrat/500.css";
+@import "@fontsource/montserrat/600.css";
+
+/* Sunset Ritual design tokens (Tailwind v4 CSS-first config) */
+@theme {
+  --color-sunset-yellow: #ffd700;
+  --color-sunset-orange: #ff7a45;
+  --color-sunset-coral: #ff8c7a;
+  --color-ocean: #0e4d64;
+  --color-night: #0b0b0f;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Discrete "Reel" scroll only on the landing (data-reel), not on /admin */
+html[data-reel] {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-night);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Every reel section: exactly one viewport, always fully locked */
+.snap-section {
+  height: 100vh;
+  height: 100svh;
+  width: 100vw;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Aggressive contrast helper for text over photography */
+.text-contrast {
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.9),
+    0 4px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* Zara-style nav hover: letter-spacing expansion, no boxes */
+.nav-link {
+  transition: letter-spacing 0.35s ease, color 0.35s ease, opacity 0.35s ease;
+}
+.nav-link:hover {
+  letter-spacing: 0.1em;
+}
+
+/* Loader pulse */
+@keyframes horizons-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.045);
+    opacity: 0.82;
+  }
+}
+.loader-pulse {
+  animation: horizons-pulse 1.6s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* Vertical typography for the expanding carousel */
+.vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}

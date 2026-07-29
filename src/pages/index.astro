@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StickyMenu from '../components/StickyMenu';
+import Hero from '../sections/Hero.astro';
+import Ritual from '../sections/Ritual.astro';
+import Experience from '../sections/Experience.astro';
+import Culinary from '../sections/Culinary.astro';
+import LiquidGold from '../sections/LiquidGold.astro';
+import SocialVibe from '../sections/SocialVibe.astro';
+import Connect from '../sections/Connect.astro';
+import Footer from '../sections/Footer.astro';
+---
+
+<Layout reel>
+  <StickyMenu client:load />
+  <main>
+    <Hero />
+    <Ritual />
+    <Experience />
+    <Culinary />
+    <LiquidGold />
+    <SocialVibe />
+    <Connect />
+    <Footer />
+  </main>
+</Layout>
+
+<script>
+  /**
+   * Discrete "Reel" scroll: every gesture moves exactly one 100vh section
+   * and locks until the transition completes.
+   */
+  const LOCK_MS = 950;
+  let locked = false;
+
+  const go = (dir: number) => {
+    if (locked || dir === 0) return;
+    const total = document.querySelectorAll('.snap-section').length;
+    const idx = Math.round(window.scrollY / window.innerHeight);
+    const next = Math.min(Math.max(idx + dir, 0), total - 1);
+    if (next === idx) return;
+    locked = true;
+    window.scrollTo({ top: next * window.innerHeight, behavior: 'smooth' });
+    window.setTimeout(() => {
+      locked = false;
+    }, LOCK_MS);
+  };
+
+  window.addEventListener(
+    'wheel',
+    (e) => {
+      e.preventDefault();
+      go(Math.sign(e.deltaY));
+    },
+    { passive: false }
+  );
+
+  let touchStartY = 0;
+  window.addEventListener(
+    'touchstart',
+    (e) => {
+      touchStartY = e.touches[0].clientY;
+    },
+    { passive: true }
+  );
+  window.addEventListener(
+    'touchend',
+    (e) => {
+      const dy = touchStartY - e.changedTouches[0].clientY;
+      if (Math.abs(dy) > 40) go(Math.sign(dy));
+    },
+    { passive: true }
+  );
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault();
+      go(1);
+    }
+    if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      go(-1);
+    }
+  });
+</script>
