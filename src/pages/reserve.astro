@@ -2,14 +2,19 @@
 import Layout from '../layouts/Layout.astro';
 import StickyMenu from '../components/StickyMenu';
 import ReservationForm from '../components/reservation/ReservationForm';
-import { DEPOSIT_AMOUNT, DEPOSIT_CURRENCY } from '../data/reservation';
+import {
+  DEPOSIT_AMOUNT,
+  DEPOSIT_CURRENCY,
+  STRIPE_PUBLISHABLE_KEY_ENV,
+} from '../data/reservation';
 
 const title = 'Reserve Your Sunset Table — Horizons Lounge Aruba';
 const description =
   'Book your rooftop table at Horizons Lounge Aruba. Reserve your spot for the Sunset Ritual, live music nights, or Fajita Fridays with a simple $25 deposit.';
-const image = '/images/sunset.png';
+const image = '/images/drinks/signature-cocktail.jpg';
 
-const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '';
+const stripePublishableKey =
+  (import.meta.env as Record<string, string | undefined>)[STRIPE_PUBLISHABLE_KEY_ENV] ?? '';
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 
