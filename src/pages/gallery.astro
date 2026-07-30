@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StickyMenu from '../components/StickyMenu';
+import GalleryWall from '../components/GalleryWall';
+import { galleryImages } from '../data/gallery';
+
+const title = 'Gallery — Horizons Lounge Aruba';
+const description =
+  'Step inside Horizons Lounge Aruba. A curated visual journey through sunsets, cocktails, sushi, live music and the unforgettable Sunset Ritual at Amsterdam Manor.';
+const image = galleryImages[0]?.src ?? '/images/horizons-logo.svg';
+
+const siteOrigin = 'https://horizonsloungearuba.com';
+const gallerySchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ImageGallery',
+  name: 'Horizons Lounge Aruba Gallery',
+  description,
+  url: `${siteOrigin}/gallery`,
+  image: galleryImages.map((img) => new URL(img.src, siteOrigin).toString()),
+};
+---
+
+<Layout title={title} description={description} image={image}>
+  <StickyMenu client:load pathname={Astro.url.pathname} />
+  <main>
+    <GalleryWall client:load images={galleryImages} />
+  </main>
+</Layout>
+
+<script type="application/ld+json" set:html={JSON.stringify(gallerySchema)} />

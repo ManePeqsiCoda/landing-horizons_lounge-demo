@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -8,13 +8,9 @@ interface NavLink {
   accent?: boolean;
 }
 
-const LINKS: NavLink[] = [
-  { label: 'HOME', href: '#hero' },
-  { label: 'CULINARY & MIXOLOGY', href: '/menu' },
-  { label: 'EXPERIENCES', href: '#events' },
-  { label: 'RESERVE WITH US', href: '#connect', accent: true },
-  { label: 'CONTACT', href: '#footer' },
-];
+interface StickyMenuProps {
+  pathname?: string;
+}
 
 const REEL_MAIN_ID = 'reel-main';
 
@@ -23,36 +19,78 @@ function setReelBlur(on: boolean) {
   document.getElementById(REEL_MAIN_ID)?.classList.toggle('menu-blur', on);
 }
 
+function getLinks(isHome: boolean): NavLink[] {
+  return [
+    { label: 'HOME', href: isHome ? '#hero' : '/' },
+    { label: 'GALLERY', href: '/gallery' },
+    { label: 'CULINARY & MIXOLOGY', href: '/menu' },
+    { label: 'EXPERIENCES', href: '/experiences' },
+    { label: 'RESERVE WITH US', href: '/reserve', accent: true },
+    { label: 'CONTACT', href: isHome ? '#footer' : '/#footer' },
+  ];
+}
+
 /**
  * Zara-style navigation.
- * - Desktop: vertical column at the right edge, smaller serif type, closer
- *   to the top without touching it. Always visible.
+ * - Desktop: brand mark + vertical column at the right edge. Hidden while
+ *   scrolling down, revealed when scrolling up.
  * - Mobile: hamburger button (large hit area) opens a full-screen curtain.
  */
-export default function StickyMenu() {
+export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) {
   const [open, setOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [pathname, setPathname] = useState(propPathname ?? '/');
+  const lastScrollY = useRef(0);
+
+  const isHome = pathname === '/' || pathname === '/index.html';
+  const LINKS = getLinks(isHome);
+
+  useEffect(() => {
+    if (propPathname === undefined) {
+      setPathname(window.location.pathname);
+    }
+  }, [propPathname]);
 
   useEffect(() => {
     setReelBlur(open);
     return () => setReelBlur(false);
   }, [open]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      const current = window.scrollY;
+      setVisible(current < lastScrollY.current);
+      lastScrollY.current = current;
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const desktopVisible = 'md:translate-y-0 md:opacity-100';
+  const brandHidden = 'md:-translate-y-28 md:opacity-0 md:pointer-events-none';
+  const navHidden = 'md:-translate-y-full md:opacity-0 md:pointer-events-none';
+
   return (
     <>
       {/* Brand mark (top-left) */}
       <a
-        href="#hero"
-        className="text-contrast fixed left-6 top-5 z-50 font-serif text-xl tracking-[0.25em] text-white md:left-12 md:text-2xl"
+        href={isHome ? '#hero' : '/'}
+        className={`text-contrast fixed left-6 top-5 z-50 font-serif text-xl tracking-[0.25em] text-white transition-transform duration-500 ease-out md:left-12 md:text-2xl ${
+          visible ? desktopVisible : brandHidden
+        }`}
       >
         HORIZONS
       </a>
 
-      {/* Right-side vertical menu (desktop) — always visible, compact top */}
+      {/* Right-side vertical menu (desktop) */}
       <nav
         aria-label="Primary"
         onMouseEnter={() => setReelBlur(true)}
         onMouseLeave={() => setReelBlur(false)}
-        className="fixed right-6 top-20 z-50 hidden md:right-12 md:block lg:top-24"
+        className={`fixed right-6 top-20 z-50 hidden transition-transform duration-500 ease-out md:right-12 md:block lg:top-24 ${
+          visible ? desktopVisible : navHidden
+        }`}
       >
         <ul className="flex flex-col items-end gap-4 lg:gap-5">
           {LINKS.map((link) => (
