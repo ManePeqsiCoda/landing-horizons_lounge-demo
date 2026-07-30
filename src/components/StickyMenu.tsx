@@ -10,7 +10,7 @@ interface NavLink {
 
 const LINKS: NavLink[] = [
   { label: 'HOME', href: '#hero' },
-  { label: 'CULINARY & MIXOLOGY', href: '#culinary' },
+  { label: 'CULINARY & MIXOLOGY', href: '/menu' },
   { label: 'EXPERIENCES', href: '#events' },
   { label: 'RESERVE WITH US', href: '#connect', accent: true },
   { label: 'CONTACT', href: '#footer' },
