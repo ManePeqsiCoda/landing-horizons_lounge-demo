@@ -12,7 +12,7 @@ import Footer from '../sections/Footer.astro';
 ---
 
 <Layout reel>
-  <StickyMenu client:load />
+  <StickyMenu client:load pathname={Astro.url.pathname} />
   <main id="reel-main">
     <Hero />
     <Ritual />

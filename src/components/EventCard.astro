@@ -1,0 +1,96 @@
+---
+import type { EventItem } from '../data/events';
+
+interface Props extends EventItem {}
+
+const {
+  image,
+  imageAlt,
+  kicker,
+  title,
+  description,
+  details,
+  date,
+  dateKicker,
+  cta,
+  ctaHref,
+} = Astro.props;
+
+const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+
+<section
+  class="group relative grid min-h-[90vh] grid-cols-1 bg-white lg:grid-cols-2"
+  aria-labelledby={`event-title-${slug}`}
+>
+  <!-- Text Left — Clean, Airy Lifestyle Editorial -->
+  <div
+    class="order-2 flex flex-col justify-center px-8 py-16 transition-transform duration-500 ease-out group-hover:-translate-y-1 lg:order-1 lg:px-16 lg:py-24 xl:px-24"
+  >
+    <p
+      class="mb-3 text-[11px] font-semibold tracking-[0.25em] text-sunset-orange uppercase"
+    >
+      {kicker}
+    </p>
+    <h2
+      id={`event-title-${slug}`}
+      class="font-serif text-4xl text-night md:text-5xl lg:text-6xl"
+    >
+      {title}
+    </h2>
+
+    <p
+      class="mt-6 max-w-md text-sm font-light leading-relaxed text-neutral-600"
+    >
+      {description}
+    </p>
+
+    <ul class="mt-6 flex flex-wrap gap-3">
+      {
+        details.map((detail) => (
+          <li class="rounded-full border border-neutral-300 px-3 py-1 text-[10px] font-medium tracking-[0.15em] text-neutral-600 uppercase">
+            {detail}
+          </li>
+        ))
+      }
+    </ul>
+
+    <a
+      href={ctaHref}
+      class="mt-8 inline-flex w-fit items-center gap-3 bg-sunset-yellow px-6 py-3 text-[11px] font-semibold tracking-[0.15em] text-night uppercase transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+    >
+      {cta}
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <!-- Image Right — Magazine-Style Date Badge -->
+  <div
+    class="relative order-1 min-h-[60vh] overflow-hidden lg:order-2 lg:min-h-full"
+  >
+    <img
+      src={image}
+      alt={imageAlt}
+      width="1200"
+      height="1600"
+      loading="lazy"
+      class="absolute inset-0 h-full w-full object-cover transition-all duration-700 ease-out group-hover:scale-105 group-hover:saturate-[1.15]"
+    />
+
+    <!-- Modern flyer / cover date badge -->
+    <div
+      class="absolute right-4 top-4 z-10 bg-white px-5 py-4 shadow-xl md:right-8 md:top-8 md:px-6 md:py-5"
+    >
+      <span
+        class="block text-[10px] font-semibold tracking-[0.25em] text-sunset-orange uppercase md:text-[11px]"
+      >
+        {dateKicker}
+      </span>
+      <span
+        class="block text-4xl font-bold leading-none tracking-tight text-night md:text-5xl lg:text-6xl"
+      >
+        {date}
+      </span>
+    </div>
+  </div>
+</section>

@@ -1,18 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StickyMenu from '../components/StickyMenu';
-import MenuHero from '../components/MenuHero.astro';
-import MenuContent from '../sections/MenuContent.astro';
+import MenuReel from '../components/MenuReel';
 
 const title = 'Culinary & Mixology — Horizons Lounge Aruba';
 const description =
   'Explore the drinks and plates menu at Horizons Lounge Aruba. Signature cocktails, sushi, plant-based dishes and the sunset ritual at Amsterdam Manor.';
 ---
 
-<Layout title={title} description={description}>
-  <StickyMenu client:load />
-  <main>
-    <MenuHero />
-    <MenuContent />
-  </main>
+<Layout title={title} description={description} reel>
+  <StickyMenu client:load pathname={Astro.url.pathname} />
+  <MenuReel client:load />
 </Layout>

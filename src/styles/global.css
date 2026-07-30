@@ -39,7 +39,8 @@ body {
 }
 
 /* Every reel section: exactly one viewport, always fully locked */
-.snap-section {
+.snap-section,
+.menu-snap-section {
   height: 100vh;
   height: 100svh;
   width: 100vw;
@@ -47,6 +48,43 @@ body {
   scroll-snap-stop: always;
   position: relative;
   overflow: hidden;
+}
+
+/* Menu hero: diagonal / horizontal split panels */
+.menu-triangle {
+  background: transparent;
+  border: none;
+  appearance: none;
+}
+
+.drinks-area {
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.plates-area {
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.divider-horizontal {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .drinks-area {
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+  }
+
+  .plates-area {
+    clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  }
+
+  .divider-diagonal {
+    display: none;
+  }
+
+  .divider-horizontal {
+    display: block;
+  }
 }
 
 /* Aggressive contrast helper for text over photography */

@@ -15,6 +15,7 @@ interface ExpandCardsProps {
  */
 export default function ExpandCards({ items, defaultExpanded = false }: ExpandCardsProps) {
   const [expanded, setExpanded] = useState<number | false>(defaultExpanded);
+  const hasExpanded = expanded !== false;
 
   return (
     <div
@@ -23,6 +24,12 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
     >
       {items.map((item, i) => {
         const isExpanded = expanded === i;
+        const flexClass =
+          !hasExpanded
+            ? 'flex-1'
+            : isExpanded
+              ? 'flex-[6] lg:flex-[3]'
+              : 'flex-[0.25] lg:flex-1';
         return (
           <article
             key={item.id}
@@ -30,9 +37,7 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             tabIndex={0}
             aria-expanded={isExpanded}
             aria-label={`${item.name} — $${item.price}`}
-            className={`group relative cursor-pointer overflow-hidden rounded-none outline-none transition-all duration-500 ease-in-out focus-visible:ring-2 focus-visible:ring-sunset-yellow ${
-              isExpanded ? 'flex-[3]' : 'flex-1'
-            }`}
+            className={`group relative cursor-pointer overflow-hidden rounded-none outline-none transition-all duration-500 ease-in-out focus-visible:ring-2 focus-visible:ring-sunset-yellow ${flexClass}`}
             style={{ flexBasis: 0 }}
             onMouseEnter={() => {setExpanded(i);}}
             onClick={() => setExpanded(isExpanded ? false : i)}
@@ -48,21 +53,21 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             {/* Veladura para legibilidad del texto */}
             <div className="absolute inset-0 bg-gradient-to-t from-night/75 via-night/15 to-transparent" />
 
-            {/* Título vertical — desktop colapsado */}
+            {/* Título vertical — tarjetas colapsadas (pestañas en móvil y desktop) */}
             {!isExpanded && (
-              <div className="absolute inset-0 hidden items-center justify-center lg:flex">
-                <span className="vertical-text text-contrast font-serif text-xl tracking-[0.25em] text-white uppercase">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="vertical-text text-contrast font-serif text-[10px] tracking-[0.2em] text-white uppercase lg:text-xl lg:tracking-[0.25em]">
                   {item.name}
                 </span>
               </div>
             )}
 
-            {/* Título horizontal + info */}
+            {/* Título horizontal + info — solo tarjeta expandida */}
             <div
               className={`absolute inset-x-0 bottom-0 p-5 transition-all duration-500 ease-out md:p-6 ${
                 isExpanded
                   ? 'translate-y-0 opacity-100'
-                  : 'pointer-events-none translate-y-4 opacity-100 lg:translate-y-4 lg:opacity-0'
+                  : 'pointer-events-none translate-y-4 opacity-0'
               }`}
             >
               <div className="flex items-baseline justify-between gap-3">

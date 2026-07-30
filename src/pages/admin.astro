@@ -3,23 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import AdminDashboard from '../components/AdminDashboard';
 ---
 
-<Layout title="Horizons Lounge — Admin Demo" description="Internal demo dashboard for Horizons Lounge Aruba.">
-  <main class="min-h-screen bg-night py-16 text-white">
-    <header class="mx-auto mb-12 flex w-full max-w-4xl items-center justify-between px-6">
-      <div>
-        <p class="text-[10px] font-medium tracking-[0.35em] text-sunset-yellow uppercase">
-          Horizons Lounge Aruba
-        </p>
-        <h1 class="mt-2 font-serif text-3xl md:text-4xl">Admin Dashboard</h1>
-      </div>
-      <a
-        href="/"
-        class="text-xs font-light tracking-[0.25em] text-neutral-400 uppercase transition-colors hover:text-sunset-yellow"
-      >
-        ← Back to site
-      </a>
-    </header>
-
+<Layout title="Horizons Lounge — Admin Demo" description="Internal demo dashboard for Horizons Lounge Aruba." robots="noindex, nofollow">
+  <main class="min-h-screen bg-night text-white">
     <AdminDashboard client:load />
   </main>
 </Layout>

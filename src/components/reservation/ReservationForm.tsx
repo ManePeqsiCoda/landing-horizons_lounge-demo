@@ -87,8 +87,8 @@ function StripeCardSection() {
   if (!stripe || !elements) {
     return (
       <div className="rounded-xl border border-sunset-orange/30 bg-sunset-orange/10 p-4 text-sm text-sunset-orange">
-        Stripe is loading or the publishable key is missing. Add your
-        PUBLIC_STRIPE_PUBLISHABLE_KEY to test the card form.
+        Stripe is loading or the publishable key is missing. Add your{' '}
+        {STRIPE_PUBLISHABLE_KEY_ENV} to test the card form.
       </div>
     );
   }
@@ -167,7 +167,7 @@ function InnerForm({
 
     if (!stripe || !elements) {
       setErrorMessage(
-        'Stripe is not ready. Make sure you have set a valid PUBLIC_STRIPE_PUBLISHABLE_KEY.'
+        `Stripe is not ready. Make sure you have set a valid ${STRIPE_PUBLISHABLE_KEY_ENV}.`
       );
       setStatus('error');
       return;

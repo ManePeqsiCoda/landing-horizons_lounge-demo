@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block admin/private areas
+Disallow: /admin/
+
+Sitemap: https://horizonsaruba.com/sitemap.xml

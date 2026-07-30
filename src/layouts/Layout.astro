@@ -7,6 +7,7 @@ interface Props {
   description?: string;
   image?: string;
   reel?: boolean;
+  robots?: string;
 }
 
 const {
@@ -14,6 +15,7 @@ const {
   description = 'Horizons Lounge at Amsterdam Manor, Aruba. Signature cocktails, sushi, live music and the most iconic sunset ritual on Eagle Beach.',
   image = '/images/horizons-logo.svg',
   reel = false,
+  robots = 'index, follow',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
@@ -24,6 +26,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content={robots} />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />

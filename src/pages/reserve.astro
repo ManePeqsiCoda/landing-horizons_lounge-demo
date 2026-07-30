@@ -1,0 +1,89 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StickyMenu from '../components/StickyMenu';
+import ReservationForm from '../components/reservation/ReservationForm';
+import { DEPOSIT_AMOUNT, DEPOSIT_CURRENCY } from '../data/reservation';
+
+const title = 'Reserve Your Sunset Table — Horizons Lounge Aruba';
+const description =
+  'Book your rooftop table at Horizons Lounge Aruba. Reserve your spot for the Sunset Ritual, live music nights, or Fajita Fridays with a simple $25 deposit.';
+const image = '/images/sunset.png';
+
+const stripePublishableKey = import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '';
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Reservation',
+  name: 'Horizons Lounge Table Reservation',
+  description,
+  url: canonicalURL.href,
+  image: new URL(image, Astro.url.origin).href,
+  reservationFor: {
+    '@type': 'Event',
+    name: 'Horizons Lounge Rooftop Experience',
+    location: {
+      '@type': 'Place',
+      name: 'Horizons Lounge at Amsterdam Manor Beach Resort',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'J.E. Irausquin Blvd 252',
+        addressLocality: 'Eagle Beach',
+        addressCountry: 'AW',
+      },
+    },
+  },
+  price: `${DEPOSIT_AMOUNT}`,
+  priceCurrency: DEPOSIT_CURRENCY,
+};
+---
+
+<Layout title={title} description={description} image={image}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+  <StickyMenu client:load pathname={Astro.url.pathname} />
+
+  <main
+    class="relative min-h-screen bg-neutral-900 bg-cover bg-center bg-no-repeat text-night"
+    style="background-image: url('/images/sunset.png');"
+  >
+    {/* Warm atmospheric overlay for readability */}
+    <div class="absolute inset-0 bg-gradient-to-br from-night/70 via-night/40 to-ocean/50" />
+
+    <div class="relative z-10 flex min-h-screen items-center justify-center px-6 py-28 md:py-32">
+      <div class="w-full max-w-2xl rounded-3xl bg-white/90 p-8 shadow-2xl backdrop-blur-md md:p-12">
+        {/* Header */}
+        <div class="mb-8 text-center">
+          <p class="mb-3 text-[11px] font-semibold tracking-[0.35em] text-sunset-orange uppercase">
+            Rooftop Reservations
+          </p>
+          <h1 class="font-serif text-4xl text-night md:text-5xl lg:text-6xl">
+            Reserve Your Sunset
+          </h1>
+          <p class="mx-auto mt-4 max-w-md text-sm font-light leading-relaxed text-neutral-600">
+            Choose your experience, pick your golden-hour table, and secure it with a small demo
+            deposit. The ocean view is included.
+          </p>
+        </div>
+
+        <ReservationForm
+          stripePublishableKey={stripePublishableKey}
+          client:load
+        />
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  /* Smooth backdrop for the card image edge */
+  main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(11, 11, 15, 0.35) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
