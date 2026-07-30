@@ -29,42 +29,42 @@ export default function ReservationSummary({
   eventLabel,
 }: ReservationSummaryProps) {
   return (
-    <div className="space-y-4">
-      <div className="rounded-xl border border-white/40 bg-white/60 p-4 backdrop-blur-sm">
-        <p className="text-[10px] font-semibold tracking-[0.25em] text-sunset-orange uppercase">
+    <div className="sticky top-6 space-y-4 lg:top-8">
+      <div className="border border-white/20 bg-white/10 p-5 backdrop-blur-md">
+        <p className="text-xs font-semibold tracking-[0.25em] text-sunset-yellow uppercase">
           Reservation Summary
         </p>
-        <h3 className="mt-1 font-serif text-2xl text-night">{eventLabel}</h3>
-        <dl className="mt-4 space-y-2 text-sm">
+        <h3 className="mt-2 font-serif text-2xl leading-none text-white">{eventLabel}</h3>
+        <dl className="mt-5 space-y-3 text-base">
           <div className="flex justify-between">
-            <dt className="text-neutral-500">Date</dt>
-            <dd className="font-medium text-night">{formatDate(data.date)}</dd>
+            <dt className="text-white/60">Date</dt>
+            <dd className="font-medium text-white">{formatDate(data.date)}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-neutral-500">Time</dt>
-            <dd className="font-medium text-night">{data.time || '—'}</dd>
+            <dt className="text-white/60">Time</dt>
+            <dd className="font-medium text-white">{data.time || '—'}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-neutral-500">Guests</dt>
-            <dd className="font-medium text-night">{data.guests}</dd>
+            <dt className="text-white/60">Guests</dt>
+            <dd className="font-medium text-white">{data.guests}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-neutral-500">Name</dt>
-            <dd className="font-medium text-night">{data.fullName || '—'}</dd>
+            <dt className="text-white/60">Name</dt>
+            <dd className="font-medium text-white">{data.fullName || '—'}</dd>
           </div>
         </dl>
       </div>
 
-      <div className="flex items-center justify-between rounded-xl bg-night p-4 text-white">
-        <span className="text-xs font-medium tracking-wide uppercase">
+      <div className="flex items-center justify-between border border-white/20 bg-night/60 p-5 text-white">
+        <span className="text-sm font-medium tracking-wide uppercase">
           Deposit to reserve
         </span>
-        <span className="font-serif text-2xl text-sunset-yellow">
+        <span className="font-serif text-3xl text-sunset-yellow">
           {formatCurrency(DEPOSIT_AMOUNT, DEPOSIT_CURRENCY)}
         </span>
       </div>
 
-      <p className="text-[10px] leading-relaxed text-neutral-500">
+      <p className="text-xs leading-relaxed text-white/50">
         This is a demo authorization only. No real charge will be processed.
       </p>
     </div>

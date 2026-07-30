@@ -27,15 +27,15 @@ interface ReservationFormProps {
 const cardOptions: StripeCardElementOptions = {
   style: {
     base: {
-      fontSize: '16px',
-      color: '#0b0b0f',
+      fontSize: '17px',
+      color: '#ffffff',
       fontFamily: '"Montserrat", ui-sans-serif, system-ui, sans-serif',
       '::placeholder': {
-        color: '#a3a3a3',
+        color: 'rgba(255, 255, 255, 0.5)',
       },
     },
     invalid: {
-      color: '#dc2626',
+      color: '#ff8c7a',
     },
   },
 };
@@ -86,7 +86,7 @@ function StripeCardSection() {
 
   if (!stripe || !elements) {
     return (
-      <div className="rounded-xl border border-sunset-orange/30 bg-sunset-orange/10 p-4 text-sm text-sunset-orange">
+      <div className="border border-sunset-orange/40 bg-sunset-orange/10 p-4 text-sm text-sunset-orange">
         Stripe is loading or the publishable key is missing. Add your{' '}
         {STRIPE_PUBLISHABLE_KEY_ENV} to test the card form.
       </div>
@@ -94,17 +94,17 @@ function StripeCardSection() {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <label
         htmlFor="card-element"
-        className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
+        className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
       >
         Card Details
       </label>
-      <div className="rounded-lg border border-neutral-200 bg-white px-4 py-3 shadow-sm focus-within:border-sunset-orange focus-within:ring-2 focus-within:ring-sunset-orange/20">
+      <div className="border border-white/20 bg-white/10 px-4 py-3.5 transition focus-within:border-sunset-yellow focus-within:bg-white/[0.14]">
         <CardElement id="card-element" options={cardOptions} />
       </div>
-      <p className="text-[10px] text-neutral-400">
+      <p className="text-xs text-white/50">
         Demo mode — use 4242 4242 4242 4242, any future date, any CVC.
       </p>
     </div>
@@ -213,8 +213,8 @@ function InnerForm({
   if (status === 'success' && paymentMethodId) {
     const mailto = buildMailto(form, paymentMethodId);
     return (
-      <div className="rounded-2xl bg-white p-8 text-center shadow-2xl">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-sunset-yellow/20">
+      <div className="border border-white/20 bg-white/10 p-8 text-center shadow-2xl backdrop-blur-md">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center bg-sunset-yellow/20">
           <svg
             className="h-8 w-8 text-sunset-yellow"
             fill="none"
@@ -225,18 +225,18 @@ function InnerForm({
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="mt-6 font-serif text-3xl text-night">Reservation Ready</h2>
-        <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-neutral-600">
-          Your demo deposit of <strong>${DEPOSIT_AMOUNT} {DEPOSIT_CURRENCY}</strong> has been
+        <h2 className="mt-6 font-serif text-3xl text-white">Reservation Ready</h2>
+        <p className="mx-auto mt-3 max-w-sm text-base leading-relaxed text-white/70">
+          Your demo deposit of <strong className="text-sunset-yellow">${DEPOSIT_AMOUNT} {DEPOSIT_CURRENCY}</strong> has been
           authorized. We are preparing your request to send to Horizons Lounge.
         </p>
         <a
           href={mailto}
-          className="mt-6 inline-flex items-center gap-2 bg-sunset-yellow px-8 py-3 text-[11px] font-semibold tracking-[0.15em] text-night uppercase transition-all hover:-translate-y-0.5 hover:shadow-lg"
+          className="mt-6 inline-flex items-center gap-2 bg-sunset-yellow px-8 py-3.5 text-sm font-semibold tracking-[0.15em] text-night uppercase transition-all hover:-translate-y-0.5 hover:shadow-lg"
         >
           Send request via email
         </a>
-        <p className="mt-4 text-[10px] text-neutral-400">
+        <p className="mt-4 text-xs text-white/50">
           If your email client did not open automatically, click the button above.
         </p>
       </div>
@@ -244,207 +244,213 @@ function InnerForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Experience */}
-        <div className="space-y-2 md:col-span-2">
-          <label
-            htmlFor="eventId"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
-          >
-            Experience
-          </label>
-          <select
-            id="eventId"
-            name="eventId"
-            value={form.eventId}
-            onChange={handleChange}
-            className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          >
-            {RESERVATION_EVENTS.map((event) => (
-              <option key={event.id} value={event.id}>
-                {event.label}
-              </option>
-            ))}
-          </select>
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:gap-7" noValidate>
+      {/* Main fields + payment */}
+      <div className="space-y-4 lg:col-span-2">
+        <div className="grid grid-cols-1 gap-x-5 gap-y-3 md:grid-cols-2">
+          {/* Experience */}
+          <div className="space-y-2 md:col-span-2">
+            <label
+              htmlFor="eventId"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Experience
+            </label>
+            <select
+              id="eventId"
+              name="eventId"
+              value={form.eventId}
+              onChange={handleChange}
+              className="form-glass w-full appearance-none px-4 py-3.5 text-base"
+            >
+              {RESERVATION_EVENTS.map((event) => (
+                <option key={event.id} value={event.id}>
+                  {event.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Date */}
+          <div className="space-y-2">
+            <label
+              htmlFor="date"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Date
+            </label>
+            <input
+              id="date"
+              name="date"
+              type="date"
+              min={todayInputValue()}
+              value={form.date}
+              onChange={handleChange}
+              required
+              className="form-glass w-full px-4 py-3.5 text-base"
+            />
+          </div>
+
+          {/* Time */}
+          <div className="space-y-2">
+            <label
+              htmlFor="time"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Time
+            </label>
+            <select
+              id="time"
+              name="time"
+              value={form.time}
+              onChange={handleChange}
+              className="form-glass w-full appearance-none px-4 py-3.5 text-base"
+            >
+              {TIME_SLOTS.map((slot) => (
+                <option key={slot} value={slot}>
+                  {slot}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Guests */}
+          <div className="space-y-2">
+            <label
+              htmlFor="guests"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Guests
+            </label>
+            <input
+              id="guests"
+              name="guests"
+              type="number"
+              min={MIN_GUESTS}
+              max={MAX_GUESTS}
+              value={form.guests}
+              onChange={handleChange}
+              required
+              className="form-glass w-full px-4 py-3.5 text-base"
+            />
+          </div>
+
+          {/* Full Name */}
+          <div className="space-y-2">
+            <label
+              htmlFor="fullName"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Full Name
+            </label>
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              value={form.fullName}
+              onChange={handleChange}
+              placeholder="Jane Doe"
+              required
+              className="form-glass w-full px-4 py-3.5 text-base placeholder:text-white/40"
+            />
+          </div>
+
+          {/* Email */}
+          <div className="space-y-2">
+            <label
+              htmlFor="email"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="jane@example.com"
+              required
+              className="form-glass w-full px-4 py-3.5 text-base placeholder:text-white/40"
+            />
+          </div>
+
+          {/* Phone */}
+          <div className="space-y-2 md:col-span-2">
+            <label
+              htmlFor="phone"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Phone
+            </label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              value={form.phone}
+              onChange={handleChange}
+              placeholder="+297 000 0000"
+              required
+              className="form-glass w-full px-4 py-3.5 text-base placeholder:text-white/40"
+            />
+          </div>
+
+          {/* Notes */}
+          <div className="space-y-2 md:col-span-2">
+            <label
+              htmlFor="notes"
+              className="block text-xs font-semibold tracking-[0.2em] text-white/60 uppercase"
+            >
+              Notes / Occasion
+            </label>
+            <textarea
+              id="notes"
+              name="notes"
+              rows={2}
+              value={form.notes}
+              onChange={handleChange}
+              placeholder="Birthday, anniversary, dietary restrictions..."
+              className="form-glass w-full resize-none px-4 py-3.5 text-base placeholder:text-white/40"
+            />
+          </div>
         </div>
 
-        {/* Date */}
-        <div className="space-y-2">
-          <label
-            htmlFor="date"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
-          >
-            Date
-          </label>
-          <input
-            id="date"
-            name="date"
-            type="date"
-            min={todayInputValue()}
-            value={form.date}
-            onChange={handleChange}
-            required
-            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          />
-        </div>
+        <div className="h-px bg-white/20" />
 
-        {/* Time */}
-        <div className="space-y-2">
-          <label
-            htmlFor="time"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
-          >
-            Time
-          </label>
-          <select
-            id="time"
-            name="time"
-            value={form.time}
-            onChange={handleChange}
-            className="w-full appearance-none rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          >
-            {TIME_SLOTS.map((slot) => (
-              <option key={slot} value={slot}>
-                {slot}
-              </option>
-            ))}
-          </select>
-        </div>
+        <StripeCardSection />
 
-        {/* Guests */}
-        <div className="space-y-2">
-          <label
-            htmlFor="guests"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
+        {status === 'error' && errorMessage && (
+          <div
+            role="alert"
+            aria-live="polite"
+            className="border border-red-400/40 bg-red-500/10 px-4 py-3 text-base text-red-200"
           >
-            Guests
-          </label>
-          <input
-            id="guests"
-            name="guests"
-            type="number"
-            min={MIN_GUESTS}
-            max={MAX_GUESTS}
-            value={form.guests}
-            onChange={handleChange}
-            required
-            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          />
-        </div>
+            {errorMessage}
+          </div>
+        )}
 
-        {/* Full Name */}
-        <div className="space-y-2">
-          <label
-            htmlFor="fullName"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
-          >
-            Full Name
-          </label>
-          <input
-            id="fullName"
-            name="fullName"
-            type="text"
-            value={form.fullName}
-            onChange={handleChange}
-            placeholder="Jane Doe"
-            required
-            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          />
-        </div>
+        {!stripePublishableKey && (
+          <div className="border border-sunset-orange/40 bg-sunset-orange/10 px-4 py-3 text-sm text-sunset-orange">
+            <strong>Demo setup:</strong> add your{' '}
+            <code className="bg-white/10 px-1 py-0.5">{STRIPE_PUBLISHABLE_KEY_ENV}</code>{' '}
+            to a <code className="bg-white/10 px-1 py-0.5">.env</code> file to activate the
+            real Stripe card form.
+          </div>
+        )}
 
-        {/* Email */}
-        <div className="space-y-2">
-          <label
-            htmlFor="email"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
-          >
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="jane@example.com"
-            required
-            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="space-y-2 md:col-span-2">
-          <label
-            htmlFor="phone"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
-          >
-            Phone
-          </label>
-          <input
-            id="phone"
-            name="phone"
-            type="tel"
-            value={form.phone}
-            onChange={handleChange}
-            placeholder="+297 000 0000"
-            required
-            className="w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          />
-        </div>
-
-        {/* Notes */}
-        <div className="space-y-2 md:col-span-2">
-          <label
-            htmlFor="notes"
-            className="block text-[11px] font-semibold tracking-[0.2em] text-neutral-500 uppercase"
-          >
-            Notes / Occasion
-          </label>
-          <textarea
-            id="notes"
-            name="notes"
-            rows={3}
-            value={form.notes}
-            onChange={handleChange}
-            placeholder="Birthday, anniversary, dietary restrictions..."
-            className="w-full resize-none rounded-lg border border-neutral-200 bg-white px-4 py-3 text-sm text-night shadow-sm outline-none transition focus:border-sunset-orange focus:ring-2 focus:ring-sunset-orange/20"
-          />
-        </div>
+        <button
+          type="submit"
+          disabled={status === 'processing'}
+          className="w-full bg-sunset-yellow px-8 py-4 text-sm font-semibold tracking-[0.2em] text-night uppercase transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {status === 'processing' ? 'Processing…' : `Authorize $${DEPOSIT_AMOUNT} Deposit`}
+        </button>
       </div>
 
-      <div className="h-px bg-neutral-200" />
-
-      <StripeCardSection />
-
-      {status === 'error' && errorMessage && (
-        <div
-          role="alert"
-          aria-live="polite"
-          className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700"
-        >
-          {errorMessage}
-        </div>
-      )}
-
-      {!stripePublishableKey && (
-        <div className="rounded-lg border border-sunset-orange/30 bg-sunset-orange/10 px-4 py-3 text-xs text-sunset-orange">
-          <strong>Demo setup:</strong> add your{' '}
-          <code className="rounded bg-white/60 px-1 py-0.5">{STRIPE_PUBLISHABLE_KEY_ENV}</code>{' '}
-          to a <code className="rounded bg-white/60 px-1 py-0.5">.env</code> file to activate the
-          real Stripe card form.
-        </div>
-      )}
-
-      <button
-        type="submit"
-        disabled={status === 'processing'}
-        className="w-full bg-sunset-yellow px-8 py-4 text-[12px] font-semibold tracking-[0.2em] text-night uppercase transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {status === 'processing' ? 'Processing…' : `Authorize $${DEPOSIT_AMOUNT} Deposit`}
-      </button>
-
-      <ReservationSummary data={form} eventLabel={selectedEvent.label} />
+      {/* Summary */}
+      <div className="lg:col-span-1">
+        <ReservationSummary data={form} eventLabel={selectedEvent.label} />
+      </div>
     </form>
   );
 }
