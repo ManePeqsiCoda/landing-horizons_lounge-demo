@@ -135,6 +135,14 @@ function InnerForm({
   const selectedEvent =
     RESERVATION_EVENTS.find((e) => e.id === form.eventId) ?? RESERVATION_EVENTS[0];
 
+  // Pre-select an experience when arriving via /reserve?event=<id>
+  useEffect(() => {
+    const eventParam = new URLSearchParams(window.location.search).get('event');
+    if (eventParam && RESERVATION_EVENTS.some((e) => e.id === eventParam)) {
+      setForm((prev) => ({ ...prev, eventId: eventParam }));
+    }
+  }, []);
+
   useEffect(() => {
     if (status === 'success' && paymentMethodId) {
       const mailto = buildMailto(form, paymentMethodId);
@@ -422,7 +430,7 @@ function InnerForm({
       {!stripePublishableKey && (
         <div className="rounded-lg border border-sunset-orange/30 bg-sunset-orange/10 px-4 py-3 text-xs text-sunset-orange">
           <strong>Demo setup:</strong> add your{' '}
-          <code className="rounded bg-white/60 px-1 py-0.5">PUBLIC_STRIPE_PUBLISHABLE_KEY</code>{' '}
+          <code className="rounded bg-white/60 px-1 py-0.5">{STRIPE_PUBLISHABLE_KEY_ENV}</code>{' '}
           to a <code className="rounded bg-white/60 px-1 py-0.5">.env</code> file to activate the
           real Stripe card form.
         </div>
