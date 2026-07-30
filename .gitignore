@@ -21,3 +21,9 @@ Thumbs.db
 
 # Vercel
 .vercel/
+
+# agent skills / development docs
+.agents/
+skills-lock.json
+AGENTS.md
+*.md
