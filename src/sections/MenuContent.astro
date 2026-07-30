@@ -1,14 +1,40 @@
 ---
-// Placeholder para las subcategorías y productos del menú.
-// Se deja preparado para poblarlo con imágenes y contenido posteriormente.
+// Contenido del menú: sección DRINKS con tarjetas expandibles
+// y placeholder de PLATES (tendrá subcategorías — pendiente).
+import ExpandCards from '../components/ExpandCards.jsx';
+import { drinks } from '../data/menu';
 ---
 
+{/* DRINKS — header fijo arriba, carrusel ocupa el resto de la pantalla */}
+<section id="drinks" class="flex h-screen w-full flex-col bg-night">
+  <header class="shrink-0 px-4 py-5 md:px-10 md:py-7">
+    <p
+      class="font-sans text-[10px] font-medium tracking-[0.35em] text-sunset-yellow uppercase"
+    >
+      Signature Cocktails
+    </p>
+    <h2 class="text-contrast mt-1 font-serif text-3xl text-white md:text-5xl">
+      DRINKS
+    </h2>
+  </header>
+
+  <div class="min-h-0 flex-1 px-4 pb-4 md:px-10 md:pb-7">
+    <ExpandCards client:load items={drinks} />
+  </div>
+</section>
+
+{/* PLATES — placeholder hasta definir subcategorías */}
 <section
   id="menu-content"
   class="flex min-h-screen w-full items-center justify-center bg-night px-6 py-24"
 >
   <div class="text-center">
-    <h2 class="font-serif text-3xl font-medium tracking-[0.15em] text-white/60 md:text-5xl">
+    <p
+      class="font-sans text-[10px] font-medium tracking-[0.35em] text-sunset-yellow uppercase"
+    >
+      Plates
+    </p>
+    <h2 class="mt-2 font-serif text-4xl text-white/60 md:text-6xl">
       COMING SOON
     </h2>
     <p class="mt-6 font-sans text-xs font-medium tracking-[0.25em] text-white/40 uppercase">

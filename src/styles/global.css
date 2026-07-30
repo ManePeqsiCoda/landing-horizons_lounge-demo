@@ -21,10 +21,14 @@
   --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Smooth scroll for all anchor/hash navigation */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Discrete "Reel" scroll only on the landing (data-reel), not on /admin */
 html[data-reel] {
   scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
 }
 
 body {
