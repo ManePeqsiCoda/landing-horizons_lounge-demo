@@ -37,13 +37,13 @@ export default function ReservationSummary({
   );
 
   return (
-    <div className="sticky top-6 space-y-5 lg:top-8">
+    <div className="sticky top-6 space-y-4 lg:top-8">
       <motion.div
         layout
         className="rounded-2xl border border-cream/15 bg-cream/8 p-6 shadow-2xl backdrop-blur-xl"
       >
         <div className="flex items-center gap-2">
-          <Sparkles size={14} strokeWidth={1.5} className="text-sunset-yellow" />
+          <Sparkles size={16} strokeWidth={1.5} className="text-sunset-yellow" />
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-sunset-yellow">
             Your reservation
           </p>
@@ -56,7 +56,7 @@ export default function ReservationSummary({
         <dl className="mt-6 space-y-4">
           <div className="flex items-start justify-between gap-4">
             <dt className="flex items-center gap-2 text-sm font-medium text-cream/55">
-              <Calendar size={14} strokeWidth={1.5} />
+              <Calendar size={16} strokeWidth={1.5} />
               Date
             </dt>
             <dd className="max-w-[60%] text-right text-sm font-semibold leading-snug text-cream">
@@ -65,7 +65,7 @@ export default function ReservationSummary({
           </div>
           <div className="flex items-center justify-between gap-4">
             <dt className="flex items-center gap-2 text-sm font-medium text-cream/55">
-              <Clock size={14} strokeWidth={1.5} />
+              <Clock size={16} strokeWidth={1.5} />
               Time
             </dt>
             <dd className="font-display text-lg font-bold text-cream">
@@ -74,7 +74,7 @@ export default function ReservationSummary({
           </div>
           <div className="flex items-center justify-between gap-4">
             <dt className="flex items-center gap-2 text-sm font-medium text-cream/55">
-              <Users size={14} strokeWidth={1.5} />
+              <Users size={16} strokeWidth={1.5} />
               Guests
             </dt>
             <dd className="font-display text-2xl font-bold text-cream">
@@ -86,7 +86,7 @@ export default function ReservationSummary({
         <div className="mt-6 h-px bg-cream/10" />
 
         <div className="mt-5 flex items-center justify-between">
-          <span className="text-sm font-medium text-cream/65">Deposit to reserve</span>
+          <span className="text-sm font-medium text-cream/65">Deposit</span>
           <span className="font-serif text-3xl font-bold text-sunset-yellow">
             {formatCurrency(DEPOSIT_AMOUNT, DEPOSIT_CURRENCY)}
           </span>
@@ -94,24 +94,20 @@ export default function ReservationSummary({
       </motion.div>
 
       <div
-        className={`rounded-xl border border-cream/10 p-5 backdrop-blur-md transition-colors duration-300 ${
+        className={`rounded-xl border border-cream/10 p-4 backdrop-blur-md transition-colors duration-300 ${
           isComplete ? 'bg-emerald-500/10' : 'bg-cream/5'
         }`}
       >
         <p
-          className={`text-sm font-medium leading-relaxed ${
+          className={`text-xs font-medium leading-relaxed ${
             isComplete ? 'text-emerald-200' : 'text-cream/55'
           }`}
         >
           {isComplete
-            ? 'All set — your details are complete and you can authorize the deposit.'
-            : 'Complete your details and card information to secure your table.'}
+            ? 'All set — authorize your deposit to confirm.'
+            : 'Complete your contact details and card to secure your table.'}
         </p>
       </div>
-
-      <p className="text-center text-xs leading-relaxed text-cream/40">
-        This is a demo authorization only. No real charge will be processed.
-      </p>
     </div>
   );
 }

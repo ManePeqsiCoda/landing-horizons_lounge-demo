@@ -60,28 +60,11 @@ const structuredData = {
     <div class="reserve-grain absolute inset-0 opacity-40" aria-hidden="true" />
 
     {/* Content */}
-    <div class="reserve-content relative z-10 flex min-h-screen flex-col justify-center px-5 py-20 md:px-10 lg:px-16">
-      <div class="mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-12 lg:gap-12">
-        {/* Header + copy */}
-        <header class="lg:col-span-4 lg:pt-12">
-          <p class="reserve-kicker">Rooftop Reservations</p>
-          <h1 class="reserve-headline mt-3">
-            Reserve Your
-            <span class="block text-sunset-yellow">Sunset Table</span>
-          </h1>
-          <p class="reserve-lead mt-5 max-w-sm">
-            Choose your experience, pick your golden-hour table, and secure it with a small demo
-            deposit.
-          </p>
-          <div class="mt-8 hidden h-px w-24 bg-gradient-to-r from-sunset-orange to-transparent lg:block" />
-        </header>
-
-        {/* Form panel */}
-        <section class="lg:col-span-8">
-          <div class="reserve-form-panel">
-            <ReservationForm stripePublishableKey={stripePublishableKey} client:load />
-          </div>
-        </section>
+    <div class="reserve-content relative z-10 flex min-h-screen flex-col justify-start px-5 pt-28 pb-12 md:px-10 md:pt-32 lg:px-16 lg:pt-36">
+      <div class="mx-auto w-full max-w-7xl">
+        <div class="reserve-form-panel">
+          <ReservationForm stripePublishableKey={stripePublishableKey} client:load />
+        </div>
       </div>
     </div>
   </main>
@@ -189,6 +172,7 @@ const structuredData = {
   .reserve-input,
   .reserve-select {
     width: 100%;
+    height: 3.5rem;
     appearance: none;
     background: rgba(255, 255, 255, 0.07);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -197,7 +181,7 @@ const structuredData = {
     font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 500;
-    padding: 0.875rem 1rem;
+    padding: 0 1rem;
     outline: none;
     transition: all 0.2s ease;
   }
@@ -242,8 +226,8 @@ const structuredData = {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 3rem;
-    height: 3rem;
+    width: 3.5rem;
+    height: 3.5rem;
     background: rgba(255, 255, 255, 0.07);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: #fdf8f1;
@@ -264,7 +248,7 @@ const structuredData = {
   .reserve-stepper-value {
     appearance: none;
     width: 100%;
-    height: 3rem;
+    height: 3.5rem;
     text-align: center;
     background: rgba(255, 255, 255, 0.05);
     border-top: 1px solid rgba(255, 255, 255, 0.15);

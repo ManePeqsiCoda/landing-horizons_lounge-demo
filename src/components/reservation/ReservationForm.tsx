@@ -119,7 +119,7 @@ function StripeCardSection() {
         htmlFor="card-element"
         className="reserve-label"
       >
-        <CreditCard size={14} strokeWidth={1.5} />
+        <CreditCard size={16} strokeWidth={1.5} />
         Card Details
       </label>
       <div className="reserve-card-element rounded-xl border border-cream/15 bg-cream/8 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/12 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
@@ -289,7 +289,7 @@ function InnerForm({
           {/* Experience */}
           <div className="space-y-2 md:col-span-2">
             <label htmlFor="eventId" className="reserve-label">
-              <Calendar size={14} strokeWidth={1.5} />
+              <Calendar size={16} strokeWidth={1.5} />
               Experience
             </label>
             <select
@@ -310,7 +310,7 @@ function InnerForm({
           {/* Date */}
           <div className="space-y-2">
             <label htmlFor="date" className="reserve-label">
-              <Calendar size={14} strokeWidth={1.5} />
+              <Calendar size={16} strokeWidth={1.5} />
               Date
             </label>
             <input
@@ -328,7 +328,7 @@ function InnerForm({
           {/* Time */}
           <div className="space-y-2">
             <label htmlFor="time" className="reserve-label">
-              <Clock size={14} strokeWidth={1.5} />
+              <Clock size={16} strokeWidth={1.5} />
               Time
             </label>
             <select
@@ -349,18 +349,18 @@ function InnerForm({
           {/* Guests stepper */}
           <div className="space-y-2 md:col-span-2">
             <label htmlFor="guests" className="reserve-label">
-              <Users size={14} strokeWidth={1.5} />
+              <Users size={16} strokeWidth={1.5} />
               Guests
             </label>
-            <div className="flex w-full items-center md:w-56">
+            <div className="flex w-full items-center md:w-64">
               <button
                 type="button"
                 onClick={() => adjustGuests(-1)}
                 disabled={form.guests <= MIN_GUESTS}
-                className="reserve-stepper-btn rounded-l-xl"
+                className="reserve-stepper-btn h-14 w-14 rounded-l-xl"
                 aria-label="Decrease guests"
               >
-                <Minus size={18} strokeWidth={1.5} />
+                <Minus size={20} strokeWidth={1.5} />
               </button>
               <input
                 id="guests"
@@ -371,16 +371,16 @@ function InnerForm({
                 value={form.guests}
                 onChange={handleChange}
                 required
-                className="reserve-stepper-value"
+                className="reserve-stepper-value h-14"
               />
               <button
                 type="button"
                 onClick={() => adjustGuests(1)}
                 disabled={form.guests >= MAX_GUESTS}
-                className="reserve-stepper-btn rounded-r-xl"
+                className="reserve-stepper-btn h-14 w-14 rounded-r-xl"
                 aria-label="Increase guests"
               >
-                <Plus size={18} strokeWidth={1.5} />
+                <Plus size={20} strokeWidth={1.5} />
               </button>
             </div>
           </div>
@@ -388,7 +388,7 @@ function InnerForm({
           {/* Full Name */}
           <div className="space-y-2">
             <label htmlFor="fullName" className="reserve-label">
-              <User size={14} strokeWidth={1.5} />
+              <User size={16} strokeWidth={1.5} />
               Full Name
             </label>
             <input
@@ -406,7 +406,7 @@ function InnerForm({
           {/* Email */}
           <div className="space-y-2">
             <label htmlFor="email" className="reserve-label">
-              <Mail size={14} strokeWidth={1.5} />
+              <Mail size={16} strokeWidth={1.5} />
               Email
             </label>
             <input
@@ -424,7 +424,7 @@ function InnerForm({
           {/* Phone */}
           <div className="space-y-2 md:col-span-2">
             <label htmlFor="phone" className="reserve-label">
-              <Phone size={14} strokeWidth={1.5} />
+              <Phone size={16} strokeWidth={1.5} />
               Phone
             </label>
             <input
@@ -442,7 +442,7 @@ function InnerForm({
           {/* Notes */}
           <div className="space-y-2 md:col-span-2">
             <label htmlFor="notes" className="reserve-label">
-              <FileText size={14} strokeWidth={1.5} />
+              <FileText size={16} strokeWidth={1.5} />
               Notes / Occasion
             </label>
             <textarea
