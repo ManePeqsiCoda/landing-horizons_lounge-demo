@@ -6,6 +6,11 @@ import PlateCategories from './PlateCategories';
 
 type MenuCategory = 'drinks' | 'plates';
 
+const toTitleCase = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
 const LOCK_MS = 950;
 
 export default function MenuReel() {
@@ -208,3 +213,4 @@ export default function MenuReel() {
     </main>
   );
 }
+

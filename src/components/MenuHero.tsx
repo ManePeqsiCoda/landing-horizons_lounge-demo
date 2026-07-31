@@ -21,10 +21,19 @@ export default function MenuHero({ onSelectDrinks, onSelectPlates }: MenuHeroPro
         onClick={onSelectDrinks}
         aria-label="View drinks"
         className="menu-triangle drinks-area group absolute inset-0 z-10 flex items-start justify-start transition-colors duration-500 hover:bg-white/[0.03]"
+        style={{
+          backgroundImage: 'url(/images/gallery/01.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
-        <div className="pointer-events-none p-10 md:p-20 lg:p-28">
-          <span className="text-contrast font-serif text-5xl font-medium tracking-[0.08em] text-white transition-all duration-500 ease-out group-hover:tracking-[0.14em] md:text-6xl lg:text-7xl">
-            DRINKS
+        <div className="absolute inset-0 bg-night/45 transition-colors duration-500 group-hover:bg-night/35" aria-hidden="true" />
+        <div className="pointer-events-none relative z-10 p-10 md:p-20 lg:p-28">
+          <span
+            className="text-contrast text-5xl font-normal leading-none tracking-[0.02em] text-sunset-yellow transition-all duration-500 ease-out group-hover:scale-105 md:text-6xl lg:text-7xl"
+            style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
+          >
+            Drinks
           </span>
         </div>
       </button>
@@ -35,10 +44,19 @@ export default function MenuHero({ onSelectDrinks, onSelectPlates }: MenuHeroPro
         onClick={onSelectPlates}
         aria-label="View plates"
         className="menu-triangle plates-area group absolute inset-0 z-10 flex items-end justify-end transition-colors duration-500 hover:bg-white/[0.03]"
+        style={{
+          backgroundImage: 'url(/images/gallery/06.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
-        <div className="pointer-events-none p-10 md:p-20 lg:p-28">
-          <span className="text-contrast font-serif text-5xl font-medium tracking-[0.08em] text-white transition-all duration-500 ease-out group-hover:tracking-[0.14em] md:text-6xl lg:text-7xl">
-            PLATES
+        <div className="absolute inset-0 bg-night/45 transition-colors duration-500 group-hover:bg-night/35" aria-hidden="true" />
+        <div className="pointer-events-none relative z-10 p-10 md:p-20 lg:p-28">
+          <span
+            className="text-contrast text-5xl font-normal leading-none tracking-[0.02em] text-sunset-yellow transition-all duration-500 ease-out group-hover:scale-105 md:text-6xl lg:text-7xl"
+            style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
+          >
+            Plates
           </span>
         </div>
       </button>

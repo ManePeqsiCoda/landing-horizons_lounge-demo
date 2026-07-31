@@ -56,7 +56,10 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             {/* Título vertical — tarjetas colapsadas (pestañas en móvil y desktop) */}
             {!isExpanded && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="vertical-text text-contrast font-serif text-[10px] tracking-[0.2em] text-white uppercase lg:text-xl lg:tracking-[0.25em]">
+                <span
+                  className="vertical-text text-contrast text-xs font-normal leading-none tracking-[0.04em] text-sunset-yellow md:text-sm lg:text-2xl"
+                  style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
+                >
                   {item.name}
                 </span>
               </div>
@@ -64,7 +67,7 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
 
             {/* Título horizontal + info — solo tarjeta expandida */}
             <div
-              className={`absolute inset-x-0 bottom-0 p-5 transition-all duration-500 ease-out md:p-6 ${
+              className={`absolute inset-x-0 bottom-0 border-t border-white/10 bg-gradient-to-t from-night/80 via-night/50 to-transparent p-5 backdrop-blur-sm transition-all duration-500 ease-out md:p-6 ${
                 isExpanded
                   ? 'translate-y-0 opacity-100'
                   : 'pointer-events-none translate-y-4 opacity-0'
@@ -85,7 +88,7 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
                   isExpanded ? 'mt-3 max-h-48 opacity-100' : 'mt-0 max-h-0 opacity-0'
                 }`}
               >
-                <p className="font-sans text-sm font-light leading-relaxed text-white/85">
+                <p className="text-shadow-brief font-display text-sm font-light leading-relaxed text-cream/90 md:text-base">
                   {item.description}
                 </p>
                 <ul className="mt-3 flex flex-wrap gap-2">

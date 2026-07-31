@@ -1,5 +1,10 @@
 import type { PlateSubcategory } from '../data/menu';
 
+const toTitleCase = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
 interface PlateCategoriesProps {
   subcategories: PlateSubcategory[];
   selectedId?: string | null;
@@ -57,8 +62,11 @@ export default function PlateCategories({
 
             {/* Etiqueta grande, alineada a la derecha abajo */}
             <div className="absolute inset-x-0 bottom-0 flex items-end justify-end p-5 md:p-7 lg:p-10">
-              <span className="text-contrast text-right font-serif text-3xl font-medium tracking-[0.08em] text-white transition-all duration-500 ease-out group-hover:tracking-[0.14em] md:text-4xl lg:text-5xl">
-                {sub.shortLabel}
+              <span
+                className="text-contrast text-right text-3xl font-normal leading-none tracking-[0.02em] text-sunset-yellow transition-all duration-500 ease-out group-hover:scale-105 md:text-4xl lg:text-5xl"
+                style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
+              >
+                {toTitleCase(sub.shortLabel)}
               </span>
             </div>
             </button>
