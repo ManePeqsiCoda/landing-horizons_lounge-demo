@@ -3,10 +3,14 @@ import SectionWrapper from '../components/SectionWrapper.astro';
 ---
 
 <!-- 3. The Experience (Services) -->
-<SectionWrapper id="experience" title="The Experience" kicker="Lounge Atmosphere" tone="b">
-  <p
-    class="text-contrast mx-auto mt-6 max-w-xl text-sm font-light tracking-[0.2em] text-neutral-300"
-  >
-    Placeholder — direct highlights of the lounge atmosphere.
-  </p>
-</SectionWrapper>
+<SectionWrapper
+  id="experience"
+  base="THE"
+  script="Experience"
+  tone="b"
+  image="/images/gallery/10.jpg"
+  paragraphs={[
+    'Every corner of Horizons is composed for atmosphere: soft ocean breezes, candlelight, and a soundscape that moves from sunset acoustic to midnight energy. The experience is immersive, intentional, and unmistakably Aruba.',
+    'Reserve your table by the water, settle into a private cabana, or let our hosts craft an evening that belongs only to you. Luxury here is not loud — it is felt.',
+  ]}
+/>

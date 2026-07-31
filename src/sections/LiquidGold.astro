@@ -2,11 +2,15 @@
 import SectionWrapper from '../components/SectionWrapper.astro';
 ---
 
-<!-- 5. Liquid Gold (Mixology) — future entry point to the 2x2 grid + expanding carousel -->
-<SectionWrapper id="mixology" title="Liquid Gold" kicker="Signature Mixology" tone="b">
-  <p
-    class="text-contrast mx-auto mt-6 max-w-xl text-sm font-light tracking-[0.2em] text-neutral-300"
-  >
-    Placeholder — Eagle Beach Sunset · Hibiscus Margarita.
-  </p>
-</SectionWrapper>
+<!-- 5. Liquid Gold (Mixology) -->
+<SectionWrapper
+  id="mixology"
+  base="LIQUID"
+  script="Gold"
+  tone="b"
+  image="/images/gallery/01.jpg"
+  paragraphs={[
+    'The bar is the beating heart of Horizons. Our mixologists turn premium spirits, hand-pressed juices, and edible florals into cocktails that look like jewelry and taste like the tropics.',
+    'Signature mixes, reimagined classics, and a twice-daily happy hour ensure there is always a reason to raise a glass. Here, every pour is liquid gold.',
+  ]}
+/>

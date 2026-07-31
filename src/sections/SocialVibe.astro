@@ -2,11 +2,15 @@
 import SectionWrapper from '../components/SectionWrapper.astro';
 ---
 
-<!-- 6. Social Vibe (Live Music & Events) — pure rhetoric: the fun, the experiences -->
-<SectionWrapper id="events" title="Social Vibe" kicker="Live Music · Weekly Events" tone="a">
-  <p
-    class="text-contrast mx-auto mt-6 max-w-xl text-sm font-light tracking-[0.2em] text-neutral-300"
-  >
-    Placeholder — Manager's Cocktail Party, themed nights, the social atmosphere.
-  </p>
-</SectionWrapper>
+<!-- 6. Social Vibe (Live Music & Events) -->
+<SectionWrapper
+  id="events"
+  base="SOCIAL"
+  script="Vibe"
+  tone="a"
+  image="/images/gallery/09.jpg"
+  paragraphs={[
+    'When the sun sets, the rhythm rises. Live musicians, themed nights, and the natural energy of the crowd turn Horizons into the most magnetic social stage on Eagle Beach.',
+    'Come for the sunset, stay for the scene. From intimate conversations to late-night dancing, the vibe is always set to unforgettable.',
+  ]}
+/>

@@ -1,43 +1,74 @@
 ---
+import SplitTitle from './SplitTitle.astro';
+import SectionFootnote from './SectionFootnote.astro';
+
 /**
  * Reel section wrapper: exactly 100vh x 100vw with scroll-snap lock.
- * Temporary monochrome placeholder with an overlaid white title,
- * ready to be swapped for the final photography.
+ * Full-bleed photography background with a dark vignette overlay.
+ *
+ * Each section now uses a two-word typographic lockup on the left
+ * (bold sans base + overlapped script) and a full-width narrative
+ * footnote pinned to the bottom.
  */
 interface Props {
   id: string;
-  title: string;
-  kicker?: string;
+  /** First word — large sans-serif base layer. */
+  base: string;
+  /** Second word — script layer overlapped to the right/bottom. */
+  script: string;
+  /** Two or more paragraphs shown at the bottom of the section. */
+  paragraphs: string[];
   tone?: 'a' | 'b';
+  image?: string;
 }
 
-const { id, title, kicker, tone = 'a' } = Astro.props;
+const { id, base, script, paragraphs, tone = 'a', image } = Astro.props;
 
-const tones = {
-  a: 'from-neutral-800 via-neutral-900 to-black',
-  b: 'from-zinc-800 via-neutral-900 to-neutral-950',
+const overlayGradients = {
+  a: 'from-night/55 via-warm-charcoal/10 to-night/65',
+  b: 'from-night/50 via-terracotta/10 to-night/60',
+};
+
+const fallbackGradients = {
+  a: 'from-night/80 via-warm-charcoal/60 to-night',
+  b: 'from-warm-charcoal/80 via-terracotta/40 to-night',
 };
 ---
 
-<section id={id} class="snap-section flex items-center justify-center">
-  <!-- Temporary monochrome placeholder (replaced by final photography) -->
-  <div
-    class={`absolute inset-0 bg-gradient-to-b ${tones[tone]} grayscale`}
-    aria-hidden="true"
-  >
+<section id={id} class="snap-section relative flex flex-col justify-between overflow-hidden">
+  {
+    image ? (
+      <>
+        <img
+          src={image}
+          alt=""
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover"
+          aria-hidden="true"
+        />
+        <div
+          class={`absolute inset-0 bg-gradient-to-b ${overlayGradients[tone]}`}
+          aria-hidden="true"
+        />
+      </>
+    ) : (
+      <div
+        class={`absolute inset-0 bg-gradient-to-b ${fallbackGradients[tone]}`}
+        aria-hidden="true"
+      />
+    )
+  }
+
+  {/* Top-left typographic lockup */}
+  <div class="relative z-10 p-6 pt-12 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
+    <SplitTitle base={base} script={script} />
   </div>
 
-  <div class="relative z-10 px-6 text-center">
-    {
-      kicker && (
-        <p class="text-contrast mb-4 text-xs font-medium tracking-[0.35em] text-sunset-yellow uppercase">
-          {kicker}
-        </p>
-      )
-    }
-    <h2 class="text-contrast font-serif text-5xl text-white md:text-7xl">
-      {title}
-    </h2>
+  {/* Optional center content */}
+  <div class="relative z-10 flex flex-1 items-center justify-center px-6">
     <slot />
   </div>
+
+  {/* Full-width bottom narrative */}
+  <SectionFootnote paragraphs={paragraphs} />
 </section>

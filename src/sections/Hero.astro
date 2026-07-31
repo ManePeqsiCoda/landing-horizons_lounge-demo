@@ -1,45 +1,84 @@
 ---
-/**
- * 1. Landing Hero — future 4K sunset video with Fofoti tree silhouette.
- * No menu visible here; StickyMenu fades in after this frame.
- */
+import SplitTitle from '../components/SplitTitle.astro';
+import SectionFootnote from '../components/SectionFootnote.astro';
 ---
 
-<section id="hero" class="snap-section flex items-center justify-center">
-  <!-- Temporary monochrome placeholder (replaced by the 4K sunset video) -->
+<!--
+  1. Landing Hero — cinematic sunset video background.
+  No menu visible here; StickyMenu fades in after this frame.
+-->
+<section id="hero" class="snap-section relative flex flex-col justify-between overflow-hidden">
+  <!-- Cinematic background video: plays once, no controls, starts after loader -->
+  <video
+    id="hero-video"
+    src="/cinematic.mp4"
+    poster="/images/sunset.png"
+    muted
+    playsinline
+    preload="auto"
+    tabindex="-1"
+    aria-hidden="true"
+    class="absolute inset-0 h-full w-full object-cover"
+  >
+  </video>
+
+  <!-- Subtle dark vignette overlay for text legibility -->
   <div
-    class="absolute inset-0 bg-gradient-to-b from-neutral-700 via-neutral-900 to-black grayscale"
+    class="absolute inset-0 bg-gradient-to-b from-night/45 via-night/20 to-night/60"
     aria-hidden="true"
   >
   </div>
 
-  <div class="relative z-10 px-6 text-center">
-    <p
-      class="text-contrast mb-6 text-xs font-medium tracking-[0.45em] text-sunset-yellow uppercase"
-    >
-      Amsterdam Manor · Eagle Beach · Aruba
-    </p>
-    <h1
-      class="text-contrast font-serif text-6xl font-medium tracking-wide text-white md:text-8xl"
-    >
-      HORIZONS
-    </h1>
-    <p
-      class="text-contrast mt-6 text-sm font-light tracking-[0.3em] text-neutral-300 uppercase"
-    >
-      The Sunset Ritual
-    </p>
+  <!-- Top-left typographic lockup -->
+  <div class="relative z-10 p-6 pt-12 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
+    <SplitTitle base="HORIZONS" script="Lounge" />
   </div>
 
-  <!-- Scroll cue -->
+  <!-- Center scroll cue -->
   <div
-    class="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-center"
+    class="absolute inset-0 z-10 flex items-center justify-center"
     aria-hidden="true"
   >
-    <p class="text-contrast text-[10px] tracking-[0.3em] text-neutral-400 uppercase">
-      Scroll
-    </p>
-    <div class="mx-auto mt-2 h-10 w-px bg-gradient-to-b from-white/70 to-transparent">
+    <div class="text-center">
+      <p class="text-contrast text-[10px] tracking-[0.3em] text-neutral-400 uppercase">
+        Scroll
+      </p>
+      <div class="mx-auto mt-2 h-10 w-px bg-gradient-to-b from-white/70 to-transparent"></div>
     </div>
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    var video = document.getElementById('hero-video');
+    if (!video) return;
+
+    function startPlayback() {
+      video.currentTime = 0;
+      var playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(function () {
+          // Autoplay blocked or already handled; keep poster visible.
+        });
+      }
+    }
+
+    var loader = document.getElementById('horizons-loader');
+
+    if (!loader) {
+      // Loader already dismissed; play immediately.
+      startPlayback();
+      return;
+    }
+
+    // Wait for the loader to be removed from the DOM, then play from the start.
+    var observer = new MutationObserver(function () {
+      if (!document.getElementById('horizons-loader')) {
+        observer.disconnect();
+        startPlayback();
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  })();
+</script>

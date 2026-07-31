@@ -3,17 +3,27 @@ import SectionWrapper from '../components/SectionWrapper.astro';
 ---
 
 <!-- 7. Connect (Direct/Indirect Channels) -->
-<SectionWrapper id="connect" title="Reserve With Us" kicker="OpenTable · WhatsApp" tone="b">
-  <div class="mt-8 flex flex-col items-center gap-4">
+<SectionWrapper
+  id="connect"
+  base="RESERVE"
+  script="Now"
+  tone="b"
+  image="/images/gallery/04.jpg"
+  paragraphs={[
+    'Securing your place at Horizons is effortless. Choose your moment — a sunset toast, a private dinner, a celebration — and let our team handle every detail.',
+    'Book through OpenTable for instant confirmation, or reach us directly on WhatsApp for a personal touch. The best evenings are the ones planned ahead.',
+  ]}
+>
+  <div class="flex flex-col items-center gap-4">
     <a
       href="#"
-      class="text-contrast border border-sunset-yellow px-10 py-3 text-xs font-medium tracking-[0.35em] text-sunset-yellow uppercase transition-colors hover:bg-sunset-yellow hover:text-night"
+      class="border border-sunset-yellow px-10 py-3 text-xs font-semibold tracking-[0.25em] text-sunset-yellow uppercase transition-colors hover:bg-sunset-yellow hover:text-night"
     >
       Book on OpenTable
     </a>
     <a
       href="#"
-      class="text-contrast text-xs font-light tracking-[0.3em] text-neutral-300 uppercase transition-colors hover:text-white"
+      class="text-xs font-semibold tracking-[0.2em] text-cream/80 uppercase transition-colors hover:text-sunset-yellow"
     >
       WhatsApp us
     </a>
