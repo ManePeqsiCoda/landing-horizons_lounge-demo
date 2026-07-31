@@ -1,7 +1,6 @@
 /**
  * Gestor de eventos del panel admin.
- * Permite editar eventos existentes y simular la creación de nuevos.
- * Estilo Liquid Glass.
+ * Tarjetas de eventos con mejor jerarquía, tipografía clara y acciones organizadas.
  */
 
 import { useState } from 'react';
@@ -57,9 +56,9 @@ export default function EventManager() {
       <button
         type="button"
         onClick={addEvent}
-        className="glass-button glass-button-dashed w-full justify-center gap-2 py-4 text-xs font-semibold tracking-[0.15em] text-slate-700 uppercase"
+        className="admin-button admin-button-dashed w-full justify-center gap-2 py-4"
       >
-        <Plus size={16} strokeWidth={1.5} />
+        <Plus size={18} strokeWidth={1.5} />
         Add new event
       </button>
 
@@ -69,21 +68,23 @@ export default function EventManager() {
           return (
             <article
               key={event.id}
-              className="glass-panel group overflow-hidden transition hover:-translate-y-0.5 hover:bg-white/70"
+              className="admin-card group overflow-hidden"
             >
-              <div className="relative h-40 overflow-hidden">
+              <div className="relative h-44 overflow-hidden">
                 <img
                   src={event.image}
                   alt={event.imageAlt || event.title}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/70 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[var(--admin-ink)]/80 to-transparent" />
                 <div className="absolute bottom-4 left-4 flex items-center gap-3">
-                  <div className="rounded-lg border border-white/30 bg-slate-900/50 px-3 py-1 text-center backdrop-blur-md">
-                    <p className="text-[9px] font-semibold tracking-[0.2em] text-sunset-yellow uppercase">
+                  <div className="rounded-xl border border-white/20 bg-[var(--admin-ink)]/60 px-3 py-2 text-center backdrop-blur-md">
+                    <p className="text-[10px] font-bold tracking-[0.15em] text-[var(--admin-accent-light)] uppercase">
                       {event.dateKicker || 'UPCOMING'}
                     </p>
-                    <p className="font-serif text-xl text-white">{event.date || '—'}</p>
+                    <p className="admin-number mt-0.5 text-2xl font-bold text-white">
+                      {event.date || '—'}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -95,84 +96,82 @@ export default function EventManager() {
                       value={event.title}
                       onChange={(e) => updateEvent(event.id, { title: e.target.value })}
                       placeholder="Title"
-                      className="glass-input w-full px-3 py-2 text-sm"
+                      className="admin-input w-full"
                     />
                     <input
                       value={event.kicker}
                       onChange={(e) => updateEvent(event.id, { kicker: e.target.value })}
                       placeholder="Kicker"
-                      className="glass-input w-full px-3 py-2 text-sm"
+                      className="admin-input w-full"
                     />
                     <div className="grid grid-cols-2 gap-3">
                       <input
                         value={event.dateKicker}
                         onChange={(e) => updateEvent(event.id, { dateKicker: e.target.value })}
                         placeholder="Date kicker"
-                        className="glass-input px-3 py-2 text-sm"
+                        className="admin-input"
                       />
                       <input
                         value={event.date}
                         onChange={(e) => updateEvent(event.id, { date: e.target.value })}
                         placeholder="Date"
-                        className="glass-input px-3 py-2 text-sm"
+                        className="admin-input"
                       />
                     </div>
                     <input
                       value={event.image}
                       onChange={(e) => updateEvent(event.id, { image: e.target.value })}
                       placeholder="Image URL"
-                      className="glass-input w-full px-3 py-2 text-sm"
+                      className="admin-input w-full"
                     />
                     <textarea
                       value={event.description}
                       onChange={(e) => updateEvent(event.id, { description: e.target.value })}
                       placeholder="Description"
                       rows={3}
-                      className="glass-input w-full resize-none px-3 py-2 text-sm"
+                      className="admin-textarea admin-input w-full"
                     />
                     <textarea
                       value={event.details.join('\n')}
                       onChange={(e) => updateDetails(event.id, e.target.value)}
                       placeholder="Details (one per line)"
                       rows={3}
-                      className="glass-input w-full resize-none px-3 py-2 text-sm"
+                      className="admin-textarea admin-input w-full"
                     />
                     <div className="flex gap-2">
                       <button
                         type="button"
                         onClick={cancelEdit}
-                        className="glass-button px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase"
+                        className="admin-button admin-button-secondary"
                       >
-                        <X size={14} strokeWidth={1.5} /> Cancel
+                        <X size={16} strokeWidth={1.5} /> Cancel
                       </button>
                       <button
                         type="button"
                         onClick={cancelEdit}
-                        className="glass-button-primary px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase"
+                        className="admin-button admin-button-primary"
                       >
-                        <Check size={14} strokeWidth={1.5} /> Save
+                        <Check size={16} strokeWidth={1.5} /> Save
                       </button>
                     </div>
                   </div>
                 ) : (
                   <div>
-                    <p className="text-[10px] font-semibold tracking-[0.2em] text-sunset-orange uppercase">
-                      {event.kicker}
-                    </p>
-                    <h3 className="mt-1 font-serif text-2xl text-slate-900">{event.title}</h3>
-                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600">
+                    <p className="admin-card-sub">{event.kicker}</p>
+                    <h3 className="admin-card-header mt-1 text-2xl">{event.title}</h3>
+                    <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--admin-muted)]">
                       {event.description}
                     </p>
-                    <ul className="mt-3 space-y-1">
+                    <ul className="mt-4 space-y-2">
                       {event.details.map((d, i) => (
-                        <li key={i} className="flex items-center gap-2 text-xs font-medium text-slate-600">
-                          <Calendar size={12} strokeWidth={1.5} />
+                        <li key={i} className="flex items-center gap-2 text-sm font-medium text-[var(--admin-muted)]">
+                          <Calendar size={16} strokeWidth={1.5} className="text-[var(--admin-accent)]" />
                           {d}
                         </li>
                       ))}
                     </ul>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-[10px] font-semibold tracking-[0.15em] text-slate-500 uppercase">
+                    <div className="mt-5 flex items-center justify-between border-t border-[var(--admin-line)] pt-4">
+                      <span className="admin-number text-sm font-bold text-[var(--admin-subtle)]">
                         {events.indexOf(event) + 1} of {events.length}
                       </span>
                       <div className="flex gap-2">
@@ -180,17 +179,17 @@ export default function EventManager() {
                           type="button"
                           onClick={() => startEdit(event.id)}
                           aria-label={`Edit ${event.title}`}
-                          className="text-slate-500 transition hover:text-sunset-orange"
+                          className="rounded-lg p-2 text-[var(--admin-subtle)] transition hover:bg-[var(--admin-panel-soft)] hover:text-[var(--admin-accent)]"
                         >
-                          <Edit2 size={16} strokeWidth={1.5} />
+                          <Edit2 size={18} strokeWidth={1.5} />
                         </button>
                         <button
                           type="button"
                           onClick={() => deleteEvent(event.id)}
                           aria-label={`Delete ${event.title}`}
-                          className="text-slate-500 transition hover:text-rose-700"
+                          className="rounded-lg p-2 text-[var(--admin-subtle)] transition hover:bg-[var(--admin-panel-soft)] hover:text-[var(--admin-cancel)]"
                         >
-                          <Trash2 size={16} strokeWidth={1.5} />
+                          <Trash2 size={18} strokeWidth={1.5} />
                         </button>
                       </div>
                     </div>
@@ -202,9 +201,7 @@ export default function EventManager() {
         })}
       </div>
 
-      <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-        Demo only — changes are not saved
-      </p>
+      <p className="admin-empty">Demo only — changes are not saved</p>
     </div>
   );
 }

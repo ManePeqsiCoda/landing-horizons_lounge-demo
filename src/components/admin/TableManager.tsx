@@ -1,7 +1,6 @@
 /**
  * Gestor de mesas del panel admin.
- * Muestra capacidad, mesas libres/ocupadas/reservadas y filtro por número de personas.
- * Estilo Liquid Glass.
+ * Resumen de capacidad y tarjetas de mesas con números claros y estados identificables.
  */
 
 import { useMemo, useState } from 'react';
@@ -12,7 +11,7 @@ import {
   type Table,
   type TableStatus,
 } from '../../data/tables';
-import { Armchair, Users } from 'lucide-react';
+import { Armchair, Users, RotateCcw } from 'lucide-react';
 
 interface TableManagerProps {
   tables: Table[];
@@ -20,12 +19,18 @@ interface TableManagerProps {
 }
 
 const STATUS_CLASSES: Record<TableStatus, string> = {
-  free: 'glass-status-free',
-  occupied: 'glass-status-occupied',
-  reserved: 'glass-status-reserved',
+  free: 'admin-status-free',
+  occupied: 'admin-status-occupied',
+  reserved: 'admin-status-reserved',
 };
 
 const STATUS_ORDER: TableStatus[] = ['free', 'reserved', 'occupied'];
+
+const STATUS_DOT: Record<TableStatus, string> = {
+  free: 'bg-[var(--admin-confirm)]',
+  occupied: 'bg-[var(--admin-cancel)]',
+  reserved: 'bg-[var(--admin-pending)]',
+};
 
 export default function TableManager({ tables, onUpdate }: TableManagerProps) {
   const [guestFilter, setGuestFilter] = useState<number | 'all'>('all');
@@ -60,42 +65,37 @@ export default function TableManager({ tables, onUpdate }: TableManagerProps) {
     <div className="space-y-6">
       {/* Capacity summary */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="glass-panel p-5">
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-            Total chairs
-          </p>
-          <p className="mt-3 font-serif text-3xl text-slate-900">{capacity.totalChairs}</p>
+        <div className="admin-stat-card p-5">
+          <p className="admin-stat-label">Total chairs</p>
+          <p className="admin-stat-value mt-3">{capacity.totalChairs}</p>
+          <p className="admin-stat-sub">{capacity.totalTables} tables</p>
         </div>
-        <div className="glass-panel p-5">
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-            Chairs used
+        <div className="admin-stat-card p-5">
+          <p className="admin-stat-label">Chairs used</p>
+          <p className="admin-stat-value mt-3 text-[var(--admin-cancel)]">{capacity.usedChairs}</p>
+          <p className="admin-stat-sub">
+            {capacity.occupiedTables} occupied + {capacity.reservedTables} reserved
           </p>
-          <p className="mt-3 font-serif text-3xl text-sunset-coral">{capacity.usedChairs}</p>
-          <p className="mt-1 text-[11px] font-medium text-slate-600">{capacity.occupiedTables} occupied + {capacity.reservedTables} reserved</p>
         </div>
-        <div className="glass-panel p-5">
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-            Free chairs
-          </p>
-          <p className="mt-3 font-serif text-3xl text-emerald-700">{capacity.freeChairs}</p>
-          <p className="mt-1 text-[11px] font-medium text-slate-600">Across {capacity.freeTables} tables</p>
+        <div className="admin-stat-card p-5">
+          <p className="admin-stat-label">Free chairs</p>
+          <p className="admin-stat-value mt-3 text-[var(--admin-confirm)]">{capacity.freeChairs}</p>
+          <p className="admin-stat-sub">Across {capacity.freeTables} tables</p>
         </div>
-        <div className="glass-panel p-5">
-          <p className="text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-            Free tables
-          </p>
-          <p className="mt-3 font-serif text-3xl text-sunset-orange">{capacity.freeTables}</p>
-          <p className="mt-1 text-[11px] font-medium text-slate-600">of {capacity.totalTables} total</p>
+        <div className="admin-stat-card p-5">
+          <p className="admin-stat-label">Free tables</p>
+          <p className="admin-stat-value mt-3 text-[var(--admin-accent)]">{capacity.freeTables}</p>
+          <p className="admin-stat-sub">of {capacity.totalTables} total</p>
         </div>
       </div>
 
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        <Users size={16} strokeWidth={1.5} className="text-slate-500" />
+        <Users size={18} strokeWidth={1.5} className="text-[var(--admin-subtle)]" />
         <select
           value={guestFilter}
           onChange={(e) => setGuestFilter(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-          className="glass-select px-4 py-3 text-sm"
+          className="admin-select"
         >
           <option value="all">All capacities</option>
           {guestOptions.map((c) => (
@@ -105,11 +105,11 @@ export default function TableManager({ tables, onUpdate }: TableManagerProps) {
           ))}
         </select>
 
-        <Armchair size={16} strokeWidth={1.5} className="ml-2 text-slate-500" />
+        <Armchair size={18} strokeWidth={1.5} className="ml-2 text-[var(--admin-subtle)]" />
         <select
           value={locationFilter}
           onChange={(e) => setLocationFilter(e.target.value)}
-          className="glass-select px-4 py-3 text-sm"
+          className="admin-select"
         >
           <option value="all">All locations</option>
           {Object.entries(TABLE_LOCATIONS).map(([key, label]) => (
@@ -118,6 +118,11 @@ export default function TableManager({ tables, onUpdate }: TableManagerProps) {
             </option>
           ))}
         </select>
+
+        <div className="ml-auto flex items-center gap-2 text-sm font-medium text-[var(--admin-subtle)]">
+          <RotateCcw size={16} strokeWidth={1.5} />
+          <span>Click a card to cycle status</span>
+        </div>
       </div>
 
       {/* Table grid */}
@@ -127,28 +132,31 @@ export default function TableManager({ tables, onUpdate }: TableManagerProps) {
             key={t.id}
             type="button"
             onClick={() => cycleStatus(t.id)}
-            className="glass-panel group p-5 text-left transition hover:-translate-y-0.5 hover:bg-white/70"
+            className="admin-table-card group"
           >
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-                  {TABLE_LOCATIONS[t.location]}
-                </p>
-                <h4 className="mt-1 font-serif text-xl text-slate-900">{t.name}</h4>
+              <div className="text-left">
+                <p className="admin-card-sub">{TABLE_LOCATIONS[t.location]}</p>
+                <h4 className="admin-card-header mt-1 text-xl">{t.name}</h4>
               </div>
-              <span className="font-serif text-2xl text-slate-900">{t.capacity}</span>
+              <div className="admin-table-capacity">
+                {t.capacity}
+              </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between">
-              <span className={`glass-status ${STATUS_CLASSES[t.status]}`}>
+            <div className="mt-5 flex items-center justify-between">
+              <span className={`admin-status ${STATUS_CLASSES[t.status]}`}>
+                <span className={`h-2 w-2 rounded-full ${STATUS_DOT[t.status]}`} />
                 {TABLE_STATUS_LABELS[t.status]}
               </span>
               {t.reservationName && t.status !== 'free' && (
-                <span className="truncate pl-2 text-[11px] font-medium text-slate-600">{t.reservationName}</span>
+                <span className="truncate pl-2 text-sm font-medium text-[var(--admin-muted)]">
+                  {t.reservationName}
+                </span>
               )}
             </div>
 
-            <p className="mt-4 text-[10px] font-semibold tracking-[0.15em] text-slate-500 uppercase">
+            <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-[var(--admin-subtle)]">
               Click to cycle status
             </p>
           </button>
@@ -156,8 +164,8 @@ export default function TableManager({ tables, onUpdate }: TableManagerProps) {
       </div>
 
       {filteredTables.length === 0 && (
-        <div className="glass-panel py-12 text-center">
-          <p className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">No tables match</p>
+        <div className="admin-card py-12 text-center">
+          <p className="admin-empty">No tables match</p>
         </div>
       )}
     </div>

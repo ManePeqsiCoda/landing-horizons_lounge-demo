@@ -1,6 +1,6 @@
 /**
  * Tarjetas de KPI del dashboard administrativo.
- * Estilo Liquid Glass. Datos calculados a partir de reservas y mesas mock.
+ * Números grandes, tabulares y de alto contraste para legibilidad rápida.
  */
 
 import { CalendarDays, Armchair, Users, DollarSign } from 'lucide-react';
@@ -25,28 +25,32 @@ export default function DashboardStats({ reservations, tables }: DashboardStatsP
       value: todayReservations.length,
       sub: `${todayReservations.filter((r) => r.status === 'confirmed').length} confirmed`,
       icon: CalendarDays,
-      accent: 'text-sunset-orange',
+      valueColor: 'text-[var(--admin-ink)]',
+      iconColor: 'text-[var(--admin-accent)]',
     },
     {
       label: 'Guests today',
       value: todayGuests,
       sub: `${capacity.usedChairs} chairs used`,
       icon: Users,
-      accent: 'text-sunset-coral',
+      valueColor: 'text-[var(--admin-ink)]',
+      iconColor: 'text-[var(--admin-accent-light)]',
     },
     {
       label: 'Free tables',
       value: capacity.freeTables,
       sub: `${capacity.freeChairs} free chairs`,
       icon: Armchair,
-      accent: 'text-emerald-700',
+      valueColor: 'text-[var(--admin-confirm)]',
+      iconColor: 'text-[var(--admin-confirm)]',
     },
     {
       label: 'Est. deposits today',
       value: `$${todayRevenue}`,
       sub: `${todayReservations.filter((r) => r.deposit > 0).length} paid deposits`,
       icon: DollarSign,
-      accent: 'text-slate-900',
+      valueColor: 'text-[var(--admin-ink)]',
+      iconColor: 'text-[var(--admin-pending)]',
     },
   ];
 
@@ -55,17 +59,15 @@ export default function DashboardStats({ reservations, tables }: DashboardStatsP
       {cards.map((card) => (
         <div
           key={card.label}
-          className="glass-panel group p-5 transition hover:-translate-y-0.5 hover:bg-white/70"
+          className="admin-stat-card p-5"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-                {card.label}
-              </p>
-              <p className={`mt-3 font-serif text-3xl ${card.accent}`}>{card.value}</p>
-              <p className="mt-1 text-[11px] font-medium tracking-[0.08em] text-slate-600">{card.sub}</p>
+              <p className="admin-stat-label">{card.label}</p>
+              <p className={`admin-stat-value mt-3 ${card.valueColor}`}>{card.value}</p>
+              <p className="admin-stat-sub">{card.sub}</p>
             </div>
-            <card.icon size={20} strokeWidth={1.5} className="text-slate-400" />
+            <card.icon size={24} strokeWidth={1.5} className={card.iconColor} />
           </div>
         </div>
       ))}

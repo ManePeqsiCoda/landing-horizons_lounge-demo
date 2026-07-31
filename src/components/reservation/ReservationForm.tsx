@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   CardElement,
   Elements,
@@ -7,6 +8,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import type { StripeCardElementOptions } from '@stripe/stripe-js';
+import { Minus, Plus, Calendar, Clock, Users, Mail, Phone, User, FileText, CreditCard } from 'lucide-react';
 import {
   DEPOSIT_AMOUNT,
   DEPOSIT_CURRENCY,
@@ -28,14 +30,15 @@ const cardOptions: StripeCardElementOptions = {
   style: {
     base: {
       fontSize: '17px',
-      color: '#2b2420',
+      color: '#fdf8f1',
       fontFamily: '"Montserrat", ui-sans-serif, system-ui, sans-serif',
+      letterSpacing: '0.01em',
       '::placeholder': {
-        color: 'rgba(43, 36, 32, 0.45)',
+        color: 'rgba(253, 248, 241, 0.45)',
       },
     },
     invalid: {
-      color: '#c75b39',
+      color: '#ff9b85',
     },
   },
 };
@@ -80,13 +83,30 @@ ${data.fullName}`;
   )}&body=${encodeURIComponent(body)}`;
 }
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.06, delayChildren: 0.15 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
 function StripeCardSection() {
   const stripe = useStripe();
   const elements = useElements();
 
   if (!stripe || !elements) {
     return (
-      <div className="border border-terracotta/30 bg-terracotta/10 p-4 text-sm text-terracotta">
+      <div className="rounded-xl border border-sunset-orange/30 bg-sunset-orange/10 p-4 text-sm text-sunset-orange">
         Stripe is loading or the publishable key is missing. Add your{' '}
         {STRIPE_PUBLISHABLE_KEY_ENV} to test the card form.
       </div>
@@ -97,14 +117,15 @@ function StripeCardSection() {
     <div className="space-y-3">
       <label
         htmlFor="card-element"
-        className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
+        className="reserve-label"
       >
+        <CreditCard size={14} strokeWidth={1.5} />
         Card Details
       </label>
-      <div className="border border-warm-charcoal/15 bg-white/60 px-4 py-3.5 transition focus-within:border-sunset-orange focus-within:bg-white">
+      <div className="reserve-card-element rounded-xl border border-cream/15 bg-cream/8 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/12 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
         <CardElement id="card-element" options={cardOptions} />
       </div>
-      <p className="text-xs text-warm-charcoal/50">
+      <p className="text-xs font-medium text-cream/45">
         Demo mode — use 4242 4242 4242 4242, any future date, any CVC.
       </p>
     </div>
@@ -162,6 +183,13 @@ function InnerForm({
     }));
   };
 
+  const adjustGuests = (delta: number) => {
+    setForm((prev) => ({
+      ...prev,
+      guests: Math.max(MIN_GUESTS, Math.min(MAX_GUESTS, prev.guests + delta)),
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -210,12 +238,16 @@ function InnerForm({
   };
 
   if (status === 'success' && paymentMethodId) {
-    const mailto = buildMailto(form, paymentMethodId);
     return (
-      <div className="border border-warm-charcoal/10 bg-white/70 p-8 text-center shadow-2xl backdrop-blur-md">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center bg-sunset-yellow/25">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="rounded-2xl border border-cream/15 bg-cream/10 p-8 text-center shadow-2xl backdrop-blur-xl md:p-12"
+      >
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-sunset-yellow/20 shadow-[0_0_40px_rgba(255,215,0,0.25)]">
           <svg
-            className="h-8 w-8 text-terracotta"
+            className="h-10 w-10 text-sunset-yellow"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -224,35 +256,40 @@ function InnerForm({
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight text-warm-charcoal">Reservation Ready</h2>
-        <p className="mx-auto mt-3 max-w-sm text-base leading-relaxed text-warm-charcoal/70">
-          Your demo deposit of <strong className="text-terracotta">${DEPOSIT_AMOUNT} {DEPOSIT_CURRENCY}</strong> has been
-          authorized. We are preparing your request to send to Horizons Lounge.
+        <h2 className="mt-6 font-serif text-3xl font-bold tracking-tight text-cream md:text-4xl">
+          Reservation Ready
+        </h2>
+        <p className="mx-auto mt-3 max-w-md text-base leading-relaxed text-cream/70">
+          Your demo deposit of{' '}
+          <strong className="text-sunset-yellow">${DEPOSIT_AMOUNT} {DEPOSIT_CURRENCY}</strong> has
+          been authorized. We are preparing your request to send to Horizons Lounge.
         </p>
         <a
-          href={mailto}
-          className="mt-6 inline-flex items-center gap-2 bg-sunset-yellow px-8 py-3.5 text-sm font-semibold tracking-[0.15em] text-warm-charcoal uppercase transition-all hover:-translate-y-0.5 hover:shadow-lg"
+          href={buildMailto(form, paymentMethodId)}
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-sunset-yellow px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-warm-charcoal shadow-lg transition-all hover:-translate-y-0.5 hover:bg-cream hover:shadow-xl"
         >
           Send request via email
         </a>
-        <p className="mt-4 text-xs text-warm-charcoal/50">
+        <p className="mt-4 text-xs text-cream/45">
           If your email client did not open automatically, click the button above.
         </p>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:gap-7" noValidate>
-      {/* Main fields + payment */}
-      <div className="space-y-4 lg:col-span-2">
-        <div className="grid grid-cols-1 gap-x-5 gap-y-3 md:grid-cols-2">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-7 lg:grid-cols-12 lg:gap-10" noValidate>
+      <motion.div
+        className="space-y-6 lg:col-span-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={itemVariants} className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
           {/* Experience */}
           <div className="space-y-2 md:col-span-2">
-            <label
-              htmlFor="eventId"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+            <label htmlFor="eventId" className="reserve-label">
+              <Calendar size={14} strokeWidth={1.5} />
               Experience
             </label>
             <select
@@ -260,7 +297,7 @@ function InnerForm({
               name="eventId"
               value={form.eventId}
               onChange={handleChange}
-              className="form-glass-light w-full appearance-none px-4 py-3.5 text-base"
+              className="reserve-select"
             >
               {RESERVATION_EVENTS.map((event) => (
                 <option key={event.id} value={event.id}>
@@ -272,10 +309,8 @@ function InnerForm({
 
           {/* Date */}
           <div className="space-y-2">
-            <label
-              htmlFor="date"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+            <label htmlFor="date" className="reserve-label">
+              <Calendar size={14} strokeWidth={1.5} />
               Date
             </label>
             <input
@@ -286,16 +321,14 @@ function InnerForm({
               value={form.date}
               onChange={handleChange}
               required
-              className="form-glass-light w-full px-4 py-3.5 text-base"
+              className="reserve-input"
             />
           </div>
 
           {/* Time */}
           <div className="space-y-2">
-            <label
-              htmlFor="time"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+            <label htmlFor="time" className="reserve-label">
+              <Clock size={14} strokeWidth={1.5} />
               Time
             </label>
             <select
@@ -303,7 +336,7 @@ function InnerForm({
               name="time"
               value={form.time}
               onChange={handleChange}
-              className="form-glass-light w-full appearance-none px-4 py-3.5 text-base"
+              className="reserve-select"
             >
               {TIME_SLOTS.map((slot) => (
                 <option key={slot} value={slot}>
@@ -313,33 +346,49 @@ function InnerForm({
             </select>
           </div>
 
-          {/* Guests */}
-          <div className="space-y-2">
-            <label
-              htmlFor="guests"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+          {/* Guests stepper */}
+          <div className="space-y-2 md:col-span-2">
+            <label htmlFor="guests" className="reserve-label">
+              <Users size={14} strokeWidth={1.5} />
               Guests
             </label>
-            <input
-              id="guests"
-              name="guests"
-              type="number"
-              min={MIN_GUESTS}
-              max={MAX_GUESTS}
-              value={form.guests}
-              onChange={handleChange}
-              required
-              className="form-glass-light w-full px-4 py-3.5 text-base"
-            />
+            <div className="flex w-full items-center md:w-56">
+              <button
+                type="button"
+                onClick={() => adjustGuests(-1)}
+                disabled={form.guests <= MIN_GUESTS}
+                className="reserve-stepper-btn rounded-l-xl"
+                aria-label="Decrease guests"
+              >
+                <Minus size={18} strokeWidth={1.5} />
+              </button>
+              <input
+                id="guests"
+                name="guests"
+                type="number"
+                min={MIN_GUESTS}
+                max={MAX_GUESTS}
+                value={form.guests}
+                onChange={handleChange}
+                required
+                className="reserve-stepper-value"
+              />
+              <button
+                type="button"
+                onClick={() => adjustGuests(1)}
+                disabled={form.guests >= MAX_GUESTS}
+                className="reserve-stepper-btn rounded-r-xl"
+                aria-label="Increase guests"
+              >
+                <Plus size={18} strokeWidth={1.5} />
+              </button>
+            </div>
           </div>
 
           {/* Full Name */}
           <div className="space-y-2">
-            <label
-              htmlFor="fullName"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+            <label htmlFor="fullName" className="reserve-label">
+              <User size={14} strokeWidth={1.5} />
               Full Name
             </label>
             <input
@@ -350,16 +399,14 @@ function InnerForm({
               onChange={handleChange}
               placeholder="Jane Doe"
               required
-              className="form-glass-light w-full px-4 py-3.5 text-base placeholder:text-warm-charcoal/40"
+              className="reserve-input"
             />
           </div>
 
           {/* Email */}
           <div className="space-y-2">
-            <label
-              htmlFor="email"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+            <label htmlFor="email" className="reserve-label">
+              <Mail size={14} strokeWidth={1.5} />
               Email
             </label>
             <input
@@ -370,16 +417,14 @@ function InnerForm({
               onChange={handleChange}
               placeholder="jane@example.com"
               required
-              className="form-glass-light w-full px-4 py-3.5 text-base placeholder:text-warm-charcoal/40"
+              className="reserve-input"
             />
           </div>
 
           {/* Phone */}
           <div className="space-y-2 md:col-span-2">
-            <label
-              htmlFor="phone"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+            <label htmlFor="phone" className="reserve-label">
+              <Phone size={14} strokeWidth={1.5} />
               Phone
             </label>
             <input
@@ -390,16 +435,14 @@ function InnerForm({
               onChange={handleChange}
               placeholder="+297 000 0000"
               required
-              className="form-glass-light w-full px-4 py-3.5 text-base placeholder:text-warm-charcoal/40"
+              className="reserve-input"
             />
           </div>
 
           {/* Notes */}
           <div className="space-y-2 md:col-span-2">
-            <label
-              htmlFor="notes"
-              className="block text-xs font-semibold tracking-[0.2em] text-warm-charcoal/60 uppercase"
-            >
+            <label htmlFor="notes" className="reserve-label">
+              <FileText size={14} strokeWidth={1.5} />
               Notes / Occasion
             </label>
             <textarea
@@ -409,47 +452,68 @@ function InnerForm({
               value={form.notes}
               onChange={handleChange}
               placeholder="Birthday, anniversary, dietary restrictions..."
-              className="form-glass-light w-full resize-none px-4 py-3.5 text-base placeholder:text-warm-charcoal/40"
+              className="reserve-input resize-none"
             />
           </div>
-        </div>
+        </motion.div>
 
-        <div className="h-px bg-warm-charcoal/10" />
+        <motion.div variants={itemVariants} className="h-px bg-cream/10" />
 
-        <StripeCardSection />
+        <motion.div variants={itemVariants}>
+          <StripeCardSection />
+        </motion.div>
 
         {status === 'error' && errorMessage && (
-          <div
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
             role="alert"
             aria-live="polite"
-            className="border border-red-400/40 bg-red-500/10 px-4 py-3 text-base text-red-700"
+            className="rounded-xl border border-red-400/40 bg-red-500/12 px-4 py-3 text-base text-red-200"
           >
             {errorMessage}
-          </div>
+          </motion.div>
         )}
 
         {!stripePublishableKey && (
-          <div className="border border-terracotta/30 bg-terracotta/10 px-4 py-3 text-sm text-terracotta">
+          <motion.div
+            variants={itemVariants}
+            className="rounded-xl border border-sunset-orange/30 bg-sunset-orange/10 px-4 py-3 text-sm text-sunset-orange"
+          >
             <strong>Demo setup:</strong> add your{' '}
-            <code className="bg-warm-charcoal/5 px-1 py-0.5">{STRIPE_PUBLISHABLE_KEY_ENV}</code>{' '}
-            to a <code className="bg-warm-charcoal/5 px-1 py-0.5">.env</code> file to activate the
+            <code className="rounded bg-cream/10 px-1 py-0.5">{STRIPE_PUBLISHABLE_KEY_ENV}</code> to
+            a <code className="rounded bg-cream/10 px-1 py-0.5">.env</code> file to activate the
             real Stripe card form.
-          </div>
+          </motion.div>
         )}
 
-        <button
-          type="submit"
-          disabled={status === 'processing'}
-          className="w-full bg-sunset-yellow px-8 py-4 text-sm font-semibold tracking-[0.2em] text-warm-charcoal uppercase transition-all hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {status === 'processing' ? 'Processing…' : `Authorize $${DEPOSIT_AMOUNT} Deposit`}
-        </button>
-      </div>
+        <motion.div variants={itemVariants}>
+          <button
+            type="submit"
+            disabled={status === 'processing'}
+            className="reserve-submit-button"
+          >
+            {status === 'processing' ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-cream/30 border-t-cream" />
+                Processing…
+              </span>
+            ) : (
+              <span>Authorize ${DEPOSIT_AMOUNT} Deposit</span>
+            )}
+          </button>
+        </motion.div>
+      </motion.div>
 
       {/* Summary */}
-      <div className="lg:col-span-1">
+      <motion.div
+        className="lg:col-span-4"
+        initial={{ opacity: 0, x: 24 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      >
         <ReservationSummary data={form} eventLabel={selectedEvent.label} />
-      </div>
+      </motion.div>
     </form>
   );
 }

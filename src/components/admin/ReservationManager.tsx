@@ -1,7 +1,6 @@
 /**
  * Gestor de reservas del panel admin.
- * Permite filtrar por fecha, evento y estado; ver detalles; cambiar estado localmente.
- * Estilo Liquid Glass.
+ * Tabla más legible, detalles con mejor jerarquía y números claros.
  */
 
 import { useMemo, useState } from 'react';
@@ -27,9 +26,9 @@ function formatDate(dateString: string): string {
 }
 
 const STATUS_CLASSES: Record<ReservationStatus, string> = {
-  confirmed: 'glass-status-confirmed',
-  pending: 'glass-status-pending',
-  cancelled: 'glass-status-cancelled',
+  confirmed: 'admin-status-confirmed',
+  pending: 'admin-status-pending',
+  cancelled: 'admin-status-cancelled',
 };
 
 export default function ReservationManager({ reservations, onUpdate }: ReservationManagerProps) {
@@ -67,24 +66,24 @@ export default function ReservationManager({ reservations, onUpdate }: Reservati
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center">
         <div className="relative flex-1">
           <Search
-            size={16}
+            size={18}
             strokeWidth={1.5}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500"
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--admin-subtle)]"
           />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email or ID"
-            className="glass-input w-full py-3 pl-11 pr-4 text-sm"
+            className="admin-input w-full py-3 pl-11 pr-4"
           />
         </div>
-        <div className="flex items-center gap-3">
-          <Filter size={16} strokeWidth={1.5} className="text-slate-500" />
+        <div className="flex flex-wrap items-center gap-3">
+          <Filter size={18} strokeWidth={1.5} className="text-[var(--admin-subtle)]" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as ReservationStatus | 'all')}
-            className="glass-select px-4 py-3 text-sm"
+            className="admin-select"
           >
             <option value="all">All statuses</option>
             <option value="confirmed">Confirmed</option>
@@ -94,7 +93,7 @@ export default function ReservationManager({ reservations, onUpdate }: Reservati
           <select
             value={eventFilter}
             onChange={(e) => setEventFilter(e.target.value)}
-            className="glass-select px-4 py-3 text-sm"
+            className="admin-select"
           >
             {events.map((e) => (
               <option key={e.id} value={e.id}>
@@ -108,37 +107,49 @@ export default function ReservationManager({ reservations, onUpdate }: Reservati
       <div className="grid gap-6 lg:grid-cols-5">
         {/* List */}
         <div className="lg:col-span-3">
-          <div className="glass-panel overflow-hidden">
-            <table className="glass-table text-left text-sm">
+          <div className="admin-card overflow-hidden">
+            <table className="admin-table">
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Guest</th>
                   <th>Date / Time</th>
-                  <th>Guests</th>
+                  <th className="text-right">Guests</th>
                   <th>Status</th>
                 </tr>
               </thead>
-              <tbody className="text-slate-800">
+              <tbody>
                 {filtered.map((r) => (
                   <tr
                     key={r.id}
                     onClick={() => setSelectedId(r.id)}
-                    className={`glass-table-row cursor-pointer ${
-                      selectedId === r.id ? 'glass-table-row-active' : ''
-                    }`}
+                    className={`cursor-pointer ${selectedId === r.id ? 'admin-row-active' : ''}`}
                   >
-                    <td className="font-mono text-xs text-slate-500">{r.id}</td>
                     <td>
-                      <p className="font-sans font-semibold text-slate-900">{r.fullName}</p>
-                      <p className="text-xs text-slate-600">{r.eventLabel}</p>
+                      <span className="admin-number text-sm font-semibold text-[var(--admin-subtle)]">
+                        {r.id}
+                      </span>
                     </td>
                     <td>
-                      {formatDate(r.date)} · {r.time}
+                      <p className="admin-primary-text">{r.fullName}</p>
+                      <p className="admin-secondary-text">{r.eventLabel}</p>
                     </td>
-                    <td>{r.guests}</td>
                     <td>
-                      <span className={`glass-status ${STATUS_CLASSES[r.status]}`}>
+                      <span className="text-sm font-semibold text-[var(--admin-ink)]">
+                        {formatDate(r.date)}
+                      </span>
+                      <span className="mx-2 text-[var(--admin-subtle)]">·</span>
+                      <span className="admin-number text-sm font-semibold text-[var(--admin-ink)]">
+                        {r.time}
+                      </span>
+                    </td>
+                    <td className="text-right">
+                      <span className="admin-number text-lg font-bold text-[var(--admin-ink)]">
+                        {r.guests}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={`admin-status ${STATUS_CLASSES[r.status]}`}>
                         {RESERVATION_STATUS_LABELS[r.status]}
                       </span>
                     </td>
@@ -146,7 +157,7 @@ export default function ReservationManager({ reservations, onUpdate }: Reservati
                 ))}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-5 py-8 text-center text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">
+                    <td colSpan={5} className="admin-empty">
                       No reservations found
                     </td>
                   </tr>
@@ -158,51 +169,53 @@ export default function ReservationManager({ reservations, onUpdate }: Reservati
 
         {/* Detail panel */}
         <div className="lg:col-span-2">
-          <div className="glass-panel sticky top-6 p-6">
+          <div className="admin-card sticky top-6 p-6">
             {selected ? (
               <div className="space-y-5">
                 <div>
-                  <p className="text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-                    Reservation Details
-                  </p>
-                  <h3 className="mt-2 font-serif text-2xl text-slate-900">{selected.fullName}</h3>
-                  <p className="text-sm text-slate-600">{selected.email}</p>
-                  <p className="text-sm text-slate-600">{selected.phone}</p>
+                  <p className="admin-card-sub">Reservation Details</p>
+                  <h3 className="admin-card-header mt-1 text-2xl">{selected.fullName}</h3>
+                  <p className="admin-secondary-text mt-1">{selected.email}</p>
+                  <p className="admin-secondary-text">{selected.phone}</p>
                 </div>
 
-                <dl className="space-y-3 text-sm">
-                  <div className="flex justify-between border-b border-white/40 pb-2">
-                    <dt className="text-slate-500">Experience</dt>
-                    <dd className="font-medium text-slate-900">{selected.eventLabel}</dd>
+                <dl className="admin-dl">
+                  <div className="admin-dl-row">
+                    <dt className="admin-dl-term">Experience</dt>
+                    <dd className="admin-dl-value">{selected.eventLabel}</dd>
                   </div>
-                  <div className="flex justify-between border-b border-white/40 pb-2">
-                    <dt className="text-slate-500">Date</dt>
-                    <dd className="font-medium text-slate-900">{formatDate(selected.date)}</dd>
+                  <div className="admin-dl-row">
+                    <dt className="admin-dl-term">Date</dt>
+                    <dd className="admin-dl-value">{formatDate(selected.date)}</dd>
                   </div>
-                  <div className="flex justify-between border-b border-white/40 pb-2">
-                    <dt className="text-slate-500">Time</dt>
-                    <dd className="font-medium text-slate-900">{selected.time}</dd>
+                  <div className="admin-dl-row">
+                    <dt className="admin-dl-term">Time</dt>
+                    <dd className="admin-dl-value admin-number">{selected.time}</dd>
                   </div>
-                  <div className="flex justify-between border-b border-white/40 pb-2">
-                    <dt className="text-slate-500">Guests</dt>
-                    <dd className="font-medium text-slate-900">{selected.guests}</dd>
+                  <div className="admin-dl-row">
+                    <dt className="admin-dl-term">Guests</dt>
+                    <dd className="admin-dl-value admin-number text-lg font-bold">{selected.guests}</dd>
                   </div>
-                  <div className="flex justify-between border-b border-white/40 pb-2">
-                    <dt className="text-slate-500">Deposit</dt>
-                    <dd className="font-medium text-slate-900">${selected.deposit}</dd>
+                  <div className="admin-dl-row">
+                    <dt className="admin-dl-term">Deposit</dt>
+                    <dd className="admin-dl-value admin-number text-lg font-bold">
+                      ${selected.deposit}
+                    </dd>
                   </div>
-                  <div className="flex justify-between border-b border-white/40 pb-2">
-                    <dt className="text-slate-500">Table</dt>
-                    <dd className="font-medium text-slate-900">{selected.tableId ?? 'Not assigned'}</dd>
+                  <div className="admin-dl-row">
+                    <dt className="admin-dl-term">Table</dt>
+                    <dd className="admin-dl-value admin-number">
+                      {selected.tableId ?? 'Not assigned'}
+                    </dd>
                   </div>
                 </dl>
 
                 {selected.notes && (
-                  <div className="border-l-4 border-sunset-yellow bg-sunset-yellow/10 p-4">
-                    <p className="text-[10px] font-semibold tracking-[0.2em] text-slate-700 uppercase">
-                      Notes
+                  <div className="rounded-xl border border-[var(--admin-line)] bg-[var(--admin-panel-soft)] p-4">
+                    <p className="admin-card-sub">Notes</p>
+                    <p className="mt-1 text-sm font-medium leading-relaxed text-[var(--admin-ink)]">
+                      {selected.notes}
                     </p>
-                    <p className="mt-1 text-sm leading-relaxed text-slate-700">{selected.notes}</p>
                   </div>
                 )}
 
@@ -212,10 +225,10 @@ export default function ReservationManager({ reservations, onUpdate }: Reservati
                       key={s}
                       type="button"
                       onClick={() => updateStatus(selected.id, s)}
-                      className={`flex-1 px-3 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase transition ${
+                      className={`admin-button flex-1 rounded-lg text-xs font-semibold uppercase tracking-wide ${
                         selected.status === s
-                          ? 'glass-button-primary rounded-lg'
-                          : 'glass-button rounded-lg'
+                          ? 'admin-button-primary'
+                          : 'admin-button-secondary'
                       }`}
                     >
                       {RESERVATION_STATUS_LABELS[s]}
@@ -224,10 +237,8 @@ export default function ReservationManager({ reservations, onUpdate }: Reservati
                 </div>
               </div>
             ) : (
-              <div className="py-12 text-center">
-                <p className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">
-                  Select a reservation to view details
-                </p>
+              <div className="admin-empty">
+                Select a reservation to view details
               </div>
             )}
           </div>

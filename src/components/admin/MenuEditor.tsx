@@ -1,7 +1,6 @@
 /**
  * Editor de menú del panel admin.
- * Permite editar drinks y plates, con vista previa tipo ExpandCards.
- * Estilo Liquid Glass.
+ * Interfaz clara con tipografía legible y precios prominentes.
  */
 
 import { useMemo, useState } from 'react';
@@ -101,7 +100,10 @@ export default function MenuEditor(_props: MenuEditorProps) {
 
   const renderRow = (item: MenuItem, plateId?: string) => {
     const isEditing = editingId === item.id;
-    const update = plateId ? updatePlateItem : updateDrink;
+    const update = (updates: Partial<MenuItem>) => {
+      if (plateId) updatePlateItem(plateId, item.id, updates);
+      else updateDrink(item.id, updates);
+    };
     const remove = plateId
       ? () => deletePlateItem(plateId, item.id)
       : () => deleteDrink(item.id);
@@ -109,48 +111,53 @@ export default function MenuEditor(_props: MenuEditorProps) {
     return (
       <li
         key={item.id}
-        className="border-b border-white/30 px-5 py-4 transition hover:bg-white/25"
+        className="border-b border-[var(--admin-line)] px-5 py-5 transition last:border-b-0 hover:bg-[var(--admin-panel-soft)]"
       >
         {isEditing ? (
           <div className="grid gap-4 md:grid-cols-2">
             <input
               value={item.name}
-              onChange={(e) => update(item.id, { name: e.target.value })}
+              onChange={(e) => update({ name: e.target.value })}
               placeholder="Name"
-              className="glass-input px-3 py-2 text-sm"
+              className="admin-input"
             />
-            <input
-              value={item.price}
-              type="number"
-              onChange={(e) => update(item.id, { price: Number(e.target.value) })}
-              placeholder="Price"
-              className="glass-input px-3 py-2 text-sm"
-            />
+            <div className="relative">
+              <span className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--admin-subtle)]">
+                $
+              </span>
+              <input
+                value={item.price}
+                type="number"
+                onChange={(e) => update({ price: Number(e.target.value) })}
+                placeholder="Price"
+                className="admin-input w-full pl-8"
+              />
+            </div>
             <input
               value={item.image}
-              onChange={(e) => update(item.id, { image: e.target.value })}
+              onChange={(e) => update({ image: e.target.value })}
               placeholder="Image URL"
-              className="glass-input px-3 py-2 text-sm md:col-span-2"
+              className="admin-input md:col-span-2"
             />
             <textarea
               value={item.description}
-              onChange={(e) => update(item.id, { description: e.target.value })}
+              onChange={(e) => update({ description: e.target.value })}
               placeholder="Description"
               rows={2}
-              className="glass-input resize-none px-3 py-2 text-sm md:col-span-2"
+              className="admin-textarea admin-input md:col-span-2"
             />
             <input
               value={formatTagsInput(item.tags)}
-              onChange={(e) => update(item.id, { tags: parseTagsInput(e.target.value) })}
+              onChange={(e) => update({ tags: parseTagsInput(e.target.value) })}
               placeholder="Tags separated by commas"
-              className="glass-input px-3 py-2 text-sm md:col-span-2"
+              className="admin-input md:col-span-2"
             />
-            <label className="flex items-center gap-2 text-sm font-medium text-slate-700 md:col-span-2">
+            <label className="flex items-center gap-3 text-sm font-semibold text-[var(--admin-muted)] md:col-span-2">
               <input
                 type="checkbox"
                 checked={item.featured}
-                onChange={(e) => update(item.id, { featured: e.target.checked })}
-                className="h-4 w-4 accent-sunset-orange"
+                onChange={(e) => update({ featured: e.target.checked })}
+                className="admin-checkbox"
               />
               Featured
             </label>
@@ -158,42 +165,39 @@ export default function MenuEditor(_props: MenuEditorProps) {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="glass-button px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase"
+                className="admin-button admin-button-secondary"
               >
-                <X size={14} strokeWidth={1.5} /> Cancel
+                <X size={16} strokeWidth={1.5} /> Cancel
               </button>
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="glass-button-primary px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase"
+                className="admin-button admin-button-primary"
               >
-                <Check size={14} strokeWidth={1.5} /> Save
+                <Check size={16} strokeWidth={1.5} /> Save
               </button>
             </div>
           </div>
         ) : (
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1">
-              <div className="flex items-baseline gap-3">
-                <h4 className="truncate font-serif text-lg text-slate-900">{item.name}</h4>
-                <span className="font-sans text-sm font-semibold text-sunset-orange">
+              <div className="flex flex-wrap items-baseline gap-3">
+                <h4 className="text-lg font-semibold tracking-tight text-[var(--admin-ink)]">
+                  {item.name}
+                </h4>
+                <span className="admin-number text-lg font-bold text-[var(--admin-accent)]">
                   ${item.price}
                 </span>
                 {item.featured && (
-                  <span className="rounded-full border border-sunset-orange/40 bg-sunset-orange/10 px-2 py-0.5 text-[9px] font-semibold tracking-[0.12em] text-sunset-orange uppercase">
-                    Featured
-                  </span>
+                  <span className="admin-tag admin-tag-accent">Featured</span>
                 )}
               </div>
-              <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-slate-600">
+              <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-[var(--admin-muted)]">
                 {item.description}
               </p>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {item.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-slate-300/60 bg-white/30 px-2 py-0.5 text-[10px] font-semibold tracking-[0.08em] text-slate-600 uppercase"
-                  >
+                  <span key={tag} className="admin-tag">
                     {tag}
                   </span>
                 ))}
@@ -204,17 +208,17 @@ export default function MenuEditor(_props: MenuEditorProps) {
                 type="button"
                 onClick={() => startEdit(item.id)}
                 aria-label={`Edit ${item.name}`}
-                className="text-slate-500 transition hover:text-sunset-orange"
+                className="rounded-lg p-2 text-[var(--admin-subtle)] transition hover:bg-[var(--admin-panel-soft)] hover:text-[var(--admin-accent)]"
               >
-                <Edit2 size={16} strokeWidth={1.5} />
+                <Edit2 size={18} strokeWidth={1.5} />
               </button>
               <button
                 type="button"
                 onClick={remove}
                 aria-label={`Delete ${item.name}`}
-                className="text-slate-500 transition hover:text-rose-700"
+                className="rounded-lg p-2 text-[var(--admin-subtle)] transition hover:bg-[var(--admin-panel-soft)] hover:text-[var(--admin-cancel)]"
               >
-                <Trash2 size={16} strokeWidth={1.5} />
+                <Trash2 size={18} strokeWidth={1.5} />
               </button>
             </div>
           </div>
@@ -226,26 +230,18 @@ export default function MenuEditor(_props: MenuEditorProps) {
   return (
     <div className="space-y-6">
       {/* Tabs */}
-      <div className="flex flex-wrap items-center gap-3 border-b border-white/40 pb-4">
+      <div className="flex flex-wrap items-center gap-3 border-b border-[var(--admin-line)] pb-4">
         <button
           type="button"
           onClick={() => setActiveTab('drinks')}
-          className={`rounded-lg px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase transition ${
-            activeTab === 'drinks'
-              ? 'bg-white/60 text-slate-900 shadow-sm'
-              : 'text-slate-600 hover:bg-white/30'
-          }`}
+          className={`admin-tab ${activeTab === 'drinks' ? 'admin-tab-active' : ''}`}
         >
           Drinks
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('plates')}
-          className={`rounded-lg px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase transition ${
-            activeTab === 'plates'
-              ? 'bg-white/60 text-slate-900 shadow-sm'
-              : 'text-slate-600 hover:bg-white/30'
-          }`}
+          className={`admin-tab ${activeTab === 'plates' ? 'admin-tab-active' : ''}`}
         >
           Plates
         </button>
@@ -254,7 +250,7 @@ export default function MenuEditor(_props: MenuEditorProps) {
           <select
             value={selectedPlateId}
             onChange={(e) => setSelectedPlateId(e.target.value)}
-            className="glass-select ml-auto px-4 py-2 text-sm"
+            className="admin-select ml-2"
           >
             {plates.map((p) => (
               <option key={p.id} value={p.id}>
@@ -267,31 +263,27 @@ export default function MenuEditor(_props: MenuEditorProps) {
         <button
           type="button"
           onClick={() => setShowPreview((s) => !s)}
-          className={`ml-auto flex items-center gap-2 rounded-lg px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase transition lg:ml-0 ${
-            showPreview
-              ? 'bg-sunset-yellow text-slate-900 shadow-sm'
-              : 'bg-white/40 text-slate-800 hover:bg-white/70'
+          className={`admin-button ml-auto gap-2 ${
+            showPreview ? 'admin-button-primary' : 'admin-button-secondary'
           }`}
         >
-          <Eye size={14} strokeWidth={1.5} />
+          <Eye size={16} strokeWidth={1.5} />
           {showPreview ? 'Hide preview' : 'Preview cards'}
         </button>
       </div>
 
       {/* Preview */}
       {showPreview && (
-        <div className="glass-panel p-4">
-          <p className="mb-3 text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
-            ExpandCards preview
-          </p>
-          <div className="h-[320px]">
+        <div className="admin-card p-4">
+          <p className="admin-card-sub">ExpandCards preview</p>
+          <div className="mt-3 h-[320px]">
             <ExpandCards items={previewItems} />
           </div>
         </div>
       )}
 
       {/* List */}
-      <div className="glass-panel overflow-hidden">
+      <div className="admin-card overflow-hidden">
         <ul>
           {activeTab === 'drinks'
             ? drinks.map((d) => renderRow(d))
@@ -302,15 +294,13 @@ export default function MenuEditor(_props: MenuEditorProps) {
       <button
         type="button"
         onClick={activeTab === 'drinks' ? addDrink : addPlateItem}
-        className="glass-button glass-button-dashed w-full justify-center gap-2 py-4 text-xs font-semibold tracking-[0.15em] text-slate-700 uppercase"
+        className="admin-button admin-button-dashed w-full justify-center gap-2 py-4"
       >
-        <Plus size={16} strokeWidth={1.5} />
+        <Plus size={18} strokeWidth={1.5} />
         Add {activeTab === 'drinks' ? 'drink' : 'plate'}
       </button>
 
-      <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
-        Demo only — changes are not saved
-      </p>
+      <p className="admin-empty">Demo only — changes are not saved</p>
     </div>
   );
 }

@@ -50,32 +50,270 @@ const structuredData = {
   <StickyMenu client:load pathname={Astro.url.pathname} />
 
   <main
-    class="relative flex min-h-screen bg-sand bg-cover bg-center bg-no-repeat text-warm-charcoal"
+    class="reserve-stage relative min-h-screen overflow-hidden bg-night text-cream"
     style="background-image: url('/images/sunset.png');"
   >
-    {/* Atmospheric overlays for depth and readability */}
-    <div class="absolute inset-0 bg-gradient-to-br from-night/50 via-warm-charcoal/25 to-night/45" />
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,transparent_0%,rgba(11,11,15,0.25)_100%)]" />
+    {/* Deep atmospheric blur layers */}
+    <div class="reserve-bg-blur absolute inset-0 scale-110 bg-cover bg-center bg-no-repeat" aria-hidden="true" />
+    <div class="reserve-vignette absolute inset-0" aria-hidden="true" />
+    <div class="reserve-light-leak absolute inset-0" aria-hidden="true" />
+    <div class="reserve-grain absolute inset-0 opacity-40" aria-hidden="true" />
 
-    {/* Left liquid-glass reservation panel */}
-    <section
-      class="glass-panel-light relative z-10 flex min-h-screen w-full flex-col justify-center border-r border-warm-charcoal/10 px-6 py-10 shadow-2xl backdrop-blur-2xl lg:w-[68%] lg:px-8 lg:py-12 xl:w-[70%] xl:px-10"
-    >
-      {/* Header */}
-      <header class="mb-5 lg:mb-6">
-        <p class="mb-1.5 text-xs font-semibold tracking-[0.25em] text-terracotta uppercase">
-          Rooftop Reservations
-        </p>
-        <h1 class="font-display text-4xl font-semibold leading-[0.95] tracking-tight text-warm-charcoal md:text-5xl lg:text-[3rem]">
-          Reserve Your Sunset
-        </h1>
-        <p class="mt-2 max-w-md text-base font-light leading-relaxed text-warm-charcoal/70">
-          Choose your experience, pick your golden-hour table, and secure it with a small demo
-          deposit.
-        </p>
-      </header>
+    {/* Content */}
+    <div class="reserve-content relative z-10 flex min-h-screen flex-col justify-center px-5 py-20 md:px-10 lg:px-16">
+      <div class="mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-12 lg:gap-12">
+        {/* Header + copy */}
+        <header class="lg:col-span-4 lg:pt-12">
+          <p class="reserve-kicker">Rooftop Reservations</p>
+          <h1 class="reserve-headline mt-3">
+            Reserve Your
+            <span class="block text-sunset-yellow">Sunset Table</span>
+          </h1>
+          <p class="reserve-lead mt-5 max-w-sm">
+            Choose your experience, pick your golden-hour table, and secure it with a small demo
+            deposit.
+          </p>
+          <div class="mt-8 hidden h-px w-24 bg-gradient-to-r from-sunset-orange to-transparent lg:block" />
+        </header>
 
-      <ReservationForm stripePublishableKey={stripePublishableKey} client:load />
-    </section>
+        {/* Form panel */}
+        <section class="lg:col-span-8">
+          <div class="reserve-form-panel">
+            <ReservationForm stripePublishableKey={stripePublishableKey} client:load />
+          </div>
+        </section>
+      </div>
+    </div>
   </main>
 </Layout>
+
+<style>
+  .reserve-stage {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .reserve-bg-blur {
+    background-image: url('/images/sunset.png');
+    filter: blur(28px) saturate(1.15) brightness(0.85);
+    transform: scale(1.12);
+  }
+
+  .reserve-vignette {
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255, 122, 69, 0.18) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(199, 91, 57, 0.14) 0%, transparent 40%),
+      linear-gradient(135deg, rgba(11, 11, 15, 0.72) 0%, rgba(43, 36, 32, 0.55) 50%, rgba(11, 11, 15, 0.78) 100%);
+  }
+
+  .reserve-light-leak {
+    background: radial-gradient(
+      ellipse at 70% 20%,
+      rgba(255, 215, 0, 0.12) 0%,
+      rgba(255, 122, 69, 0.06) 25%,
+      transparent 55%
+    );
+    mix-blend-mode: screen;
+  }
+
+  .reserve-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .reserve-kicker {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-sunset-orange);
+  }
+
+  .reserve-headline {
+    font-family: var(--font-serif);
+    font-size: clamp(2.75rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--color-cream);
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  }
+
+  .reserve-lead {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.65;
+    color: rgba(253, 248, 241, 0.72);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  }
+
+  .reserve-form-panel {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(32px) saturate(160%);
+    -webkit-backdrop-filter: blur(32px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 1.5rem;
+    box-shadow:
+      0 24px 80px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    padding: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .reserve-form-panel {
+      padding: 2.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .reserve-form-panel {
+      padding: 3rem;
+    }
+  }
+
+  .reserve-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(253, 248, 241, 0.65);
+  }
+
+  .reserve-input,
+  .reserve-select {
+    width: 100%;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.875rem;
+    color: #fdf8f1;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.875rem 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .reserve-input::placeholder {
+    color: rgba(253, 248, 241, 0.35);
+  }
+
+  .reserve-input:hover,
+  .reserve-select:hover {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .reserve-input:focus,
+  .reserve-select:focus {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--color-sunset-orange);
+    box-shadow: 0 0 0 3px rgba(255, 122, 69, 0.18);
+  }
+
+  .reserve-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23fdf8f1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 1rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25rem;
+    padding-right: 2.75rem;
+  }
+
+  .reserve-input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.6;
+    cursor: pointer;
+  }
+
+  .reserve-card-element {
+    padding: 0.25rem 0;
+  }
+
+  .reserve-stepper-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fdf8f1;
+    transition: all 0.18s ease;
+  }
+
+  .reserve-stepper-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--color-sunset-orange);
+    color: var(--color-sunset-yellow);
+  }
+
+  .reserve-stepper-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  .reserve-stepper-value {
+    appearance: none;
+    width: 100%;
+    height: 3rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: none;
+    border-right: none;
+    color: #fdf8f1;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    outline: none;
+  }
+
+  .reserve-stepper-value::-webkit-outer-spin-button,
+  .reserve-stepper-value::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .reserve-submit-button {
+    width: 100%;
+    border-radius: 9999px;
+    background: var(--color-sunset-yellow);
+    border: 1px solid var(--color-sunset-yellow);
+    color: var(--color-warm-charcoal);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1.125rem 2rem;
+    box-shadow:
+      0 8px 24px rgba(255, 215, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+
+  .reserve-submit-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: #fff;
+    border-color: #fff;
+    box-shadow:
+      0 14px 36px rgba(255, 215, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  .reserve-submit-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+</style>

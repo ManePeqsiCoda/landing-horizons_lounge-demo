@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { Calendar, Clock, Users, Sparkles } from 'lucide-react';
 import type { ReservationFormData } from '../../data/reservation';
 import { DEPOSIT_AMOUNT, DEPOSIT_CURRENCY } from '../../data/reservation';
 
@@ -28,43 +31,85 @@ export default function ReservationSummary({
   data,
   eventLabel,
 }: ReservationSummaryProps) {
+  const isComplete = useMemo(
+    () => data.fullName.trim() && data.email.trim() && data.phone.trim() && data.date,
+    [data]
+  );
+
   return (
-    <div className="sticky top-6 space-y-4 lg:top-8">
-      <div className="border border-warm-charcoal/10 bg-white/60 p-5 backdrop-blur-md">
-        <p className="text-xs font-semibold tracking-[0.2em] text-terracotta uppercase">
-          Reservation Summary
-        </p>
-        <h3 className="mt-2 font-display text-2xl font-semibold leading-none tracking-tight text-warm-charcoal">{eventLabel}</h3>
-        <dl className="mt-5 space-y-3 text-base">
-          <div className="flex justify-between">
-            <dt className="text-warm-charcoal/60">Date</dt>
-            <dd className="font-medium text-warm-charcoal">{formatDate(data.date)}</dd>
+    <div className="sticky top-6 space-y-5 lg:top-8">
+      <motion.div
+        layout
+        className="rounded-2xl border border-cream/15 bg-cream/8 p-6 shadow-2xl backdrop-blur-xl"
+      >
+        <div className="flex items-center gap-2">
+          <Sparkles size={14} strokeWidth={1.5} className="text-sunset-yellow" />
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-sunset-yellow">
+            Your reservation
+          </p>
+        </div>
+
+        <h3 className="mt-3 font-serif text-2xl font-bold leading-tight tracking-tight text-cream md:text-3xl">
+          {eventLabel}
+        </h3>
+
+        <dl className="mt-6 space-y-4">
+          <div className="flex items-start justify-between gap-4">
+            <dt className="flex items-center gap-2 text-sm font-medium text-cream/55">
+              <Calendar size={14} strokeWidth={1.5} />
+              Date
+            </dt>
+            <dd className="max-w-[60%] text-right text-sm font-semibold leading-snug text-cream">
+              {formatDate(data.date)}
+            </dd>
           </div>
-          <div className="flex justify-between">
-            <dt className="text-warm-charcoal/60">Time</dt>
-            <dd className="font-medium text-warm-charcoal">{data.time || '—'}</dd>
+          <div className="flex items-center justify-between gap-4">
+            <dt className="flex items-center gap-2 text-sm font-medium text-cream/55">
+              <Clock size={14} strokeWidth={1.5} />
+              Time
+            </dt>
+            <dd className="font-display text-lg font-bold text-cream">
+              {data.time || '—'}
+            </dd>
           </div>
-          <div className="flex justify-between">
-            <dt className="text-warm-charcoal/60">Guests</dt>
-            <dd className="font-medium text-warm-charcoal">{data.guests}</dd>
-          </div>
-          <div className="flex justify-between">
-            <dt className="text-warm-charcoal/60">Name</dt>
-            <dd className="font-medium text-warm-charcoal">{data.fullName || '—'}</dd>
+          <div className="flex items-center justify-between gap-4">
+            <dt className="flex items-center gap-2 text-sm font-medium text-cream/55">
+              <Users size={14} strokeWidth={1.5} />
+              Guests
+            </dt>
+            <dd className="font-display text-2xl font-bold text-cream">
+              {data.guests}
+            </dd>
           </div>
         </dl>
+
+        <div className="mt-6 h-px bg-cream/10" />
+
+        <div className="mt-5 flex items-center justify-between">
+          <span className="text-sm font-medium text-cream/65">Deposit to reserve</span>
+          <span className="font-serif text-3xl font-bold text-sunset-yellow">
+            {formatCurrency(DEPOSIT_AMOUNT, DEPOSIT_CURRENCY)}
+          </span>
+        </div>
+      </motion.div>
+
+      <div
+        className={`rounded-xl border border-cream/10 p-5 backdrop-blur-md transition-colors duration-300 ${
+          isComplete ? 'bg-emerald-500/10' : 'bg-cream/5'
+        }`}
+      >
+        <p
+          className={`text-sm font-medium leading-relaxed ${
+            isComplete ? 'text-emerald-200' : 'text-cream/55'
+          }`}
+        >
+          {isComplete
+            ? 'All set — your details are complete and you can authorize the deposit.'
+            : 'Complete your details and card information to secure your table.'}
+        </p>
       </div>
 
-      <div className="flex items-center justify-between border border-warm-charcoal/10 bg-sand/70 p-5 text-warm-charcoal">
-        <span className="text-sm font-semibold tracking-wide uppercase">
-          Deposit to reserve
-        </span>
-        <span className="font-display text-3xl font-semibold tracking-tight text-terracotta">
-          {formatCurrency(DEPOSIT_AMOUNT, DEPOSIT_CURRENCY)}
-        </span>
-      </div>
-
-      <p className="text-xs leading-relaxed text-warm-charcoal/50">
+      <p className="text-center text-xs leading-relaxed text-cream/40">
         This is a demo authorization only. No real charge will be processed.
       </p>
     </div>
