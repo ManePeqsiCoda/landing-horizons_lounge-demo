@@ -40,7 +40,7 @@ export default function GalleryWall({ images }: GalleryWallProps) {
   return (
     <section
       aria-label="Gallery"
-      className="relative h-screen min-h-screen w-screen overflow-hidden bg-sand"
+      className="relative h-screen min-h-screen w-screen overflow-hidden bg-black"
     >
       {/* Título de sección superpuesto con máxima legibilidad */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center">

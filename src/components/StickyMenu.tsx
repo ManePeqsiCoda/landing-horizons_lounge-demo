@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import HorizonsLogo from './HorizonsLogo';
 
 interface NavLink {
   label: string;
@@ -76,11 +77,12 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
       {/* Brand mark (top-left) */}
       <a
         href={isHome ? '#hero' : '/'}
-        className={`text-contrast fixed left-6 top-5 z-50 font-serif text-xl tracking-[0.25em] text-white transition-transform duration-500 ease-out md:left-12 md:text-2xl ${
+        className={`text-contrast fixed left-6 top-5 z-50 w-32 transition-transform duration-500 ease-out md:left-12 md:w-40 ${
           visible ? desktopVisible : brandHidden
         }`}
+        aria-label="Go to home"
       >
-        HORIZONS
+        <HorizonsLogo className="w-full" />
       </a>
 
       {/* Right-side vertical menu (desktop) */}

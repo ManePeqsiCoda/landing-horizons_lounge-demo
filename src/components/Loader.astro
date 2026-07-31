@@ -1,7 +1,8 @@
 ---
 /**
  * Horizons brand loader.
- * Full-screen logo with a breathing pulse while the page hydrates.
+ * Full-screen sunset background with a heavy blur overlay and the
+ * horizon logo centered at roughly half the viewport width.
  * Always dismisses exactly 2s after mount (inline script: no dependency
  * on bundled JS or the window "load" event, so it can never get stuck).
  */
@@ -9,16 +10,95 @@
 
 <div
   id="horizons-loader"
-  class="fixed inset-0 z-[100] flex items-center justify-center bg-cream transition-opacity duration-700"
+  class="fixed inset-0 z-[100] transition-opacity duration-700"
   role="status"
   aria-label="Loading Horizons Lounge"
 >
+  {/* Sunset background */}
   <img
-    src="/images/horizons-logo.svg"
-    alt="Horizons Lounge Aruba"
-    class="loader-pulse w-[78vw] max-w-3xl select-none"
+    src="/images/sunset.png"
+    alt=""
+    class="absolute inset-0 h-full w-full object-cover"
+    aria-hidden="true"
     draggable="false"
   />
+
+  {/* Blur scrim */}
+  <div
+    class="absolute inset-0 bg-night/35 backdrop-blur-xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  {/* Centered brand logo */}
+  <div class="absolute inset-0 flex items-center justify-center p-6">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 500 160"
+      width="100%"
+      height="auto"
+      class="loader-pulse w-[70vw] max-w-2xl select-none md:w-[50vw]"
+      aria-label="Horizons Lounge"
+    >
+      <defs>
+        <radialGradient id="loader-sun-gradient" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#FFF000" />
+          <stop offset="60%" stop-color="#FFCC00" />
+          <stop offset="100%" stop-color="#FFA500" />
+        </radialGradient>
+
+        <mask id="loader-top-mask">
+          <rect width="500" height="160" fill="white" />
+          <path d="M 20,88 Q 250,70 480,98 L 480,160 L 20,160 Z" fill="black" />
+        </mask>
+
+        <mask id="loader-bottom-mask">
+          <rect width="500" height="160" fill="black" />
+          <path d="M 20,88 Q 250,70 480,98 L 480,160 L 20,160 Z" fill="white" />
+        </mask>
+      </defs>
+
+      <circle cx="395" cy="75" r="42" fill="url(#loader-sun-gradient)" />
+
+      <g mask="url(#loader-top-mask)">
+        <text
+          x="250"
+          y="85"
+          font-family="'Outfit', ui-sans-serif, system-ui, sans-serif"
+          font-size="46"
+          font-weight="300"
+          letter-spacing="9"
+          fill="#fdf8f1"
+          text-anchor="middle"
+        >
+          HORIZONS
+        </text>
+      </g>
+
+      <path
+        d="M 30,88 Q 250,70 470,98"
+        stroke="#fdf8f1"
+        stroke-width="1.5"
+        fill="none"
+        stroke-linecap="round"
+      />
+
+      <g mask="url(#loader-bottom-mask)" transform="translate(0, 168) scale(1, -1)">
+        <text
+          x="250"
+          y="85"
+          font-family="'Outfit', ui-sans-serif, system-ui, sans-serif"
+          font-size="46"
+          font-weight="300"
+          letter-spacing="9"
+          fill="#00B4D8"
+          text-anchor="middle"
+        >
+          HORIZONS
+        </text>
+      </g>
+    </svg>
+  </div>
 </div>
 
 <script is:inline>
