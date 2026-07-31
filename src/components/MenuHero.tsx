@@ -30,7 +30,7 @@ export default function MenuHero({ onSelectDrinks, onSelectPlates }: MenuHeroPro
         <div className="absolute inset-0 bg-night/45 transition-colors duration-500 group-hover:bg-night/35" aria-hidden="true" />
         <div className="pointer-events-none relative z-10 p-10 md:p-20 lg:p-28">
           <span
-            className="text-contrast text-5xl font-normal leading-none tracking-[0.02em] text-sunset-yellow transition-all duration-500 ease-out group-hover:scale-105 md:text-6xl lg:text-7xl"
+            className="text-contrast text-5xl font-normal leading-none tracking-[0.02em] text-sunset-yellow transition-all duration-500 ease-out group-hover:scale-105 md:text-6xl lg:text-8xl"
             style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
           >
             Drinks
@@ -53,7 +53,7 @@ export default function MenuHero({ onSelectDrinks, onSelectPlates }: MenuHeroPro
         <div className="absolute inset-0 bg-night/45 transition-colors duration-500 group-hover:bg-night/35" aria-hidden="true" />
         <div className="pointer-events-none relative z-10 p-10 md:p-20 lg:p-28">
           <span
-            className="text-contrast text-5xl font-normal leading-none tracking-[0.02em] text-sunset-yellow transition-all duration-500 ease-out group-hover:scale-105 md:text-6xl lg:text-7xl"
+            className="text-contrast text-5xl font-normal leading-none tracking-[0.02em] text-sunset-yellow transition-all duration-500 ease-out group-hover:scale-105 md:text-6xl lg:text-8xl"
             style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
           >
             Plates

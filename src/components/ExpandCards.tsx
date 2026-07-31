@@ -57,7 +57,7 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             {!isExpanded && (
               <div className="absolute inset-0 flex items-center justify-center px-2 text-center">
                 <span
-                  className="text-contrast text-xl font-normal leading-none tracking-[0.04em] text-sunset-yellow [writing-mode:horizontal-tb] md:text-2xl lg:text-2xl lg:[writing-mode:vertical-rl] lg:[transform:rotate(180deg)]"
+                  className="text-contrast text-4xl font-normal leading-none tracking-[0.04em] text-sunset-yellow [writing-mode:horizontal-tb] md:text-5xl lg:text-5xl lg:[writing-mode:vertical-rl] lg:[transform:rotate(180deg)]"
                   style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
                 >
                   {item.name}

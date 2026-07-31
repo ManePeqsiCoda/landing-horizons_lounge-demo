@@ -3,6 +3,6 @@ import EventCard from '../components/EventCard.astro';
 import { EVENTS } from '../data/events';
 ---
 
-<div class="bg-white">
+<div class="relative">
   {EVENTS.map((event) => <EventCard {...event} />)}
 </div>

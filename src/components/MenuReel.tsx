@@ -171,7 +171,7 @@ export default function MenuReel() {
             <p className="font-sans text-[10px] font-medium tracking-[0.35em] text-sunset-yellow uppercase">
               Signature Cocktails
             </p>
-            <h2 className="text-contrast mt-1 font-serif text-3xl text-white md:text-5xl">
+            <h2 className="text-contrast mt-1 font-serif text-5xl text-white md:text-9xl">
               DRINKS
             </h2>
           </header>

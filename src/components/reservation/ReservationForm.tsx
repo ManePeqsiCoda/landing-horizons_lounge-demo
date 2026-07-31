@@ -115,16 +115,15 @@ function StripeCardSection() {
 
   return (
     <div className="space-y-3">
-      <label
-        htmlFor="card-element"
-        className="reserve-label"
-      >
-        <CreditCard size={16} strokeWidth={1.5} />
-        Card Details
+      <label htmlFor="card-element" className="reserve-label flex items-center mx-2">
+        <span className="reserve-label-text flex items-center">
+          <CreditCard size={16} strokeWidth={1.5} className='mx-2 text-center'/>
+          Card Details
+        </span>
+        <div className="reserve-control reserve-card-element rounded-xl border border-cream/15 bg-cream/8 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/12 w-100 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
+          <CardElement id="card-element" options={cardOptions} />
+        </div>
       </label>
-      <div className="reserve-card-element rounded-xl border border-cream/15 bg-cream/8 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/12 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
-        <CardElement id="card-element" options={cardOptions} />
-      </div>
       <p className="text-xs font-medium text-cream/45">
         Demo mode — use 4242 4242 4242 4242, any future date, any CVC.
       </p>
@@ -287,17 +286,17 @@ function InnerForm({
       >
         <motion.div variants={itemVariants} className="grid grid-cols-1 gap-x-6 gap-y-5 md:grid-cols-2">
           {/* Experience */}
-          <div className="space-y-2 md:col-span-2">
-            <label htmlFor="eventId" className="reserve-label">
-              <Calendar size={16} strokeWidth={1.5} />
+          <label htmlFor="eventId" className="reserve-label flex">
+            <span className="reserve-label-text flex items-center mx-2">
+              <Calendar size={16} strokeWidth={1.5} className="mx-2"/>
               Experience
-            </label>
+            </span>
             <select
               id="eventId"
               name="eventId"
               value={form.eventId}
               onChange={handleChange}
-              className="reserve-select"
+              className="reserve-control reserve-select"
             >
               {RESERVATION_EVENTS.map((event) => (
                 <option key={event.id} value={event.id}>
@@ -305,14 +304,14 @@ function InnerForm({
                 </option>
               ))}
             </select>
-          </div>
+          </label>
 
           {/* Date */}
-          <div className="space-y-2">
-            <label htmlFor="date" className="reserve-label">
-              <Calendar size={16} strokeWidth={1.5} />
+          <label htmlFor="date" className="reserve-label flex">
+            <span className="reserve-label-text flex items-center mx-2">
+              <Calendar size={16} strokeWidth={1.5} className="mx-2" />
               Date
-            </label>
+            </span>
             <input
               id="date"
               name="date"
@@ -321,22 +320,22 @@ function InnerForm({
               value={form.date}
               onChange={handleChange}
               required
-              className="reserve-input"
+              className="reserve-control reserve-input"
             />
-          </div>
+          </label>
 
           {/* Time */}
-          <div className="space-y-2">
-            <label htmlFor="time" className="reserve-label">
-              <Clock size={16} strokeWidth={1.5} />
+          <label htmlFor="time" className="reserve-label flex">
+            <span className="reserve-label-text flex items-center mx-2">
+              <Clock size={16} strokeWidth={1.5} className="mx-2"/>
               Time
-            </label>
+            </span>
             <select
               id="time"
               name="time"
               value={form.time}
               onChange={handleChange}
-              className="reserve-select"
+              className="reserve-control reserve-select"
             >
               {TIME_SLOTS.map((slot) => (
                 <option key={slot} value={slot}>
@@ -344,15 +343,15 @@ function InnerForm({
                 </option>
               ))}
             </select>
-          </div>
+          </label>
 
           {/* Guests stepper */}
-          <div className="space-y-2 md:col-span-2">
-            <label htmlFor="guests" className="reserve-label">
-              <Users size={16} strokeWidth={1.5} />
+          <label htmlFor="guests" className="reserve-label md:col-span-2 flex">
+            <span className="reserve-label-text flex items-center mx-2">
+              <Users size={16} strokeWidth={1.5} className="mx-2"/>
               Guests
-            </label>
-            <div className="flex w-full items-center md:w-64">
+            </span>
+            <div className="reserve-control flex w-full items-center md:w-64">
               <button
                 type="button"
                 onClick={() => adjustGuests(-1)}
@@ -383,14 +382,14 @@ function InnerForm({
                 <Plus size={20} strokeWidth={1.5} />
               </button>
             </div>
-          </div>
+          </label>
 
           {/* Full Name */}
-          <div className="space-y-2">
-            <label htmlFor="fullName" className="reserve-label">
-              <User size={16} strokeWidth={1.5} />
+          <label htmlFor="fullName" className="reserve-label flex">
+            <span className="reserve-label-text flex items-center mx-2">
+              <User size={16} strokeWidth={1.5} className="mx-2" />
               Full Name
-            </label>
+            </span>
             <input
               id="fullName"
               name="fullName"
@@ -399,16 +398,16 @@ function InnerForm({
               onChange={handleChange}
               placeholder="Jane Doe"
               required
-              className="reserve-input"
+              className="reserve-control reserve-input"
             />
-          </div>
+          </label>
 
           {/* Email */}
-          <div className="space-y-2">
-            <label htmlFor="email" className="reserve-label">
-              <Mail size={16} strokeWidth={1.5} />
+          <label htmlFor="email" className="reserve-label flex">
+            <span className="reserve-label-text flex items-center mx-2">
+              <Mail size={16} strokeWidth={1.5} className="mx-2"/>
               Email
-            </label>
+            </span>
             <input
               id="email"
               name="email"
@@ -417,16 +416,16 @@ function InnerForm({
               onChange={handleChange}
               placeholder="jane@example.com"
               required
-              className="reserve-input"
+              className="reserve-control reserve-input"
             />
-          </div>
+          </label>
 
           {/* Phone */}
-          <div className="space-y-2 md:col-span-2">
-            <label htmlFor="phone" className="reserve-label">
-              <Phone size={16} strokeWidth={1.5} />
+          <label htmlFor="phone" className="reserve-label md:col-span-2 flex">
+            <span className="reserve-label-text flex items-center mx-2">
+              <Phone size={16} strokeWidth={1.5} className='mx-2' />
               Phone
-            </label>
+            </span>
             <input
               id="phone"
               name="phone"
@@ -435,16 +434,16 @@ function InnerForm({
               onChange={handleChange}
               placeholder="+297 000 0000"
               required
-              className="reserve-input"
+              className="reserve-control reserve-input"
             />
-          </div>
+          </label>
 
           {/* Notes */}
-          <div className="space-y-2 md:col-span-2">
-            <label htmlFor="notes" className="reserve-label">
-              <FileText size={16} strokeWidth={1.5} />
+          <label htmlFor="notes" className="reserve-label flex w-100">
+            <span className="reserve-label-text flex items-center mx-2">
+              <FileText size={16} strokeWidth={1.5} className='mx-2'/>
               Notes / Occasion
-            </label>
+            </span>
             <textarea
               id="notes"
               name="notes"
@@ -452,9 +451,9 @@ function InnerForm({
               value={form.notes}
               onChange={handleChange}
               placeholder="Birthday, anniversary, dietary restrictions..."
-              className="reserve-input resize-none"
+              className="reserve-control reserve-input resize-none"
             />
-          </div>
+          </label>
         </motion.div>
 
         <motion.div variants={itemVariants} className="h-px bg-cream/10" />

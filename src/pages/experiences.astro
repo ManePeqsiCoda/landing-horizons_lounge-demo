@@ -84,25 +84,24 @@ const structuredData = {
 
   <StickyMenu client:load pathname={Astro.url.pathname} />
 
-  <main class="bg-cream text-warm-charcoal">
-    <!-- Page header — magazine cover energy -->
-    <section class="px-6 pb-8 pt-28 md:pt-32 lg:pb-12 lg:pt-40">
+  <main class="experiences-stage relative min-h-screen overflow-hidden bg-night text-cream">
+    {/* Dark blurred background from existing gallery image */}
+    <div class="experiences-bg absolute inset-0 bg-cover bg-center bg-no-repeat" aria-hidden="true" />
+    <div class="experiences-overlay absolute inset-0" aria-hidden="true" />
+    <div class="experiences-grain absolute inset-0" aria-hidden="true" />
+
+    {/* Page header */}
+    <section class="experiences-header relative z-10 px-6 pb-10 pt-32 md:pt-40 lg:pb-16 lg:pt-48">
       <div class="mx-auto max-w-6xl text-center">
-        <p
-          class="mb-4 text-[11px] font-semibold tracking-[0.3em] text-terracotta uppercase"
-        >
-          Sun-kissed Gatherings
-        </p>
-        <h1 class="font-display text-5xl font-semibold tracking-tight text-warm-charcoal md:text-7xl lg:text-8xl">
-          Experiences
+        <p class="experiences-kicker">Sun-kissed Gatherings</p>
+        <h1 class="experiences-title mt-4">
+          <span class="block">Experiences</span>
+          <span class="experiences-title-accent">& Events</span>
         </h1>
-        <p
-          class="mx-auto mt-6 max-w-2xl text-sm font-light leading-relaxed text-warm-charcoal/70"
-        >
-          Three ways to meet the Aruba sunset — from the quiet magic of the
-          daily ritual to the lively hum of Fajita Fridays. Each experience is
-          designed around the horizon, good company, and the signature yellow
-          glow of golden hour.
+        <p class="experiences-lead mx-auto mt-6 max-w-2xl">
+          Three ways to meet the Aruba sunset — from the quiet magic of the daily ritual to the
+          lively hum of Fajita Fridays. Each experience is designed around the horizon, good
+          company, and the signature yellow glow of golden hour.
         </p>
       </div>
     </section>
@@ -112,3 +111,68 @@ const structuredData = {
 
   <Footer />
 </Layout>
+
+<style>
+  .experiences-stage {
+    background-color: var(--color-night);
+  }
+
+  .experiences-bg {
+    background-image: url('/images/gallery/02.jpg');
+    filter: blur(22px) saturate(1.1) brightness(0.45);
+    transform: scale(1.12);
+  }
+
+  .experiences-overlay {
+    background:
+      radial-gradient(circle at 20% 20%, rgba(255, 122, 69, 0.12) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(199, 91, 57, 0.1) 0%, transparent 45%),
+      linear-gradient(180deg, rgba(11, 11, 15, 0.82) 0%, rgba(11, 11, 15, 0.92) 60%, var(--color-night) 100%);
+  }
+
+  .experiences-grain {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  .experiences-kicker {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-sunset-orange);
+  }
+
+  .experiences-title {
+    font-family: var(--font-serif);
+    font-size: clamp(3.25rem, 8vw, 6.5rem);
+    font-weight: 700;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--color-cream);
+    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  }
+
+  .experiences-title-accent {
+    font-family: var(--font-perfect-girl);
+    font-size: 0.55em;
+    font-weight: 400;
+    color: var(--color-sunset-yellow);
+    letter-spacing: 0.02em;
+    display: inline-block;
+    margin-top: 0.15em;
+    transform: rotate(-2deg);
+  }
+
+  .experiences-lead {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: rgba(253, 248, 241, 0.65);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  }
+</style>

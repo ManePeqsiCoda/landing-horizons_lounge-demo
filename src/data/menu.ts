@@ -1,6 +1,7 @@
 /**
  * Datos del menú — Horizons Lounge Aruba.
- * Imágenes: placeholders de Unsplash hasta que llegue la fotografía real.
+ * Imágenes: fotografía local en /public/images/plates y /public/images/gallery
+ * para garantizar que carguen sin depender de servicios externos.
  */
 
 export interface MenuItem {
@@ -102,8 +103,7 @@ export const plateSubcategories: PlateSubcategory[] = [
     id: 'entries',
     name: 'Entries',
     shortLabel: 'ENTRIES',
-    image:
-      'https://images.unsplash.com/photo-1541014741259-de529411b62a?q=80&w=900&auto=format&fit=crop',
+    image: '/images/gallery/06.jpg',
     items: [
       {
         id: 'tuna-tartare',
@@ -112,8 +112,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Atún fresco cortado a mano, aguacate, pepino, ajonjolí tostado y un toque cítrico de yuzu. Ligero, fresco y elegante.',
         price: 21,
         tags: ['Raw', 'Fresh', 'Sharing'],
-        image:
-          'https://images.unsplash.com/photo-1541014741259-de529411b62a?q=80&w=900&auto=format&fit=crop',
+        image: '/images/gallery/07.jpg',
       },
       {
         id: 'crispy-calamari',
@@ -122,8 +121,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Calamari dorado y crujiente servido con alioli de ajo asado y limón. Un clásico costero con twist caribeño.',
         price: 18,
         tags: ['Crispy', 'Seafood', 'Shareable'],
-        image:
-          'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/crispy-calamari.jpg',
       },
       {
         id: 'tropical-ceviche',
@@ -132,8 +130,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Pescado del día marinado en lima, leche de tigre, mango, chile serrano y cilantro. Frescura tropical en cada bocado.',
         price: 19,
         tags: ['Citrus', 'Local Fish', 'Gluten-free'],
-        image:
-          'https://images.unsplash.com/photo-1534939561126-855b8675edd7?q=80&w=900&auto=format&fit=crop',
+        image: '/images/gallery/06.jpg',
       },
     ],
   },
@@ -141,8 +138,7 @@ export const plateSubcategories: PlateSubcategory[] = [
     id: 'dining',
     name: 'International & Local Fusion Dining',
     shortLabel: 'DINING',
-    image:
-      'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=900&auto=format&fit=crop',
+    image: '/images/gallery/05.jpg',
     items: [
       {
         id: 'aruba-flatbread',
@@ -151,8 +147,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Masa fina y crujiente con queso de cabra local, tomates cherry confitados, albahaca y reducción de balsámico.',
         price: 22,
         tags: ['Flatbread', 'Vegetarian', 'Sharing'],
-        image:
-          'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/aruba-flatbread.jpg',
       },
       {
         id: 'eagle-beach-burger',
@@ -161,8 +156,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Carne premium, queso cheddar maduro, cebolla caramelizada, tomate, lechuga y salsa secreta en brioche tostado.',
         price: 24,
         tags: ['Gourmet', 'Burger', 'Comfort'],
-        image:
-          'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/eagle-beach-burger.jpg',
       },
       {
         id: 'caribbean-tacos',
@@ -171,8 +165,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Tres tacos de pescado crocante o pollo jerk con repollo, salsa de piña picante y cilantro. Sabores de la isla.',
         price: 20,
         tags: ['Tacos', 'Spicy', 'Street Food'],
-        image:
-          'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/caribbean-tacos.jpg',
       },
       {
         id: 'loaded-nachos',
@@ -181,8 +174,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Totopos cubiertos con queso fundido, jalapeños, frijoles, guacamole, pico de gallo y crema agria. Para compartir.',
         price: 19,
         tags: ['Nachos', 'Sharing', 'Cheesy'],
-        image:
-          'https://images.unsplash.com/photo-1513456852971-4a88b2e2f7fa?q=80&w=900&auto=format&fit=crop',
+        image: '/images/gallery/05.jpg',
       },
       {
         id: 'coconut-shrimp',
@@ -191,8 +183,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Camarones empanizados en coco tostado, servidos con salsa de mango y chile. Crujiente, dulce y tropical.',
         price: 23,
         tags: ['Shrimp', 'Crispy', 'Tropical'],
-        image:
-          'https://images.unsplash.com/photo-1559054663-e8d23213f55c?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/coconut-shrimp.jpg',
       },
       {
         id: 'tuna-nachos',
@@ -201,8 +192,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Wontons crujientes cubiertos con atún fresco, aguacate, salsa de sriracha-mayonesa y cebollín.',
         price: 25,
         tags: ['Tuna', 'Wonton', 'Premium'],
-        image:
-          'https://images.unsplash.com/photo-1541014741259-de529411b62a?q=80&w=900&auto=format&fit=crop',
+        image: '/images/gallery/05.jpg',
       },
       {
         id: 'pasta-aruba',
@@ -211,8 +201,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Pasta fresca con langostinos, tomates cherry, ajo, vino blanco y un toque de chile. Elegancia mediterránea con vista al mar.',
         price: 28,
         tags: ['Pasta', 'Seafood', 'Mediterranean'],
-        image:
-          'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/pasta-aruba.jpg',
       },
       {
         id: 'fresh-island-salad',
@@ -221,8 +210,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Mix de hojas verdes, aguacate, mango, nueces caramelizadas, queso feta y vinagreta de maracuyá.',
         price: 17,
         tags: ['Salad', 'Fresh', 'Vegetarian'],
-        image:
-          'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/fresh-island-salad.jpg',
       },
       {
         id: 'signature-entree',
@@ -231,8 +219,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Plato insignia del chef: filete de pescado fresco en salsa de mantequilla dorada con vegetales de temporada y puré de batata.',
         price: 34,
         tags: ['Chef Favorite', 'Signature', 'Fine Dining'],
-        image:
-          'https://images.unsplash.com/photo-1467003909585-2f8a7270028d?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/signature-entree.jpg',
       },
     ],
   },
@@ -240,8 +227,7 @@ export const plateSubcategories: PlateSubcategory[] = [
     id: 'culinary',
     name: 'Specialty Culinary Offerings',
     shortLabel: 'CULINARY',
-    image:
-      'https://images.unsplash.com/photo-1579871494447-9811cf80d488?q=80&w=900&auto=format&fit=crop',
+    image: '/images/plates/sushi-platter.jpg',
     items: [
       {
         id: 'handcrafted-sushi',
@@ -250,8 +236,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Selección de nigiri y sashimi elaborados con pescado fresco del día, arroz sazonado y wasabi natural.',
         price: 26,
         tags: ['Sushi', 'Raw', 'Artisan'],
-        image:
-          'https://images.unsplash.com/photo-1579871494447-9811cf80d488?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/handcrafted-sushi.jpg',
       },
       {
         id: 'sunset-sushi-roll',
@@ -260,8 +245,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Roll especial del horizonte con atún picante, aguacate, mango, tobiko y un toque de sriracha-mayonesa.',
         price: 24,
         tags: ['Signature Roll', 'Spicy', 'Mango'],
-        image:
-          'https://images.unsplash.com/photo-1553621042-f6e1472451cf?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/sushi-platter.jpg',
       },
       {
         id: 'vegan-poke-bowl',
@@ -270,8 +254,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Bowl vegano con quinoa, tofu marinado, edamame, aguacate, pepino, zanahoria y aderezo de sésamo.',
         price: 21,
         tags: ['Vegan', 'Healthy', 'Bowl'],
-        image:
-          'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=900&auto=format&fit=crop',
+        image: '/images/gallery/07.jpg',
       },
       {
         id: 'vegetarian-tasting',
@@ -280,8 +263,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Selección de cuatro preparaciones vegetarianas que celebran los vegetales locales de Aruba.',
         price: 29,
         tags: ['Vegetarian', 'Tasting', 'Local'],
-        image:
-          'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/vegetarian-tasting.jpg',
       },
       {
         id: 'gluten-free-seafood',
@@ -290,8 +272,7 @@ export const plateSubcategories: PlateSubcategory[] = [
           'Mariscos a la plancha con vegetales frescos, hierbas aromáticas y aceite de oliva. Sin gluten, sin concesiones.',
         price: 32,
         tags: ['Gluten-free', 'Seafood', 'Grilled'],
-        image:
-          'https://images.unsplash.com/photo-1534939561126-855b8675edd7?q=80&w=900&auto=format&fit=crop',
+        image: '/images/plates/gluten-free-seafood.jpg',
       },
     ],
   },

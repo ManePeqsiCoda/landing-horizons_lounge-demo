@@ -15,8 +15,10 @@ interface StickyMenuProps {
 
 const REEL_MAIN_ID = 'reel-main';
 
-/** Blurs / restores the reel content sitting behind the menu. */
-function setReelBlur(on: boolean) {
+/** Blurs / restores the main content sitting behind the menu on any page. */
+function setPageBlur(on: boolean) {
+  document.body.classList.toggle('menu-blur', on);
+  // Keep the legacy reel target in sync so the home page still behaves exactly as before.
   document.getElementById(REEL_MAIN_ID)?.classList.toggle('menu-blur', on);
 }
 
@@ -53,8 +55,8 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
   }, [propPathname]);
 
   useEffect(() => {
-    setReelBlur(open);
-    return () => setReelBlur(false);
+    setPageBlur(open);
+    return () => setPageBlur(false);
   }, [open]);
 
   useEffect(() => {
@@ -88,8 +90,8 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
       {/* Right-side vertical menu (desktop) */}
       <nav
         aria-label="Primary"
-        onMouseEnter={() => setReelBlur(true)}
-        onMouseLeave={() => setReelBlur(false)}
+        onMouseEnter={() => setPageBlur(true)}
+        onMouseLeave={() => setPageBlur(false)}
         className={`fixed right-6 top-20 z-50 hidden transition-transform duration-500 ease-out md:right-12 md:block lg:top-24 ${
           visible ? desktopVisible : navHidden
         }`}
@@ -99,8 +101,8 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
             <li key={link.label}>
               <a
                 href={link.href}
-                className={`nav-link text-contrast font-serif text-xl tracking-wider text-white lg:text-2xl ${
-                  link.accent ? 'text-sunset-yellow' : ''
+                className={`nav-link text-contrast font-serif text-xl tracking-wider lg:text-2xl ${
+                  link.accent ? 'text-sunset-yellow' : 'text-white'
                 }`}
               >
                 {link.label}

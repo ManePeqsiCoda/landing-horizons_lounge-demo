@@ -143,11 +143,13 @@ body {
   letter-spacing: 0.08em;
 }
 
-/* Menu focus: blur + dim the reel while hovering the navigation */
-#reel-main {
+/* Menu focus: blur + dim the content while hovering the navigation on any page */
+#reel-main,
+body > main {
   transition: filter 0.5s ease;
 }
-#reel-main.menu-blur {
+body.menu-blur #reel-main,
+body.menu-blur > main {
   filter: blur(6px) brightness(0.95);
 }
 
