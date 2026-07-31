@@ -50,26 +50,26 @@ const structuredData = {
   <StickyMenu client:load pathname={Astro.url.pathname} />
 
   <main
-    class="relative flex min-h-screen bg-neutral-900 bg-cover bg-center bg-no-repeat text-white"
+    class="relative flex min-h-screen bg-sand bg-cover bg-center bg-no-repeat text-warm-charcoal"
     style="background-image: url('/images/sunset.png');"
   >
     {/* Atmospheric overlays for depth and readability */}
-    <div class="absolute inset-0 bg-gradient-to-br from-night/85 via-night/55 to-ocean/65" />
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,transparent_0%,rgba(11,11,15,0.45)_100%)]" />
+    <div class="absolute inset-0 bg-gradient-to-br from-night/50 via-warm-charcoal/25 to-night/45" />
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,transparent_0%,rgba(11,11,15,0.25)_100%)]" />
 
     {/* Left liquid-glass reservation panel */}
     <section
-      class="relative z-10 flex h-screen w-full flex-col justify-center border-r border-white/10 bg-white/[0.08] px-6 py-5 shadow-2xl backdrop-blur-2xl lg:w-[68%] lg:px-8 lg:py-6 xl:w-[70%] xl:px-10"
+      class="glass-panel-light relative z-10 flex min-h-screen w-full flex-col justify-center border-r border-warm-charcoal/10 px-6 py-10 shadow-2xl backdrop-blur-2xl lg:w-[68%] lg:px-8 lg:py-12 xl:w-[70%] xl:px-10"
     >
       {/* Header */}
       <header class="mb-5 lg:mb-6">
-        <p class="mb-1.5 text-xs font-semibold tracking-[0.3em] text-sunset-yellow uppercase">
+        <p class="mb-1.5 text-xs font-semibold tracking-[0.25em] text-terracotta uppercase">
           Rooftop Reservations
         </p>
-        <h1 class="font-serif text-4xl leading-[0.95] text-white md:text-5xl lg:text-[3rem]">
+        <h1 class="font-display text-4xl font-semibold leading-[0.95] tracking-tight text-warm-charcoal md:text-5xl lg:text-[3rem]">
           Reserve Your Sunset
         </h1>
-        <p class="mt-2 max-w-md text-base font-light leading-relaxed text-white/70">
+        <p class="mt-2 max-w-md text-base font-light leading-relaxed text-warm-charcoal/70">
           Choose your experience, pick your golden-hour table, and secure it with a small demo
           deposit.
         </p>
