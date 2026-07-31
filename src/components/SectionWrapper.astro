@@ -35,7 +35,7 @@ const fallbackGradients = {
 };
 ---
 
-<section id={id} class="snap-section relative flex flex-col justify-between overflow-hidden">
+<section id={id} class="snap-section relative flex h-svh min-h-svh flex-col justify-between overflow-hidden">
   {
     image ? (
       <>
@@ -60,12 +60,12 @@ const fallbackGradients = {
   }
 
   {/* Top-left typographic lockup */}
-  <div class="relative z-10 p-6 pt-12 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
+  <div class="relative z-10 p-4 pt-10 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
     <SplitTitle base={base} script={script} />
   </div>
 
   {/* Optional center content */}
-  <div class="relative z-10 flex flex-1 items-center justify-center px-6">
+  <div class="relative z-10 flex min-h-0 flex-1 items-center justify-center px-4 md:px-6">
     <slot />
   </div>
 

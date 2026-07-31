@@ -7,7 +7,7 @@ import SectionFootnote from '../components/SectionFootnote.astro';
   1. Landing Hero — cinematic sunset video background.
   No menu visible here; StickyMenu fades in after this frame.
 -->
-<section id="hero" class="snap-section relative flex flex-col justify-between overflow-hidden">
+  <section id="hero" class="snap-section relative flex h-svh min-h-svh flex-col justify-between overflow-hidden">
   <!-- Cinematic background video: plays once, no controls, starts after loader -->
   <video
     id="hero-video"
@@ -30,13 +30,13 @@ import SectionFootnote from '../components/SectionFootnote.astro';
   </div>
 
   <!-- Top-left typographic lockup -->
-  <div class="relative z-10 p-6 pt-12 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
+  <div class="relative z-10 p-4 pt-10 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
     <SplitTitle base="HORIZONS" script="Lounge" />
   </div>
 
   <!-- Center scroll cue -->
   <div
-    class="absolute inset-0 z-10 flex items-center justify-center"
+    class="relative z-10 flex flex-1 items-center justify-center"
     aria-hidden="true"
   >
     <div class="text-center">
@@ -46,6 +46,14 @@ import SectionFootnote from '../components/SectionFootnote.astro';
       <div class="mx-auto mt-2 h-10 w-px bg-gradient-to-b from-white/70 to-transparent"></div>
     </div>
   </div>
+
+  <!-- Bottom narrative -->
+  <SectionFootnote
+    paragraphs={[
+      'Step into Horizons Lounge, where the golden hour of Eagle Beach becomes a living ritual. Here, every sunset is framed by handcrafted cocktails, curated rhythms, and the unmistakable warmth of Aruba.',
+      'Whether you arrive for the view, the flavors, or the company, our terrace invites you to slow down and savor the moment. This is not just a lounge — it is the horizon itself, redesigned for the senses.',
+    ]}
+  />
 </section>
 
 <script is:inline>

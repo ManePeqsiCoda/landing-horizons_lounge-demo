@@ -12,9 +12,9 @@ const { paragraphs } = Astro.props;
 const fullText = paragraphs.join(' ');
 ---
 
-<div class="section-footnote relative z-10 w-full border-white/10 bg-gradient-to-t from-night/80 via-night/50 to-transparent px-4 py-3 backdrop-blur-sm md:px-12 md:py-9 lg:px-4">
+<div class="section-footnote relative z-10 w-full border-white/10 bg-gradient-to-t from-night/80 via-night/50 to-transparent px-4 py-3 backdrop-blur-sm md:px-8 md:py-6 lg:px-12 lg:py-9">
   <p
-    class="foot-paragraph text-shadow-brief w-full font-display text-base font-light leading-relaxed tracking-[0.02em] text-cream/90 md:text-lg lg:text-[1.5rem]"
+    class="text-shadow-brief w-full font-display text-sm font-light leading-snug tracking-[0.02em] text-cream/90 md:text-base md:leading-relaxed lg:text-lg"
   >
     {fullText}
   </p>
