@@ -53,11 +53,11 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             {/* Veladura para legibilidad del texto */}
             <div className="absolute inset-0 bg-gradient-to-t from-night/75 via-night/15 to-transparent" />
 
-            {/* Título vertical — tarjetas colapsadas (pestañas en móvil y desktop) */}
+            {/* Título de tarjetas colapsadas — horizontal en móvil, vertical en desktop */}
             {!isExpanded && (
-              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute inset-0 flex items-center justify-center px-2 text-center">
                 <span
-                  className="vertical-text text-contrast text-xs font-normal leading-none tracking-[0.04em] text-sunset-yellow md:text-sm lg:text-2xl"
+                  className="text-contrast text-sm font-normal leading-none tracking-[0.04em] text-sunset-yellow [writing-mode:horizontal-tb] md:text-base lg:text-2xl lg:[writing-mode:vertical-rl] lg:[transform:rotate(180deg)]"
                   style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
                 >
                   {item.name}
