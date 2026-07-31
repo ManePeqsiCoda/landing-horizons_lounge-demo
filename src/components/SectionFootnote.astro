@@ -1,0 +1,27 @@
+---
+/**
+ * Full-width bottom narrative block for landing sections.
+ * Uses Outfit (light color) with a very short shadow for readability.
+ */
+interface Props {
+  /** One or more text fragments that will be joined into a single full-width paragraph. */
+  paragraphs: string[];
+}
+
+const { paragraphs } = Astro.props;
+const fullText = paragraphs.join(' ');
+---
+
+<div class="section-footnote relative z-10 w-full border-white/10 bg-gradient-to-t from-night/80 via-night/50 to-transparent px-4 py-3 backdrop-blur-sm md:px-12 md:py-9 lg:px-4">
+  <p
+    class="foot-paragraph text-shadow-brief w-full font-display text-base font-light leading-relaxed tracking-[0.02em] text-cream/90 md:text-lg lg:text-[1.5rem]"
+  >
+    {fullText}
+  </p>
+</div>
+
+<style>
+  .text-shadow-brief {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  }
+</style>

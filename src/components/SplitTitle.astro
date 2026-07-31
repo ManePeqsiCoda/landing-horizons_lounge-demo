@@ -1,0 +1,40 @@
+---
+/**
+ * Two-layer typographic lockup inspired by the Perfect Girl + Billa Mount
+ * sample: a bold sans base word with a script word overlapped to the
+ * lower-right, like a luxury monogram.
+ */
+interface Props {
+  /** Large sans-serif word on the left/top layer. */
+  base: string;
+  /** Script word overlapped to the right and below the base word. */
+  script: string;
+  /** Optional color token for the script word (default sunset-yellow). */
+  scriptColor?: string;
+}
+
+const { base, script, scriptColor = 'text-sunset-yellow' } = Astro.props;
+---
+
+<div class="split-title relative inline-block max-w-[55%] leading-none">
+  {/* Base layer: big, architectural, left-aligned */}
+    <span
+      class="split-title__base text-contrast relative inline-block text-[clamp(3.5rem,12vw,10rem)] font-normal uppercase tracking-[0.02em] text-white"
+      style="font-family: 'PerfectGirl Sans', 'Playfair Display', Georgia, serif;"
+      aria-hidden="true"
+    >
+      {base}
+    </span>
+
+    {/* Script layer: elegant signature, shifted down-right from the end of the base word */}
+    <span
+      class={`split-title__script text-contrast pointer-events-none absolute -bottom-[0.18em] right-0 translate-x-[18%] whitespace-nowrap text-[clamp(2rem,6.5vw,5.5rem)] leading-none ${scriptColor}`}
+      style="font-family: 'Billa Mount', 'Brush Script MT', cursive;"
+      aria-hidden="true"
+    >
+    {script}
+  </span>
+
+  {/* Screen-reader friendly full title */}
+  <span class="sr-only">{base} {script}</span>
+</div>
