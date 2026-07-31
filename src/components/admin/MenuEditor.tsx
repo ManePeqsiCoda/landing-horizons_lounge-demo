@@ -1,6 +1,7 @@
 /**
  * Editor de menú del panel admin.
  * Permite editar drinks y plates, con vista previa tipo ExpandCards.
+ * Estilo Liquid Glass.
  */
 
 import { useMemo, useState } from 'react';
@@ -108,7 +109,7 @@ export default function MenuEditor(_props: MenuEditorProps) {
     return (
       <li
         key={item.id}
-        className="border-b border-neutral-800 px-5 py-4 transition hover:bg-neutral-900/20"
+        className="border-b border-white/30 px-5 py-4 transition hover:bg-white/25"
       >
         {isEditing ? (
           <div className="grid gap-4 md:grid-cols-2">
@@ -116,40 +117,40 @@ export default function MenuEditor(_props: MenuEditorProps) {
               value={item.name}
               onChange={(e) => update(item.id, { name: e.target.value })}
               placeholder="Name"
-              className="border border-neutral-700 bg-neutral-900/50 px-3 py-2 text-sm text-white outline-none focus:border-sunset-yellow"
+              className="glass-input px-3 py-2 text-sm"
             />
             <input
               value={item.price}
               type="number"
               onChange={(e) => update(item.id, { price: Number(e.target.value) })}
               placeholder="Price"
-              className="border border-neutral-700 bg-neutral-900/50 px-3 py-2 text-sm text-white outline-none focus:border-sunset-yellow"
+              className="glass-input px-3 py-2 text-sm"
             />
             <input
               value={item.image}
               onChange={(e) => update(item.id, { image: e.target.value })}
               placeholder="Image URL"
-              className="border border-neutral-700 bg-neutral-900/50 px-3 py-2 text-sm text-white outline-none focus:border-sunset-yellow md:col-span-2"
+              className="glass-input px-3 py-2 text-sm md:col-span-2"
             />
             <textarea
               value={item.description}
               onChange={(e) => update(item.id, { description: e.target.value })}
               placeholder="Description"
               rows={2}
-              className="resize-none border border-neutral-700 bg-neutral-900/50 px-3 py-2 text-sm text-white outline-none focus:border-sunset-yellow md:col-span-2"
+              className="glass-input resize-none px-3 py-2 text-sm md:col-span-2"
             />
             <input
               value={formatTagsInput(item.tags)}
               onChange={(e) => update(item.id, { tags: parseTagsInput(e.target.value) })}
               placeholder="Tags separated by commas"
-              className="border border-neutral-700 bg-neutral-900/50 px-3 py-2 text-sm text-white outline-none focus:border-sunset-yellow md:col-span-2"
+              className="glass-input px-3 py-2 text-sm md:col-span-2"
             />
-            <label className="flex items-center gap-2 text-sm text-neutral-300 md:col-span-2">
+            <label className="flex items-center gap-2 text-sm font-medium text-slate-700 md:col-span-2">
               <input
                 type="checkbox"
                 checked={item.featured}
                 onChange={(e) => update(item.id, { featured: e.target.checked })}
-                className="h-4 w-4 accent-sunset-yellow"
+                className="h-4 w-4 accent-sunset-orange"
               />
               Featured
             </label>
@@ -157,14 +158,14 @@ export default function MenuEditor(_props: MenuEditorProps) {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="flex items-center gap-2 border border-neutral-700 px-4 py-2 text-[10px] font-medium tracking-[0.15em] text-neutral-300 uppercase transition hover:border-sunset-yellow hover:text-sunset-yellow"
+                className="glass-button px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase"
               >
                 <X size={14} strokeWidth={1.5} /> Cancel
               </button>
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="flex items-center gap-2 border border-sunset-yellow bg-sunset-yellow px-4 py-2 text-[10px] font-medium tracking-[0.15em] text-night uppercase transition hover:bg-white"
+                className="glass-button-primary px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase"
               >
                 <Check size={14} strokeWidth={1.5} /> Save
               </button>
@@ -174,24 +175,24 @@ export default function MenuEditor(_props: MenuEditorProps) {
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1">
               <div className="flex items-baseline gap-3">
-                <h4 className="truncate font-serif text-lg text-white">{item.name}</h4>
-                <span className="font-sans text-sm font-medium text-sunset-yellow">
+                <h4 className="truncate font-serif text-lg text-slate-900">{item.name}</h4>
+                <span className="font-sans text-sm font-semibold text-sunset-orange">
                   ${item.price}
                 </span>
                 {item.featured && (
-                  <span className="border border-sunset-yellow/30 px-2 py-0.5 text-[9px] tracking-[0.15em] text-sunset-yellow uppercase">
+                  <span className="rounded-full border border-sunset-orange/40 bg-sunset-orange/10 px-2 py-0.5 text-[9px] font-semibold tracking-[0.12em] text-sunset-orange uppercase">
                     Featured
                   </span>
                 )}
               </div>
-              <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-neutral-400">
+              <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-slate-600">
                 {item.description}
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {item.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-white/10 px-2 py-0.5 text-[10px] tracking-[0.1em] text-neutral-500 uppercase"
+                    className="rounded-full border border-slate-300/60 bg-white/30 px-2 py-0.5 text-[10px] font-semibold tracking-[0.08em] text-slate-600 uppercase"
                   >
                     {tag}
                   </span>
@@ -203,7 +204,7 @@ export default function MenuEditor(_props: MenuEditorProps) {
                 type="button"
                 onClick={() => startEdit(item.id)}
                 aria-label={`Edit ${item.name}`}
-                className="text-neutral-500 transition hover:text-sunset-yellow"
+                className="text-slate-500 transition hover:text-sunset-orange"
               >
                 <Edit2 size={16} strokeWidth={1.5} />
               </button>
@@ -211,7 +212,7 @@ export default function MenuEditor(_props: MenuEditorProps) {
                 type="button"
                 onClick={remove}
                 aria-label={`Delete ${item.name}`}
-                className="text-neutral-500 transition hover:text-sunset-coral"
+                className="text-slate-500 transition hover:text-rose-700"
               >
                 <Trash2 size={16} strokeWidth={1.5} />
               </button>
@@ -225,14 +226,14 @@ export default function MenuEditor(_props: MenuEditorProps) {
   return (
     <div className="space-y-6">
       {/* Tabs */}
-      <div className="flex flex-wrap items-center gap-3 border-b border-neutral-800 pb-4">
+      <div className="flex flex-wrap items-center gap-3 border-b border-white/40 pb-4">
         <button
           type="button"
           onClick={() => setActiveTab('drinks')}
-          className={`px-4 py-2 text-xs font-medium tracking-[0.2em] uppercase transition ${
+          className={`rounded-lg px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase transition ${
             activeTab === 'drinks'
-              ? 'border-b-2 border-sunset-yellow text-sunset-yellow'
-              : 'text-neutral-400 hover:text-white'
+              ? 'bg-white/60 text-slate-900 shadow-sm'
+              : 'text-slate-600 hover:bg-white/30'
           }`}
         >
           Drinks
@@ -240,10 +241,10 @@ export default function MenuEditor(_props: MenuEditorProps) {
         <button
           type="button"
           onClick={() => setActiveTab('plates')}
-          className={`px-4 py-2 text-xs font-medium tracking-[0.2em] uppercase transition ${
+          className={`rounded-lg px-4 py-2 text-xs font-semibold tracking-[0.12em] uppercase transition ${
             activeTab === 'plates'
-              ? 'border-b-2 border-sunset-yellow text-sunset-yellow'
-              : 'text-neutral-400 hover:text-white'
+              ? 'bg-white/60 text-slate-900 shadow-sm'
+              : 'text-slate-600 hover:bg-white/30'
           }`}
         >
           Plates
@@ -253,7 +254,7 @@ export default function MenuEditor(_props: MenuEditorProps) {
           <select
             value={selectedPlateId}
             onChange={(e) => setSelectedPlateId(e.target.value)}
-            className="ml-auto border border-neutral-800 bg-neutral-900/50 px-4 py-2 text-sm text-white outline-none transition focus:border-sunset-yellow"
+            className="glass-select ml-auto px-4 py-2 text-sm"
           >
             {plates.map((p) => (
               <option key={p.id} value={p.id}>
@@ -266,10 +267,10 @@ export default function MenuEditor(_props: MenuEditorProps) {
         <button
           type="button"
           onClick={() => setShowPreview((s) => !s)}
-          className={`ml-auto flex items-center gap-2 border px-4 py-2 text-[10px] font-medium tracking-[0.15em] uppercase transition lg:ml-0 ${
+          className={`ml-auto flex items-center gap-2 rounded-lg px-4 py-2 text-[10px] font-semibold tracking-[0.12em] uppercase transition lg:ml-0 ${
             showPreview
-              ? 'border-sunset-yellow bg-sunset-yellow text-night'
-              : 'border-neutral-700 text-neutral-300 hover:border-sunset-yellow hover:text-sunset-yellow'
+              ? 'bg-sunset-yellow text-slate-900 shadow-sm'
+              : 'bg-white/40 text-slate-800 hover:bg-white/70'
           }`}
         >
           <Eye size={14} strokeWidth={1.5} />
@@ -279,8 +280,8 @@ export default function MenuEditor(_props: MenuEditorProps) {
 
       {/* Preview */}
       {showPreview && (
-        <div className="border border-neutral-800 bg-neutral-900/20 p-4">
-          <p className="mb-3 text-[10px] font-medium tracking-[0.2em] text-neutral-500 uppercase">
+        <div className="glass-panel p-4">
+          <p className="mb-3 text-[10px] font-semibold tracking-[0.2em] text-slate-500 uppercase">
             ExpandCards preview
           </p>
           <div className="h-[320px]">
@@ -290,7 +291,7 @@ export default function MenuEditor(_props: MenuEditorProps) {
       )}
 
       {/* List */}
-      <div className="overflow-hidden border border-neutral-800">
+      <div className="glass-panel overflow-hidden">
         <ul>
           {activeTab === 'drinks'
             ? drinks.map((d) => renderRow(d))
@@ -301,13 +302,13 @@ export default function MenuEditor(_props: MenuEditorProps) {
       <button
         type="button"
         onClick={activeTab === 'drinks' ? addDrink : addPlateItem}
-        className="flex w-full items-center justify-center gap-2 border border-dashed border-neutral-700 py-4 text-xs font-medium tracking-[0.2em] text-neutral-400 uppercase transition hover:border-sunset-yellow hover:text-sunset-yellow"
+        className="glass-button glass-button-dashed w-full justify-center gap-2 py-4 text-xs font-semibold tracking-[0.15em] text-slate-700 uppercase"
       >
         <Plus size={16} strokeWidth={1.5} />
         Add {activeTab === 'drinks' ? 'drink' : 'plate'}
       </button>
 
-      <p className="text-center text-[10px] tracking-[0.25em] text-neutral-600 uppercase">
+      <p className="text-center text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
         Demo only — changes are not saved
       </p>
     </div>

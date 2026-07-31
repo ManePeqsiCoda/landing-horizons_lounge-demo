@@ -1,6 +1,6 @@
 /**
  * Tarjetas de KPI del dashboard administrativo.
- * Datos calculados a partir de reservas y mesas mock.
+ * Estilo Liquid Glass. Datos calculados a partir de reservas y mesas mock.
  */
 
 import { CalendarDays, Armchair, Users, DollarSign } from 'lucide-react';
@@ -25,28 +25,28 @@ export default function DashboardStats({ reservations, tables }: DashboardStatsP
       value: todayReservations.length,
       sub: `${todayReservations.filter((r) => r.status === 'confirmed').length} confirmed`,
       icon: CalendarDays,
-      accent: 'text-sunset-yellow',
+      accent: 'text-sunset-orange',
     },
     {
       label: 'Guests today',
       value: todayGuests,
       sub: `${capacity.usedChairs} chairs used`,
       icon: Users,
-      accent: 'text-sunset-orange',
+      accent: 'text-sunset-coral',
     },
     {
       label: 'Free tables',
       value: capacity.freeTables,
       sub: `${capacity.freeChairs} free chairs`,
       icon: Armchair,
-      accent: 'text-sunset-coral',
+      accent: 'text-emerald-700',
     },
     {
       label: 'Est. deposits today',
       value: `$${todayRevenue}`,
       sub: `${todayReservations.filter((r) => r.deposit > 0).length} paid deposits`,
       icon: DollarSign,
-      accent: 'text-white',
+      accent: 'text-slate-900',
     },
   ];
 
@@ -55,17 +55,17 @@ export default function DashboardStats({ reservations, tables }: DashboardStatsP
       {cards.map((card) => (
         <div
           key={card.label}
-          className="group border border-neutral-800 bg-neutral-900/50 p-5 transition-colors hover:border-neutral-700"
+          className="glass-panel group p-5 transition hover:-translate-y-0.5 hover:bg-white/70"
         >
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-[10px] font-medium tracking-[0.25em] text-neutral-500 uppercase">
+              <p className="text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
                 {card.label}
               </p>
               <p className={`mt-3 font-serif text-3xl ${card.accent}`}>{card.value}</p>
-              <p className="mt-1 text-[11px] tracking-[0.1em] text-neutral-400">{card.sub}</p>
+              <p className="mt-1 text-[11px] font-medium tracking-[0.08em] text-slate-600">{card.sub}</p>
             </div>
-            <card.icon size={20} strokeWidth={1.5} className="text-neutral-600" />
+            <card.icon size={20} strokeWidth={1.5} className="text-slate-400" />
           </div>
         </div>
       ))}

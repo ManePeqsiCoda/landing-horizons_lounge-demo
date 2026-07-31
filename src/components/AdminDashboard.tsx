@@ -1,5 +1,6 @@
 /**
- * Panel de administración completo de Horizons Lounge Aruba.
+ * Panel de administración de Horizons Lounge Aruba.
+ * Estilo Liquid Glass sobre fondo de agua de mar cenital.
  * Mock-up con navegación lateral. Sin persistencia real.
  */
 
@@ -57,8 +58,8 @@ export default function AdminDashboard() {
           <div className="space-y-8">
             <DashboardStats reservations={reservations} tables={tables} />
             <div className="grid gap-6 lg:grid-cols-2">
-              <div className="border border-neutral-800 bg-neutral-900/30 p-6">
-                <h3 className="font-serif text-xl text-white">Today's reservations</h3>
+              <div className="glass-panel p-6">
+                <h3 className="font-serif text-xl text-slate-900">Today's reservations</h3>
                 <ul className="mt-4 space-y-3">
                   {reservations
                     .filter((r) => r.date === new Date().toISOString().split('T')[0])
@@ -66,47 +67,47 @@ export default function AdminDashboard() {
                     .map((r) => (
                       <li
                         key={r.id}
-                        className="flex items-center justify-between border-b border-neutral-800 pb-3 text-sm"
+                        className="flex items-center justify-between border-b border-white/30 pb-3 text-sm"
                       >
                         <div>
-                          <p className="font-medium text-white">{r.fullName}</p>
-                          <p className="text-xs text-neutral-500">{r.eventLabel}</p>
+                          <p className="font-sans font-semibold text-slate-900">{r.fullName}</p>
+                          <p className="text-xs text-slate-600">{r.eventLabel}</p>
                         </div>
                         <div className="text-right">
-                          <p className="text-neutral-300">{r.time}</p>
-                          <p className="text-xs text-neutral-500">{r.guests} guests</p>
+                          <p className="text-slate-800">{r.time}</p>
+                          <p className="text-xs text-slate-600">{r.guests} guests</p>
                         </div>
                       </li>
                     ))}
                   {reservations.filter((r) => r.date === new Date().toISOString().split('T')[0])
                     .length === 0 && (
-                    <li className="text-xs tracking-[0.2em] text-neutral-500 uppercase">
+                    <li className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">
                       No reservations today
                     </li>
                   )}
                 </ul>
               </div>
-              <div className="border border-neutral-800 bg-neutral-900/30 p-6">
-                <h3 className="font-serif text-xl text-white">Capacity snapshot</h3>
+              <div className="glass-panel p-6">
+                <h3 className="font-serif text-xl text-slate-900">Capacity snapshot</h3>
                 <div className="mt-4 grid grid-cols-2 gap-4">
-                  <div className="border border-neutral-800 p-4 text-center">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">Used</p>
+                  <div className="glass-panel p-4 text-center">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Used</p>
                     <p className="mt-1 font-serif text-2xl text-sunset-coral">
                       {tables
                         .filter((t) => t.status !== 'free')
                         .reduce((sum, t) => sum + t.capacity, 0)}
                     </p>
                   </div>
-                  <div className="border border-neutral-800 p-4 text-center">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">Free</p>
-                    <p className="mt-1 font-serif text-2xl text-emerald-400">
+                  <div className="glass-panel p-4 text-center">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-slate-500">Free</p>
+                    <p className="mt-1 font-serif text-2xl text-emerald-600">
                       {tables
                         .filter((t) => t.status === 'free')
                         .reduce((sum, t) => sum + t.capacity, 0)}
                     </p>
                   </div>
                 </div>
-                <p className="mt-4 text-center text-[10px] tracking-[0.25em] text-neutral-500 uppercase">
+                <p className="mt-4 text-center text-[10px] font-semibold tracking-[0.25em] text-slate-500 uppercase">
                   {tables.filter((t) => t.status === 'free').length} tables available now
                 </p>
               </div>
@@ -127,16 +128,16 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] flex-col lg:flex-row">
+    <div className="flex min-h-screen flex-col gap-4 lg:flex-row">
       {/* Sidebar */}
-      <aside className="border-b border-neutral-800 lg:w-64 lg:border-b-0 lg:border-r lg:bg-neutral-900/20">
+      <aside className="glass-panel-light flex shrink-0 flex-col lg:w-72">
         <div className="p-6">
-          <p className="text-[10px] font-medium tracking-[0.35em] text-sunset-yellow uppercase">
+          <p className="text-[10px] font-semibold tracking-[0.3em] text-slate-500 uppercase">
             Horizons Lounge
           </p>
-          <p className="mt-1 font-serif text-lg text-white">Admin</p>
+          <p className="mt-1 font-serif text-2xl text-slate-900">Admin</p>
         </div>
-        <nav className="flex overflow-x-auto px-3 pb-2 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0">
+        <nav className="flex flex-1 overflow-x-auto px-2 pb-2 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0">
           {NAV.map(({ id, label, icon: Icon }) => {
             const isActive = active === id;
             return (
@@ -144,34 +145,32 @@ export default function AdminDashboard() {
                 key={id}
                 type="button"
                 onClick={() => setActive(id)}
-                className={`flex shrink-0 items-center gap-3 px-6 py-4 text-left text-xs font-medium tracking-[0.15em] uppercase transition lg:w-full ${
-                  isActive
-                    ? 'border-b-2 border-sunset-yellow text-sunset-yellow lg:border-b-0 lg:border-l-2 lg:bg-sunset-yellow/5'
-                    : 'border-b-2 border-transparent text-neutral-400 hover:text-white lg:border-l-2 lg:border-transparent lg:hover:bg-neutral-900/30'
+                className={`shrink-0 rounded-lg lg:rounded-none ${
+                  isActive ? 'glass-nav-item-active' : 'glass-nav-item'
                 }`}
               >
                 <Icon size={18} strokeWidth={1.5} />
-                {label}
+                <span className="text-[11px] font-semibold tracking-[0.12em] uppercase">{label}</span>
               </button>
             );
           })}
         </nav>
-        <div className="mt-auto hidden border-t border-neutral-800 p-6 lg:block">
+        <div className="mt-auto hidden border-t border-white/30 p-4 lg:block">
           <a
             href="/"
-            className="flex items-center gap-2 text-xs font-light tracking-[0.2em] text-neutral-400 uppercase transition hover:text-sunset-yellow"
+            className="glass-nav-item text-slate-600 hover:text-slate-900"
           >
             <LogOut size={16} strokeWidth={1.5} />
-            Back to site
+            <span className="text-[11px] font-semibold tracking-[0.12em] uppercase">Back to site</span>
           </a>
         </div>
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-6 lg:p-10">
+      <main className="glass-panel-light flex-1 p-6 lg:p-10">
         <header className="mb-8">
-          <h2 className="font-serif text-3xl text-white md:text-4xl">{SECTION_TITLES[active]}</h2>
-          <p className="mt-2 text-sm text-neutral-500">
+          <h2 className="font-serif text-3xl text-slate-900 md:text-4xl">{SECTION_TITLES[active]}</h2>
+          <p className="mt-2 text-sm font-medium text-slate-600">
             Demo dashboard — all changes are local and will reset on reload.
           </p>
         </header>

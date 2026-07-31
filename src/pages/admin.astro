@@ -4,7 +4,9 @@ import AdminDashboard from '../components/AdminDashboard';
 ---
 
 <Layout title="Horizons Lounge — Admin Demo" description="Internal demo dashboard for Horizons Lounge Aruba." robots="noindex, nofollow">
-  <main class="min-h-screen bg-night text-white">
+  <div class="admin-ocean-bg" aria-hidden="true"></div>
+  <div class="admin-scrim" aria-hidden="true"></div>
+  <main class="relative min-h-screen text-slate-900">
     <AdminDashboard client:load />
   </main>
 </Layout>
