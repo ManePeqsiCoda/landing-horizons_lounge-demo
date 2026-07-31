@@ -1,7 +1,7 @@
 /**
  * Galería de imágenes — Horizons Lounge Aruba.
- * Las fotografías deben ubicarse en /public../../public/images/gallery/ y nombrarse según el campo `src`.
- * Reemplaza los placeholders por los archivos reales que compartas en el chat.
+ * Las fotografías están ubicadas en /public/images/gallery/ y se resuelven como
+ * rutas absolutas en el navegador.
  */
 
 export interface GalleryImage {
@@ -17,63 +17,63 @@ export interface GalleryImage {
 export const galleryImages: GalleryImage[] = [
   {
     id: 'gal-01',
-    src: '../../public/images/gallery/01.jpg',
-    alt: 'Sunset ritual over Eagle Beach with the iconic Fofoti tree silhouette',
-    category: 'sunset',
+    src: '/images/gallery/01.jpg',
+    alt: 'Layered tropical cocktail served at the beach bar with Eagle Beach in the background',
+    category: 'drinks',
   },
   {
     id: 'gal-02',
-    src: '../../public/images/gallery/02.jpg',
-    alt: 'Signature cocktail served against the Aruba sunset horizon',
+    src: '/images/gallery/02.jpg',
+    alt: 'Hand raising a red signature cocktail over a plate of appetizers and Horizons branding',
     category: 'drinks',
   },
   {
     id: 'gal-03',
-    src: '../../public/images/gallery/03.jpg',
-    alt: 'Fresh sushi platter crafted by the Horizons culinary team',
-    category: 'food',
+    src: '/images/gallery/03.jpg',
+    alt: 'Couple enjoying the sunset lounge atmosphere at golden hour',
+    category: 'sunset',
   },
   {
     id: 'gal-04',
-    src: '../../public/images/gallery/04.jpg',
-    alt: 'Guests enjoying the lounge atmosphere at golden hour',
+    src: '/images/gallery/04.jpg',
+    alt: 'Guests toasting cocktails while a saxophone player performs at sunset',
     category: 'vibe',
   },
   {
     id: 'gal-05',
-    src: '../../public/images/gallery/05.jpg',
-    alt: 'Close-up of a tropical mixology creation with island fruits',
-    category: 'drinks',
-  },
-  {
-    id: 'gal-06',
-    src: '../../public/images/gallery/06.jpg',
-    alt: 'Palm frames and ocean view from the Horizons terrace',
-    category: 'beach',
-  },
-  {
-    id: 'gal-07',
-    src: '../../public/images/gallery/07.jpg',
-    alt: 'Live music performance under the Aruba night sky',
-    category: 'vibe',
-  },
-  {
-    id: 'gal-08',
-    src: '../../public/images/gallery/08.jpg',
-    alt: 'Chef plating a Caribbean-inspired dish at sunset',
+    src: '/images/gallery/05.jpg',
+    alt: 'Loaded nachos platter served at Horizons Lounge',
     category: 'food',
   },
   {
+    id: 'gal-06',
+    src: '/images/gallery/06.jpg',
+    alt: 'Overhead view of a colorful Caribbean food spread on the table',
+    category: 'food',
+  },
+  {
+    id: 'gal-07',
+    src: '/images/gallery/07.jpg',
+    alt: 'Sushi and dumplings platter crafted by the Horizons culinary team',
+    category: 'food',
+  },
+  {
+    id: 'gal-08',
+    src: '/images/gallery/08.jpg',
+    alt: 'Two pink sparkling cocktails being raised for a sunset toast',
+    category: 'drinks',
+  },
+  {
     id: 'gal-09',
-    src: '../../public/images/gallery/09.jpg',
-    alt: 'Soft candlelight and ocean breeze on the outdoor deck',
+    src: '/images/gallery/09.jpg',
+    alt: 'Vibrant carnival dancers in colorful costumes under the Aruba sky',
     category: 'vibe',
   },
   {
     id: 'gal-10',
-    src: '../../public/images/gallery/10.jpg',
-    alt: 'Colorful Aruba sky reflected on the calm Caribbean Sea',
-    category: 'sunset',
+    src: '/images/gallery/10.jpg',
+    alt: 'Group of friends toasting with colorful cocktails on the Horizons balcony',
+    category: 'vibe',
   },
 ];
 
