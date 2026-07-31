@@ -20,7 +20,7 @@ const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '
 ---
 
 <section
-  class="group relative grid min-h-[90vh] grid-cols-1 bg-white lg:grid-cols-2"
+  class="group relative grid min-h-[90vh] grid-cols-1 bg-cream lg:grid-cols-2"
   aria-labelledby={`event-title-${slug}`}
 >
   <!-- Text Left — Clean, Airy Lifestyle Editorial -->
@@ -28,19 +28,19 @@ const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '
     class="order-2 flex flex-col justify-center px-8 py-16 transition-transform duration-500 ease-out group-hover:-translate-y-1 lg:order-1 lg:px-16 lg:py-24 xl:px-24"
   >
     <p
-      class="mb-3 text-[11px] font-semibold tracking-[0.25em] text-sunset-orange uppercase"
+      class="mb-3 text-[11px] font-semibold tracking-[0.25em] text-terracotta uppercase"
     >
       {kicker}
     </p>
     <h2
       id={`event-title-${slug}`}
-      class="font-serif text-4xl text-night md:text-5xl lg:text-6xl"
+      class="font-display text-4xl font-semibold tracking-tight text-warm-charcoal md:text-5xl lg:text-6xl"
     >
       {title}
     </h2>
 
     <p
-      class="mt-6 max-w-md text-sm font-light leading-relaxed text-neutral-600"
+      class="mt-6 max-w-md text-sm font-light leading-relaxed text-warm-charcoal/70"
     >
       {description}
     </p>
@@ -48,7 +48,7 @@ const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '
     <ul class="mt-6 flex flex-wrap gap-3">
       {
         details.map((detail) => (
-          <li class="rounded-full border border-neutral-300 px-3 py-1 text-[10px] font-medium tracking-[0.15em] text-neutral-600 uppercase">
+          <li class="rounded-full border border-warm-charcoal/15 px-3 py-1 text-[10px] font-semibold tracking-[0.12em] text-warm-charcoal/70 uppercase">
             {detail}
           </li>
         ))
@@ -57,7 +57,7 @@ const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '
 
     <a
       href={ctaHref}
-      class="mt-8 inline-flex w-fit items-center gap-3 bg-sunset-yellow px-6 py-3 text-[11px] font-semibold tracking-[0.15em] text-night uppercase transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      class="mt-8 inline-flex w-fit items-center gap-3 bg-sunset-yellow px-6 py-3 text-[11px] font-semibold tracking-[0.15em] text-warm-charcoal uppercase transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       {cta}
       <span aria-hidden="true">→</span>
@@ -79,15 +79,15 @@ const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '
 
     <!-- Modern flyer / cover date badge -->
     <div
-      class="absolute right-4 top-4 z-10 bg-white px-5 py-4 shadow-xl md:right-8 md:top-8 md:px-6 md:py-5"
+      class="absolute right-4 top-4 z-10 bg-cream px-5 py-4 shadow-xl md:right-8 md:top-8 md:px-6 md:py-5"
     >
       <span
-        class="block text-[10px] font-semibold tracking-[0.25em] text-sunset-orange uppercase md:text-[11px]"
+        class="block text-[10px] font-semibold tracking-[0.25em] text-terracotta uppercase md:text-[11px]"
       >
         {dateKicker}
       </span>
       <span
-        class="block text-4xl font-bold leading-none tracking-tight text-night md:text-5xl lg:text-6xl"
+        class="block text-4xl font-bold leading-none tracking-tight text-warm-charcoal md:text-5xl lg:text-6xl"
       >
         {date}
       </span>
