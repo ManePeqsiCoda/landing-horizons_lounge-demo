@@ -40,15 +40,15 @@ export default function GalleryWall({ images }: GalleryWallProps) {
   return (
     <section
       aria-label="Gallery"
-      className="relative h-screen min-h-screen w-screen overflow-hidden bg-night"
+      className="relative h-screen min-h-screen w-screen overflow-hidden bg-sand"
     >
       {/* Título de sección superpuesto con máxima legibilidad */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center">
-        <p className="text-contrast mb-4 text-[10px] font-medium tracking-[0.35em] text-sunset-yellow uppercase">
-          Horizons Lounge Aruba
-        </p>
-        <h1 className="text-contrast font-serif text-5xl font-medium tracking-wide text-white md:text-7xl lg:text-8xl">
-          GALLERY
+        <h1
+          className="text-contrast text-7xl font-normal leading-none tracking-[0.02em] text-sunset-yellow md:text-9xl lg:text-[11rem]"
+          style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
+        >
+          Gallery
         </h1>
       </div>
 
@@ -78,7 +78,7 @@ export default function GalleryWall({ images }: GalleryWallProps) {
                 className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               />
               {/* Veladura sutil que aparece en hover para dar profundidad */}
-              <div className="absolute inset-0 bg-night/0 transition-colors duration-500 group-hover:bg-night/20" />
+              <div className="absolute inset-0 bg-terracotta/0 transition-colors duration-500 group-hover:bg-terracotta/15" />
               <figcaption className="sr-only">{image.alt}</figcaption>
             </motion.figure>
           );
