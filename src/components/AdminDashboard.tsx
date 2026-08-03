@@ -14,6 +14,7 @@ import {
   PartyPopper,
   LogOut,
 } from 'lucide-react';
+import AdminLogin from './admin/AdminLogin';
 import DashboardStats from './admin/DashboardStats';
 import ReservationManager from './admin/ReservationManager';
 import TableManager from './admin/TableManager';
@@ -47,6 +48,7 @@ const SECTION_TITLES: Record<Section, string> = {
 };
 
 export default function AdminDashboard() {
+  const [authed, setAuthed] = useState(false);
   const [active, setActive] = useState<Section>('dashboard');
   const [reservations, setReservations] = useState<AdminReservation[]>(ADMIN_RESERVATIONS);
   const [tables, setTables] = useState<Table[]>(TABLES);
@@ -142,12 +144,22 @@ export default function AdminDashboard() {
     <div className="admin-dashboard-root flex min-h-screen flex-col gap-4 p-4 lg:flex-row lg:p-6">
       {/* Sidebar */}
       <aside className="admin-sidebar flex shrink-0 flex-col lg:w-72">
-        <div className="p-6">
-          <p className="admin-sidebar-kicker">Horizons Lounge Aruba</p>
-          <p className="admin-sidebar-brand mt-1">Admin</p>
-          <p className="mt-2 text-sm font-medium leading-snug text-[var(--admin-muted)]">
-            The Sunset Ritual dashboard
-          </p>
+        <div className="flex items-start justify-between gap-4 p-6">
+          <div>
+            <p className="admin-sidebar-kicker">Horizons Lounge Aruba</p>
+            <p className="admin-sidebar-brand mt-1">Admin</p>
+            <p className="mt-2 text-sm font-medium leading-snug text-[var(--admin-muted)]">
+              The Sunset Ritual dashboard
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setAuthed(false)}
+            aria-label="Log out"
+            className="rounded-lg p-2 text-[var(--admin-subtle)] transition hover:bg-[var(--admin-panel-soft)] hover:text-[var(--admin-accent)] lg:hidden"
+          >
+            <LogOut size={18} strokeWidth={1.5} />
+          </button>
         </div>
         <nav className="flex flex-1 gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible lg:px-4 lg:pb-4">
           {NAV.map(({ id, label, icon: Icon }) => {
@@ -173,6 +185,14 @@ export default function AdminDashboard() {
             <LogOut size={18} strokeWidth={1.5} />
             <span>Back to site</span>
           </a>
+          <button
+            type="button"
+            onClick={() => setAuthed(false)}
+            className="admin-nav-item text-left"
+          >
+            <LogOut size={18} strokeWidth={1.5} />
+            <span>Log out</span>
+          </button>
         </div>
       </aside>
 
@@ -198,6 +218,8 @@ export default function AdminDashboard() {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {!authed && <AdminLogin onSuccess={() => setAuthed(true)} />}
     </div>
   );
 }
