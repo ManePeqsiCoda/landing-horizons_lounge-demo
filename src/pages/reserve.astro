@@ -70,7 +70,7 @@ const structuredData = {
   </main>
 </Layout>
 
-<style>
+<style is:global>
   .reserve-stage {
     background-size: cover;
     background-position: center;
@@ -237,11 +237,50 @@ const structuredData = {
   }
 
   .reserve-select {
+    color-scheme: dark;
+    background-color: rgba(255, 255, 255, 0.09);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23fdf8f1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: right 1rem center;
     background-repeat: no-repeat;
     background-size: 1.25rem;
     padding-right: 2.75rem;
+  }
+
+.reserve-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    height: 3.5rem;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.875rem;
+    color: #fdf8f1;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0 1rem;
+    outline: none;
+    text-align: left;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .reserve-select-trigger:hover {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .reserve-select-trigger:focus-visible {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--color-sunset-orange);
+    box-shadow: 0 0 0 3px rgba(255, 122, 69, 0.18);
+  }
+
+  .reserve-select-trigger[aria-expanded="true"] {
+    border-color: var(--color-sunset-orange);
   }
 
   .reserve-input[type="date"]::-webkit-calendar-picker-indicator {
@@ -280,6 +319,8 @@ const structuredData = {
 
   .reserve-stepper-value {
     appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
     width: 100%;
     height: 3.5rem;
     text-align: center;
@@ -304,33 +345,49 @@ const structuredData = {
   .reserve-submit-button {
     width: 100%;
     border-radius: 9999px;
-    background: var(--color-sunset-yellow);
-    border: 1px solid var(--color-sunset-yellow);
+    background: linear-gradient(
+      135deg,
+      #fff9e6 0%,
+      var(--color-sunset-yellow) 40%,
+      #ffcf33 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.45);
     color: var(--color-warm-charcoal);
     font-family: var(--font-sans);
-    font-size: 0.875rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: 0.9375rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 1.125rem 2rem;
+    padding: 1.25rem 2rem;
     box-shadow:
-      0 8px 24px rgba(255, 215, 0, 0.22),
-      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+      0 10px 32px rgba(255, 215, 0, 0.35),
+      0 0 24px rgba(255, 215, 0, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
     transition: all 0.25s ease;
     cursor: pointer;
   }
 
   .reserve-submit-button:hover:not(:disabled) {
     transform: translateY(-2px);
-    background: #fff;
+    background: linear-gradient(
+      135deg,
+      #fff 0%,
+      #fff9e6 45%,
+      var(--color-sunset-yellow) 100%
+    );
     border-color: #fff;
     box-shadow:
-      0 14px 36px rgba(255, 215, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      0 16px 44px rgba(255, 215, 0, 0.45),
+      0 0 32px rgba(255, 215, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
   }
 
   .reserve-submit-button:disabled {
-    opacity: 0.6;
+    opacity: 0.35;
+    background: linear-gradient(135deg, #5c5649 0%, #3f3830 100%);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(253, 248, 241, 0.45);
+    box-shadow: none;
     cursor: not-allowed;
   }
 </style>

@@ -9,6 +9,7 @@ import {
 import { loadStripe } from '@stripe/stripe-js';
 import type { StripeCardElementOptions } from '@stripe/stripe-js';
 import { Minus, Plus, Calendar, Clock, Users, Mail, Phone, User, FileText, CreditCard } from 'lucide-react';
+import CustomSelect from './CustomSelect';
 import {
   DEPOSIT_AMOUNT,
   DEPOSIT_CURRENCY,
@@ -100,7 +101,7 @@ const itemVariants = {
   },
 };
 
-function StripeCardSection() {
+function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean) => void }) {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -121,7 +122,11 @@ function StripeCardSection() {
           Card Details
         </span>
         <div className="reserve-control reserve-card-element rounded-xl border border-cream/15 bg-cream/8 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/12 w-100 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
-          <CardElement id="card-element" options={cardOptions} />
+          <CardElement
+            id="card-element"
+            options={cardOptions}
+            onChange={(event) => onCardChange(event.complete)}
+          />
         </div>
       </label>
       <p className="text-xs font-medium text-cream/45">
@@ -141,6 +146,7 @@ function InnerForm({
   const [status, setStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [paymentMethodId, setPaymentMethodId] = useState<string | null>(null);
+  const [cardComplete, setCardComplete] = useState(false);
   const [form, setForm] = useState<ReservationFormData>({
     eventId: RESERVATION_EVENTS[0].id,
     date: todayInputValue(),
@@ -154,6 +160,15 @@ function InnerForm({
 
   const selectedEvent =
     RESERVATION_EVENTS.find((e) => e.id === form.eventId) ?? RESERVATION_EVENTS[0];
+
+  const isFormValid = Boolean(
+    form.fullName.trim() &&
+      form.email.trim() &&
+      form.phone.trim() &&
+      cardComplete &&
+      stripe &&
+      elements
+  );
 
   useEffect(() => {
     const eventParam = new URLSearchParams(window.location.search).get('event');
@@ -291,19 +306,16 @@ function InnerForm({
               <Calendar size={16} strokeWidth={1.5} className="mx-2"/>
               Experience
             </span>
-            <select
+            <CustomSelect
               id="eventId"
               name="eventId"
               value={form.eventId}
-              onChange={handleChange}
-              className="reserve-control reserve-select"
-            >
-              {RESERVATION_EVENTS.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.label}
-                </option>
-              ))}
-            </select>
+              options={RESERVATION_EVENTS.map((event) => ({
+                value: event.id,
+                label: event.label,
+              }))}
+              onChange={(value) => setForm((prev) => ({ ...prev, eventId: value }))}
+            />
           </label>
 
           {/* Date */}
@@ -330,19 +342,13 @@ function InnerForm({
               <Clock size={16} strokeWidth={1.5} className="mx-2"/>
               Time
             </span>
-            <select
+            <CustomSelect
               id="time"
               name="time"
               value={form.time}
-              onChange={handleChange}
-              className="reserve-control reserve-select"
-            >
-              {TIME_SLOTS.map((slot) => (
-                <option key={slot} value={slot}>
-                  {slot}
-                </option>
-              ))}
-            </select>
+              options={TIME_SLOTS.map((slot) => ({ value: slot, label: slot }))}
+              onChange={(value) => setForm((prev) => ({ ...prev, time: value }))}
+            />
           </label>
 
           {/* Guests stepper */}
@@ -439,7 +445,7 @@ function InnerForm({
           </label>
 
           {/* Notes */}
-          <label htmlFor="notes" className="reserve-label flex w-100">
+          <label htmlFor="notes" className="reserve-label flex md:col-span-2">
             <span className="reserve-label-text flex items-center mx-2">
               <FileText size={16} strokeWidth={1.5} className='mx-2'/>
               Notes / Occasion
@@ -459,7 +465,7 @@ function InnerForm({
         <motion.div variants={itemVariants} className="h-px bg-cream/10" />
 
         <motion.div variants={itemVariants}>
-          <StripeCardSection />
+          <StripeCardSection onCardChange={setCardComplete} />
         </motion.div>
 
         {status === 'error' && errorMessage && (
@@ -489,8 +495,13 @@ function InnerForm({
         <motion.div variants={itemVariants}>
           <button
             type="submit"
-            disabled={status === 'processing'}
+            disabled={!isFormValid || status === 'processing'}
             className="reserve-submit-button"
+            title={
+              isFormValid
+                ? 'Complete your reservation'
+                : 'Please fill in all required information and card details'
+            }
           >
             {status === 'processing' ? (
               <span className="flex items-center justify-center gap-2">

@@ -556,6 +556,10 @@ body.menu-blur > main {
   box-shadow: 0 0 0 3px rgba(199, 91, 57, 0.12);
 }
 
+.admin-input:focus::placeholder {
+  opacity: 0;
+}
+
 .admin-select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b6056' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
