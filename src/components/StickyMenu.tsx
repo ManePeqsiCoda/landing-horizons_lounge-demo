@@ -35,8 +35,9 @@ function getLinks(isHome: boolean): NavLink[] {
 
 /**
  * Zara-style navigation.
- * - Desktop: brand mark + vertical column at the right edge. Hidden while
- *   scrolling down, revealed when scrolling up.
+ * - Desktop: brand mark + vertical column at the right edge. Revealed when
+ *   scrolling up. While scrolling down, a hamburger button stays visible
+ *   instead of hiding the menu entirely.
  * - Mobile: hamburger button (large hit area) opens a full-screen curtain.
  */
 export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) {
@@ -112,13 +113,15 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
         </ul>
       </nav>
 
-      {/* Mobile trigger — large, clearly clickable */}
+      {/* Menu trigger — always on mobile, appears on desktop while scrolling down */}
       <button
         type="button"
         aria-label="Open menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="text-contrast fixed right-4 top-4 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation md:hidden"
+        className={`text-contrast fixed right-4 top-4 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation transition-transform duration-500 ease-out md:right-12 ${
+          visible ? 'md:-translate-y-24 md:opacity-0 md:pointer-events-none' : ''
+        }`}
       >
         <span className="text-[10px] font-medium tracking-[0.25em] uppercase">
           Menu
@@ -134,7 +137,7 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-[60] flex flex-col bg-night md:hidden"
+            className="fixed inset-0 z-[60] flex flex-col bg-night"
           >
             <div className="flex justify-end px-4 py-4">
               <button
