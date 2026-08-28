@@ -8,12 +8,12 @@ export interface EventItem {
   title: string;
   description: string;
   details: string[];
-  /** The dominant line of the date badge (e.g. "31" or "SUNSET"). */
   date: string;
-  /** The smaller uppercase line above the date (e.g. "FRIDAY" or "EVERY"). */
   dateKicker: string;
   cta: string;
   ctaHref: string;
+  /** Layout topology for scrolltelling */
+  layout?: 'media-right' | 'media-left' | 'immersive';
 }
 
 export const EVENTS: EventItem[] = [
@@ -31,6 +31,7 @@ export const EVENTS: EventItem[] = [
     dateKicker: 'EVERY',
     cta: 'Reserve a Spot',
     ctaHref: `${RESERVE_PATH}?event=sunset-ritual`,
+    layout: 'media-right',
   },
   {
     id: 'managers-cocktail-party',
@@ -46,6 +47,7 @@ export const EVENTS: EventItem[] = [
     dateKicker: 'FRIDAY',
     cta: 'Join the Party',
     ctaHref: `${RESERVE_PATH}?event=managers-cocktail-party`,
+    layout: 'immersive',
   },
   {
     id: 'fajita-fridays',
@@ -61,5 +63,59 @@ export const EVENTS: EventItem[] = [
     dateKicker: 'FRIDAY',
     cta: 'Book a Table',
     ctaHref: `${RESERVE_PATH}?event=fajita-fridays`,
+    layout: 'media-left',
+  },
+];
+
+/**
+ * High-quality Unsplash stills for the experiences gallery carousel.
+ * Queried for beach sunset, tropical cocktails, live terrace energy, and shared dining.
+ */
+export interface CarouselSlide {
+  src: string;
+  alt: string;
+  credit: string;
+}
+
+export const EVENT_CAROUSEL: CarouselSlide[] = [
+  {
+    src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Golden tropical beach and turquoise water at sunset',
+    credit: 'Unsplash',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Cocktail with citrus garnish on a bar at dusk',
+    credit: 'Unsplash',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Palm silhouettes against a Caribbean sunset sky',
+    credit: 'Unsplash',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1514361892635-6b07e31e75f9?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Friends toasting colorful cocktails at a lively gathering',
+    credit: 'Unsplash',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Fine dining plates and wine glasses on a candlelit table',
+    credit: 'Unsplash',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Live music performance under warm stage lights',
+    credit: 'Unsplash',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Shared Mexican-inspired feast with tortillas and salsas',
+    credit: 'Unsplash',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1525268323446-0505ab2e06c9?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Champagne toast among guests at an evening celebration',
+    credit: 'Unsplash',
   },
 ];

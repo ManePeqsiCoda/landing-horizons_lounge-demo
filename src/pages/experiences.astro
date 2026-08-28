@@ -2,8 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import StickyMenu from '../components/StickyMenu';
 import ReserveSticky from '../components/ReserveSticky';
+import Reveal from '../components/Reveal';
+import StoryImage from '../components/StoryImage';
+import EventCarousel from '../components/EventCarousel';
 import Events from '../sections/Events.astro';
 import Footer from '../sections/Footer.astro';
+import { EVENT_CAROUSEL } from '../data/events';
 
 const title = 'Experiences & Events — Horizons Lounge Aruba';
 const description =
@@ -19,8 +23,7 @@ const structuredData = {
       name: 'The Sunset Ritual',
       description:
         'Daily sunset gathering at Horizons Lounge with signature cocktails and Eagle Beach views.',
-      image: new URL('/images/drinks/tropical-mixology.jpg', Astro.url.origin)
-        .href,
+      image: new URL('/images/drinks/tropical-mixology.jpg', Astro.url.origin).href,
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       location: {
@@ -40,8 +43,7 @@ const structuredData = {
       name: "Manager's Cocktail Party",
       description:
         'An open-air evening of live music, curated cocktails, and the Social Vibe of Horizons Lounge.',
-      image: new URL('/images/drinks/signature-cocktail.jpg', Astro.url.origin)
-        .href,
+      image: new URL('/images/drinks/signature-cocktail.jpg', Astro.url.origin).href,
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       location: {
@@ -86,95 +88,68 @@ const structuredData = {
   <StickyMenu client:load pathname={Astro.url.pathname} />
   <ReserveSticky client:load />
 
-  <main class="experiences-stage relative min-h-screen overflow-hidden bg-night text-cream">
-    {/* Dark blurred background from existing gallery image */}
-    <div class="experiences-bg absolute inset-0 bg-cover bg-center bg-no-repeat" aria-hidden="true" />
-    <div class="experiences-overlay absolute inset-0" aria-hidden="true" />
-    <div class="experiences-grain absolute inset-0" aria-hidden="true" />
+  <main id="experiences-main" class="relative bg-night text-cream">
+    {/* Hero — continuous scroll storytelling */}
+    <section class="story-section relative min-h-[88vh] overflow-hidden">
+      <div class="absolute inset-0">
+        <StoryImage
+          client:visible
+          src="/images/gallery/09.jpg"
+          className="h-full w-full"
+          fromScale={1.16}
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-night/70 via-night/45 to-night"
+          aria-hidden="true"
+        />
+        <div
+          class="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,rgba(255,122,69,0.18),transparent_50%)]"
+          aria-hidden="true"
+        />
+      </div>
 
-    {/* Page header */}
-    <section class="experiences-header relative z-10 px-6 pb-10 pt-32 md:pt-40 lg:pb-16 lg:pt-48">
-      <div class="mx-auto max-w-6xl text-center">
-        <p class="experiences-kicker">Sun-kissed Gatherings</p>
-        <h1 class="experiences-title mt-4">
-          <span class="block">Experiences</span>
-          <span class="experiences-title-accent">& Events</span>
-        </h1>
-        <p class="experiences-lead mx-auto mt-6 max-w-2xl">
-          Three ways to meet the Aruba sunset — from the quiet magic of the daily ritual to the
-          lively hum of Fajita Fridays. Each experience is designed around the horizon, good
-          company, and the signature yellow glow of golden hour.
-        </p>
+      <div class="relative z-10 mx-auto flex min-h-[88vh] max-w-5xl flex-col justify-end px-6 pb-20 pt-36 md:px-12 md:pb-28 lg:pb-32">
+        <Reveal client:visible y={30}>
+          <h1 class="font-serif text-[clamp(3.25rem,9vw,6.5rem)] font-bold leading-[0.92] tracking-[-0.03em] text-cream">
+            Experiences
+            <span
+              class="mt-2 block font-normal text-sunset-yellow"
+              style="font-family: var(--font-perfect-girl); font-size: 0.55em; transform: rotate(-2deg);"
+            >
+              & Events
+            </span>
+          </h1>
+        </Reveal>
+        <Reveal client:visible delay={0.12} y={22} className="mt-8 max-w-2xl">
+          <p class="text-on-photo text-on-photo-lg font-light">
+            Three ways to meet the Aruba sunset — from the quiet magic of the daily ritual to the
+            lively hum of Fajita Fridays. Each experience is designed around the horizon, good
+            company, and the signature yellow glow of golden hour.
+          </p>
+        </Reveal>
       </div>
     </section>
 
     <Events />
+
+    <EventCarousel client:visible slides={EVENT_CAROUSEL} />
+
+    {/* Closing CTA band */}
+    <section class="relative px-6 py-24 md:px-12 md:py-32">
+      <Reveal client:visible y={20} className="mx-auto max-w-3xl text-center">
+        <h2 class="font-serif text-3xl text-cream md:text-5xl">Make an evening yours</h2>
+        <p class="mx-auto mt-5 max-w-xl text-on-photo font-light">
+          Reserve for the Sunset Ritual, a Manager’s Cocktail Party, or Fajita Fridays — your table on Eagle Beach awaits.
+        </p>
+        <a
+          href="/reserve"
+          class="mt-10 inline-flex border border-sunset-yellow bg-sunset-yellow px-10 py-4 text-[10px] font-semibold tracking-[0.22em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+        >
+          Reserve a table
+        </a>
+      </Reveal>
+    </section>
   </main>
 
   <Footer />
 </Layout>
-
-<style>
-  .experiences-stage {
-    background-color: var(--color-night);
-  }
-
-  .experiences-bg {
-    background-image: url('/images/gallery/02.jpg');
-    filter: blur(22px) saturate(1.1) brightness(0.45);
-    transform: scale(1.12);
-  }
-
-  .experiences-overlay {
-    background:
-      radial-gradient(circle at 20% 20%, rgba(255, 122, 69, 0.12) 0%, transparent 40%),
-      radial-gradient(circle at 80% 80%, rgba(199, 91, 57, 0.1) 0%, transparent 45%),
-      linear-gradient(180deg, rgba(11, 11, 15, 0.82) 0%, rgba(11, 11, 15, 0.92) 60%, var(--color-night) 100%);
-  }
-
-  .experiences-grain {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-    opacity: 0.35;
-    pointer-events: none;
-  }
-
-  .experiences-kicker {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--color-sunset-orange);
-  }
-
-  .experiences-title {
-    font-family: var(--font-serif);
-    font-size: clamp(3.25rem, 8vw, 6.5rem);
-    font-weight: 700;
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-    color: var(--color-cream);
-    text-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
-  }
-
-  .experiences-title-accent {
-    font-family: var(--font-perfect-girl);
-    font-size: 0.55em;
-    font-weight: 400;
-    color: var(--color-sunset-yellow);
-    letter-spacing: 0.02em;
-    display: inline-block;
-    margin-top: 0.15em;
-    transform: rotate(-2deg);
-  }
-
-  .experiences-lead {
-    font-family: var(--font-sans);
-    font-size: 1.05rem;
-    font-weight: 400;
-    line-height: 1.7;
-    color: rgba(253, 248, 241, 0.65);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-  }
-</style>
