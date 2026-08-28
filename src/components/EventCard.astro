@@ -1,12 +1,13 @@
 ---
 import type { EventItem } from '../data/events';
+import Reveal from './Reveal';
+import StoryImage from './StoryImage';
 
 interface Props extends EventItem {}
 
 const {
   image,
   imageAlt,
-  kicker,
   title,
   description,
   details,
@@ -14,228 +15,133 @@ const {
   dateKicker,
   cta,
   ctaHref,
+  layout = 'media-right',
 } = Astro.props;
 
 const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const isImmersive = layout === 'immersive';
+const mediaLeft = layout === 'media-left';
 ---
 
-<section
-  class="event-card group relative grid min-h-[90vh] grid-cols-1 lg:grid-cols-2"
-  aria-labelledby={`event-title-${slug}`}
->
-  <!-- Text panel — frosted glass over dark background -->
-  <div
-    class="event-text-panel order-2 flex flex-col justify-center px-8 py-16 transition-transform duration-500 ease-out group-hover:-translate-y-1 lg:order-1 lg:px-16 lg:py-24 xl:px-24"
-  >
-    <p class="event-kicker">{kicker}</p>
-    <h2
-      id={`event-title-${slug}`}
-      class="event-title mt-3"
+{
+  isImmersive ? (
+    <section
+      id={slug}
+      class="story-section relative min-h-[92vh] overflow-hidden"
+      aria-labelledby={`event-title-${slug}`}
     >
-      {title}
-    </h2>
+      <div class="absolute inset-0">
+        <StoryImage client:visible src={image} alt={imageAlt} className="h-full w-full" fromScale={1.14} />
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-night via-night/70 to-night/35"
+          aria-hidden="true"
+        />
+      </div>
 
-    <p class="event-description mt-6 max-w-md">
-      {description}
-    </p>
+      <div class="relative z-10 mx-auto flex min-h-[92vh] max-w-7xl flex-col justify-end px-6 py-20 md:px-12 md:py-28 lg:px-16">
+        <Reveal client:visible y={28} className="max-w-xl">
+          <p class="font-display text-xs font-semibold tracking-[0.28em] text-sunset-orange uppercase">
+            {dateKicker} · {date}
+          </p>
+          <h2
+            id={`event-title-${slug}`}
+            class="mt-4 font-serif text-[clamp(2.75rem,6vw,4.75rem)] font-bold leading-[0.95] tracking-[-0.03em] text-cream"
+          >
+            {title}
+          </h2>
+        </Reveal>
+        <Reveal client:visible delay={0.1} y={20} className="mt-6 max-w-lg">
+          <p class="text-on-photo font-light">{description}</p>
+        </Reveal>
+        <Reveal client:visible delay={0.18} y={16} className="mt-6">
+          <ul class="flex flex-wrap gap-2">
+            {details.map((detail) => (
+              <li class="border border-cream/20 bg-night/40 px-3 py-1.5 text-[10px] font-semibold tracking-[0.14em] text-cream/80 uppercase backdrop-blur-sm">
+                {detail}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+        <Reveal client:visible delay={0.24} y={14} className="mt-8">
+          <a
+            href={ctaHref}
+            class="inline-flex border border-sunset-yellow bg-sunset-yellow px-8 py-3.5 text-[10px] font-semibold tracking-[0.22em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+          >
+            {cta}
+            <span aria-hidden="true" class="ml-2">→</span>
+          </a>
+        </Reveal>
+      </div>
+    </section>
+  ) : (
+    <section
+      id={slug}
+      class="story-section relative grid min-h-[85vh] grid-cols-1 overflow-hidden bg-night lg:grid-cols-2"
+      aria-labelledby={`event-title-${slug}`}
+    >
+      <div
+        class:list={[
+          'relative min-h-[55vh] lg:min-h-full',
+          mediaLeft ? 'lg:order-1' : 'lg:order-2',
+        ]}
+      >
+        <StoryImage
+          client:visible
+          src={image}
+          alt={imageAlt}
+          className="absolute inset-0 h-full w-full"
+          fromScale={1.12}
+        />
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-night/50 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-night/40"
+          aria-hidden="true"
+        />
+        <div class="absolute right-4 top-4 z-10 border border-cream/15 bg-night/55 px-4 py-3 text-center backdrop-blur-md md:right-8 md:top-8 md:px-5 md:py-4">
+          <span class="block text-[10px] font-semibold tracking-[0.2em] text-sunset-orange uppercase">
+            {dateKicker}
+          </span>
+          <span class="mt-1 block font-display text-3xl font-bold tracking-tight text-cream md:text-4xl">
+            {date}
+          </span>
+        </div>
+      </div>
 
-    <ul class="mt-6 flex flex-wrap gap-3">
-      {
-        details.map((detail) => (
-          <li class="event-chip">{detail}</li>
-        ))
-      }
-    </ul>
-
-    <a href={ctaHref} class="event-cta mt-8">
-      {cta}
-      <span aria-hidden="true">→</span>
-    </a>
-  </div>
-
-  <!-- Image panel with date badge -->
-  <div
-    class="relative order-1 min-h-[60vh] overflow-hidden lg:order-2 lg:min-h-full"
-  >
-    <img
-      src={image}
-      alt={imageAlt}
-      width="1200"
-      height="1600"
-      loading="lazy"
-      class="event-image"
-    />
-
-    <div class="event-date-badge">
-      <span class="event-date-kicker">{dateKicker}</span>
-      <span class="event-date-main">{date}</span>
-    </div>
-  </div>
-</section>
-
-<style>
-  .event-text-panel {
-    background: rgba(11, 11, 15, 0.42);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  @media (min-width: 1024px) {
-    .event-text-panel {
-      border-right: none;
-      border-left: 1px solid rgba(255, 255, 255, 0.08);
-    }
-  }
-
-  .event-kicker {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--color-sunset-orange);
-  }
-
-  .event-title {
-    font-family: var(--font-serif);
-    font-size: clamp(2.75rem, 5vw, 4.5rem);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    color: var(--color-cream);
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-  }
-
-  .event-description {
-    font-family: var(--font-sans);
-    font-size: 1.05rem;
-    font-weight: 400;
-    line-height: 1.7;
-    color: rgba(253, 248, 241, 0.62);
-  }
-
-  .event-chip {
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(253, 248, 241, 0.72);
-    padding: 0.5rem 0.875rem;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.04);
-    transition: all 0.25s ease;
-  }
-
-  .event-chip:hover {
-    border-color: rgba(255, 122, 69, 0.45);
-    color: var(--color-sunset-orange);
-  }
-
-  .event-cta {
-    display: inline-flex;
-    width: fit-content;
-    align-items: center;
-    gap: 0.75rem;
-    border-radius: 9999px;
-    background: var(--color-sunset-yellow);
-    border: 1px solid var(--color-sunset-yellow);
-    color: var(--color-warm-charcoal);
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    padding: 1rem 1.75rem;
-    box-shadow:
-      0 8px 24px rgba(255, 215, 0, 0.18),
-      inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    transition: all 0.3s ease;
-  }
-
-  .event-cta:hover {
-    transform: translateY(-3px);
-    background: #ffffff;
-    border-color: #ffffff;
-    box-shadow:
-      0 14px 36px rgba(255, 215, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.55);
-  }
-
-  .event-image {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-    transition: all 0.7s ease-out;
-  }
-
-  .event-card:hover .event-image {
-    transform: scale(1.06);
-    filter: saturate(1.15) brightness(1.05);
-  }
-
-  .event-date-badge {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1rem 1.25rem;
-    border-radius: 1rem;
-    background: rgba(11, 11, 15, 0.55);
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
-  }
-
-  @media (min-width: 768px) {
-    .event-date-badge {
-      right: 2rem;
-      top: 2rem;
-      padding: 1.25rem 1.75rem;
-    }
-  }
-
-  .event-date-kicker {
-    display: block;
-    font-family: var(--font-sans);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--color-sunset-orange);
-  }
-
-  .event-date-main {
-    display: block;
-    margin-top: 0.25rem;
-    font-family: var(--font-display);
-    font-size: 2.75rem;
-    font-weight: 800;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    color: var(--color-cream);
-  }
-
-  @media (min-width: 768px) {
-    .event-date-main {
-      font-size: 3.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .event-date-main {
-      font-size: 4rem;
-    }
-  }
-</style>
+      <div
+        class:list={[
+          'flex flex-col justify-center px-6 py-16 md:px-12 lg:px-16 lg:py-24',
+          mediaLeft ? 'lg:order-2' : 'lg:order-1',
+        ]}
+      >
+        <Reveal client:visible y={24}>
+          <h2
+            id={`event-title-${slug}`}
+            class="font-serif text-[clamp(2.5rem,5vw,4.25rem)] font-bold leading-[0.95] tracking-[-0.03em] text-cream"
+          >
+            {title}
+          </h2>
+        </Reveal>
+        <Reveal client:visible delay={0.1} y={18} className="mt-6 max-w-md">
+          <p class="text-on-photo font-light">{description}</p>
+        </Reveal>
+        <Reveal client:visible delay={0.16} y={14} className="mt-6">
+          <ul class="flex flex-wrap gap-2">
+            {details.map((detail) => (
+              <li class="border border-cream/15 px-3 py-1.5 text-[10px] font-semibold tracking-[0.14em] text-cream/75 uppercase">
+                {detail}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+        <Reveal client:visible delay={0.22} y={14} className="mt-8">
+          <a
+            href={ctaHref}
+            class="inline-flex border border-sunset-yellow bg-sunset-yellow px-8 py-3.5 text-[10px] font-semibold tracking-[0.22em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+          >
+            {cta}
+            <span aria-hidden="true" class="ml-2">→</span>
+          </a>
+        </Reveal>
+      </div>
+    </section>
+  )
+}

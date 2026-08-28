@@ -3,6 +3,6 @@ import EventCard from '../components/EventCard.astro';
 import { EVENTS } from '../data/events';
 ---
 
-<div class="relative">
+<div class="relative flex flex-col gap-0">
   {EVENTS.map((event) => <EventCard {...event} />)}
 </div>

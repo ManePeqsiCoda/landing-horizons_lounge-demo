@@ -1,16 +1,64 @@
 ---
-import SectionWrapper from '../components/SectionWrapper.astro';
+import SplitTitle from '../components/SplitTitle.astro';
+import Reveal from '../components/Reveal';
+import StoryImage from '../components/StoryImage';
+
+const plates = [
+  'Local catch, tropical fruit, Caribbean spice',
+  'Plates designed for the table, not the feed',
+  'A culinary story that unfolds with every bite',
+];
 ---
 
-<!-- 4. Culinary Art (Specialty Offerings) -->
-<SectionWrapper
+<!-- Culinary — cascade: wide media then narrative rail -->
+<section
   id="culinary"
-  base="CULINARY"
-  script="Art"
-  tone="a"
-  image="/images/gallery/07.jpg"
-  paragraphs={[
-    'Our kitchen is a meeting point between island harvest and global technique. From delicate sushi and plant-forward bowls to flame-kissed flatbreads, every plate is made to share and made to impress.',
-    'We source the freshest local catch, the ripest tropical fruits, and the boldest spices of the Caribbean. The result is a culinary story that unfolds with every bite.',
-  ]}
-/>
+  class="story-section ritual-phase-golden relative bg-night py-24 md:py-32 lg:py-40"
+  data-ritual-phase="golden"
+>
+  <div class="mx-auto max-w-7xl px-5 md:px-10 lg:px-16">
+    <Reveal client:visible y={20} className="max-w-3xl">
+      <SplitTitle base="CULINARY" script="Art" />
+    </Reveal>
+
+    <div class="mt-12 grid gap-8 md:mt-16 md:grid-cols-12 md:gap-10">
+      <Reveal client:visible delay={0.05} scale={0.98} className="relative md:col-span-8">
+        <div
+          class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-night/55 via-terracotta/10 to-transparent"
+          aria-hidden="true"
+        />
+        <StoryImage
+          client:visible
+          src="/images/gallery/07.jpg"
+          className="aspect-[16/10] w-full md:min-h-[52vh] md:aspect-auto"
+          fromScale={1.08}
+        />
+      </Reveal>
+
+      <Reveal client:visible delay={0.14} y={28} className="flex flex-col justify-end md:col-span-4">
+        <p class="text-on-photo font-light">
+          Our kitchen meets island harvest and global technique — sushi, plant-forward bowls, flame-kissed flatbreads made to share.
+        </p>
+        <ul class="mt-8 space-y-4 border-t border-cream/15 pt-6">
+          {
+            plates.map((line, i) => (
+              <li class="text-on-photo border-b border-cream/10 pb-4 text-sm font-light last:border-0 md:text-base">
+                <Reveal client:visible delay={0.18 + i * 0.06} y={12} as="span">
+                  {line}
+                </Reveal>
+              </li>
+            ))
+          }
+        </ul>
+        <Reveal client:visible delay={0.36} y={14} className="mt-8">
+          <a
+            href="/menu#culinary"
+            class="inline-flex border border-sunset-yellow bg-sunset-yellow px-8 py-3 text-[10px] font-semibold tracking-[0.22em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+          >
+            View culinary &amp; mixology
+          </a>
+        </Reveal>
+      </Reveal>
+    </div>
+  </div>
+</section>

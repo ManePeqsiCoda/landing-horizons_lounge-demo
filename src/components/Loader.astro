@@ -1,20 +1,18 @@
 ---
 /**
  * Horizons brand loader.
- * Full-screen sunset background with a heavy blur overlay and the
- * horizon logo centered at roughly half the viewport width.
- * Always dismisses exactly 2s after mount (inline script: no dependency
- * on bundled JS or the window "load" event, so it can never get stuck).
+ * Full ritual on first visit of the session; brief/skip on internal navigations
+ * so page-to-page transitions feel fast. Respects prefers-reduced-motion.
  */
 ---
 
 <div
   id="horizons-loader"
-  class="fixed inset-0 z-[100] transition-opacity duration-700"
+  class="fixed inset-0 z-[100] transition-opacity duration-500"
   role="status"
   aria-label="Loading Horizons Lounge"
+  data-loader
 >
-  {/* Sunset background */}
   <img
     src="/images/sunset.png"
     alt=""
@@ -23,14 +21,12 @@
     draggable="false"
   />
 
-  {/* Blur scrim */}
   <div
     class="absolute inset-0 bg-night/35 backdrop-blur-xl"
     aria-hidden="true"
   >
   </div>
 
-  {/* Centered brand logo */}
   <div class="absolute inset-0 flex items-center justify-center p-6">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -103,13 +99,41 @@
 
 <script is:inline>
   (function () {
-    window.setTimeout(function () {
-      var loader = document.getElementById('horizons-loader');
-      if (!loader) return;
+    var loader = document.getElementById('horizons-loader');
+    if (!loader) return;
+
+    var SESSION_KEY = 'horizons-loader-seen';
+    var reduceMotion = false;
+    try {
+      reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (e) {}
+
+    var seen = false;
+    try {
+      seen = window.sessionStorage.getItem(SESSION_KEY) === '1';
+    } catch (e) {}
+
+    var FIRST_VISIT_MS = 1200;
+    var RETURN_VISIT_MS = 280;
+    var FADE_MS = reduceMotion ? 120 : 450;
+
+    var holdMs = reduceMotion ? 0 : seen ? RETURN_VISIT_MS : FIRST_VISIT_MS;
+
+    function dismiss() {
       loader.classList.add('opacity-0', 'pointer-events-none');
       window.setTimeout(function () {
-        loader.remove();
-      }, 750);
-    }, 2000);
+        if (loader && loader.parentNode) loader.remove();
+      }, FADE_MS);
+      try {
+        window.sessionStorage.setItem(SESSION_KEY, '1');
+      } catch (e) {}
+    }
+
+    if (holdMs <= 0) {
+      dismiss();
+      return;
+    }
+
+    window.setTimeout(dismiss, holdMs);
   })();
 </script>

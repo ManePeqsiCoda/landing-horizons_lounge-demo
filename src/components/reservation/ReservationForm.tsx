@@ -17,7 +17,6 @@ import {
   MIN_GUESTS,
   RESERVATION_EMAIL,
   RESERVATION_EVENTS,
-  STRIPE_PUBLISHABLE_KEY_ENV,
   TIME_SLOTS,
   type ReservationFormData,
 } from '../../data/reservation';
@@ -85,19 +84,17 @@ ${data.fullName}`;
 }
 
 const containerVariants = {
-  hidden: { opacity: 0 },
+  hidden: {},
   visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.06, delayChildren: 0.15 },
+    transition: { staggerChildren: 0.05, delayChildren: 0.05 },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { y: 12 },
   visible: {
-    opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -107,9 +104,8 @@ function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean)
 
   if (!stripe || !elements) {
     return (
-      <div className="rounded-xl border border-sunset-orange/30 bg-sunset-orange/10 p-4 text-sm text-sunset-orange">
-        Stripe is loading or the publishable key is missing. Add your{' '}
-        {STRIPE_PUBLISHABLE_KEY_ENV} to test the card form.
+      <div className="border border-cream/15 bg-cream/[0.06] px-4 py-3 text-sm text-cream/70">
+        Connecting secure card fields…
       </div>
     );
   }
@@ -118,10 +114,10 @@ function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean)
     <div className="space-y-3">
       <label htmlFor="card-element" className="reserve-label flex items-center mx-2">
         <span className="reserve-label-text flex items-center">
-          <CreditCard size={16} strokeWidth={1.5} className='mx-2 text-center'/>
+          <CreditCard size={16} strokeWidth={1.5} className="mx-2 text-center" />
           Card Details
         </span>
-        <div className="reserve-control reserve-card-element rounded-xl border border-cream/15 bg-cream/8 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/12 w-100 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
+        <div className="reserve-control reserve-card-element w-full border border-cream/22 bg-cream/[0.08] px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/[0.12] focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.18)]">
           <CardElement
             id="card-element"
             options={cardOptions}
@@ -130,16 +126,93 @@ function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean)
         </div>
       </label>
       <p className="text-xs font-medium text-cream/45">
-        Demo mode — use 4242 4242 4242 4242, any future date, any CVC.
+        Test card — 4242 4242 4242 4242, any future date, any CVC.
+      </p>
+    </div>
+  );
+}
+
+/** Visual card fields for the prototype when no Stripe publishable key is configured. */
+function DemoCardSection({ onCardChange }: { onCardChange: (complete: boolean) => void }) {
+  const [number, setNumber] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvc, setCvc] = useState('');
+
+  useEffect(() => {
+    const digits = number.replace(/\D/g, '');
+    const expOk = /^(0[1-9]|1[0-2])\s*\/\s*\d{2}$/.test(expiry.trim());
+    const cvcOk = /^\d{3,4}$/.test(cvc.trim());
+    onCardChange(digits.length >= 15 && expOk && cvcOk);
+  }, [number, expiry, cvc, onCardChange]);
+
+  const formatNumber = (raw: string) => {
+    const digits = raw.replace(/\D/g, '').slice(0, 16);
+    return digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+  };
+
+  const formatExpiry = (raw: string) => {
+    const digits = raw.replace(/\D/g, '').slice(0, 4);
+    if (digits.length <= 2) return digits;
+    return `${digits.slice(0, 2)} / ${digits.slice(2)}`;
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="reserve-label flex">
+        <span className="reserve-label-text flex items-center mx-2">
+          <CreditCard size={16} strokeWidth={1.5} className="mx-2" />
+          Card Details
+        </span>
+        <div className="reserve-control grid w-full gap-3 sm:grid-cols-[1fr_auto_auto]">
+          <label className="sr-only" htmlFor="demo-card-number">
+            Card number
+          </label>
+          <input
+            id="demo-card-number"
+            inputMode="numeric"
+            autoComplete="cc-number"
+            placeholder="Card number"
+            value={number}
+            onChange={(e) => setNumber(formatNumber(e.target.value))}
+            className="reserve-input"
+          />
+          <label className="sr-only" htmlFor="demo-card-expiry">
+            Expiry
+          </label>
+          <input
+            id="demo-card-expiry"
+            inputMode="numeric"
+            autoComplete="cc-exp"
+            placeholder="MM / YY"
+            value={expiry}
+            onChange={(e) => setExpiry(formatExpiry(e.target.value))}
+            className="reserve-input sm:w-28"
+          />
+          <label className="sr-only" htmlFor="demo-card-cvc">
+            CVC
+          </label>
+          <input
+            id="demo-card-cvc"
+            inputMode="numeric"
+            autoComplete="cc-csc"
+            placeholder="CVC"
+            value={cvc}
+            onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
+            className="reserve-input sm:w-24"
+          />
+        </div>
+      </div>
+      <p className="text-xs font-medium text-cream/45">
+        Prototype demo — deposit is simulated. No real charge is made.
       </p>
     </div>
   );
 }
 
 function InnerForm({
-  stripePublishableKey,
+  demoMode,
 }: {
-  stripePublishableKey: string;
+  demoMode: boolean;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -166,8 +239,7 @@ function InnerForm({
       form.email.trim() &&
       form.phone.trim() &&
       cardComplete &&
-      stripe &&
-      elements
+      (demoMode || (stripe && elements))
   );
 
   useEffect(() => {
@@ -214,10 +286,23 @@ function InnerForm({
       return;
     }
 
+    if (!cardComplete) {
+      setErrorMessage('Please complete your card details.');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('processing');
+
+    if (demoMode) {
+      await new Promise((resolve) => window.setTimeout(resolve, 650));
+      setPaymentMethodId(`pm_demo_${Date.now()}`);
+      setStatus('success');
+      return;
+    }
+
     if (!stripe || !elements) {
-      setErrorMessage(
-        `Stripe is not ready. Make sure you have set a valid ${STRIPE_PUBLISHABLE_KEY_ENV}.`
-      );
+      setErrorMessage('Stripe is not ready. Please refresh and try again.');
       setStatus('error');
       return;
     }
@@ -228,8 +313,6 @@ function InnerForm({
       setStatus('error');
       return;
     }
-
-    setStatus('processing');
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
@@ -257,7 +340,7 @@ function InnerForm({
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="rounded-2xl border border-cream/15 bg-cream/10 p-8 text-center shadow-2xl backdrop-blur-xl md:p-12"
+        className="border border-cream/15 bg-night/80 p-8 text-center shadow-2xl md:p-12"
       >
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-sunset-yellow/20 shadow-[0_0_40px_rgba(255,215,0,0.25)]">
           <svg
@@ -465,7 +548,11 @@ function InnerForm({
         <motion.div variants={itemVariants} className="h-px bg-cream/10" />
 
         <motion.div variants={itemVariants}>
-          <StripeCardSection onCardChange={setCardComplete} />
+          {demoMode ? (
+            <DemoCardSection onCardChange={setCardComplete} />
+          ) : (
+            <StripeCardSection onCardChange={setCardComplete} />
+          )}
         </motion.div>
 
         {status === 'error' && errorMessage && (
@@ -474,21 +561,9 @@ function InnerForm({
             animate={{ opacity: 1, y: 0 }}
             role="alert"
             aria-live="polite"
-            className="rounded-xl border border-red-400/40 bg-red-500/12 px-4 py-3 text-base text-red-200"
+            className="border border-red-400/40 bg-red-500/12 px-4 py-3 text-base text-red-200"
           >
             {errorMessage}
-          </motion.div>
-        )}
-
-        {!stripePublishableKey && (
-          <motion.div
-            variants={itemVariants}
-            className="rounded-xl border border-sunset-orange/30 bg-sunset-orange/10 px-4 py-3 text-sm text-sunset-orange"
-          >
-            <strong>Demo setup:</strong> add your{' '}
-            <code className="rounded bg-cream/10 px-1 py-0.5">{STRIPE_PUBLISHABLE_KEY_ENV}</code> to
-            a <code className="rounded bg-cream/10 px-1 py-0.5">.env</code> file to activate the
-            real Stripe card form.
           </motion.div>
         )}
 
@@ -518,9 +593,9 @@ function InnerForm({
       {/* Summary */}
       <motion.div
         className="lg:col-span-4"
-        initial={{ opacity: 0, x: 24 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.7, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ x: 16 }}
+        animate={{ x: 0 }}
+        transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
       >
         <ReservationSummary data={form} eventLabel={selectedEvent.label} />
       </motion.div>
@@ -534,13 +609,9 @@ export default function ReservationForm({
   const keyLooksValid =
     typeof stripePublishableKey === 'string' && stripePublishableKey.startsWith('pk_');
 
-  const stripePromise = keyLooksValid
-    ? loadStripe(stripePublishableKey)
-    : Promise.resolve(null);
-
   return (
-    <Elements stripe={stripePromise}>
-      <InnerForm stripePublishableKey={stripePublishableKey} />
+    <Elements stripe={keyLooksValid ? loadStripe(stripePublishableKey) : null}>
+      <InnerForm demoMode={!keyLooksValid} />
     </Elements>
   );
 }

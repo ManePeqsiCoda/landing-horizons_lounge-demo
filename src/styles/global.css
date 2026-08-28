@@ -48,12 +48,20 @@
   --color-terracotta: #c75b39;
   --color-warm-charcoal: #2b2420;
   --color-shell: #faf3ea;
+  /* Dropdown / elevated panels on dark UI */
+  --color-sunset-panel: #171310;
 
   --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   --font-perfect-girl: "PerfectGirl Sans", "Playfair Display", Georgia, serif;
   --font-billa-mount: "Billa Mount", "Brush Script MT", cursive;
+
+  /* Body scale — minimums oriented to senior-friendly reading on photo */
+  --text-body-sm: 1rem;
+  --text-body: 1.125rem;
+  --text-body-lg: 1.25rem;
+  --text-body-xl: 1.375rem;
 }
 
 /* Smooth scroll for all anchor/hash navigation */
@@ -61,7 +69,70 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Discrete "Reel" scroll only on the landing (data-reel), not on /admin */
+/* Continuous-scroll storytelling sections (home) */
+.story-section {
+  position: relative;
+  width: 100%;
+}
+
+/* Sunset Ritual day→night atmosphere accents */
+.ritual-horizon {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-sunset-yellow) 55%, transparent),
+    color-mix(in srgb, var(--color-cream) 40%, transparent),
+    transparent
+  );
+}
+
+.ritual-phase-day .ritual-horizon {
+  opacity: 0.55;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-peach) 50%, transparent),
+    color-mix(in srgb, var(--color-sand) 45%, transparent),
+    transparent
+  );
+}
+
+.ritual-phase-golden .ritual-horizon {
+  opacity: 0.7;
+}
+
+.ritual-phase-dusk .ritual-horizon {
+  opacity: 0.45;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-ocean) 50%, transparent),
+    color-mix(in srgb, var(--color-sunset-orange) 35%, transparent),
+    transparent
+  );
+}
+
+.ritual-phase-night .ritual-horizon {
+  opacity: 0.25;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-section img {
+    transform: none !important;
+  }
+}
+
+/* Menu reel only — keep snap for /menu experience */
+.menu-snap-section {
+  height: 100vh;
+  height: 100svh;
+  width: 100vw;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  overflow: hidden;
+}
+
 html[data-reel] {
   scroll-snap-type: y mandatory;
 }
@@ -71,18 +142,6 @@ body {
   color: var(--color-warm-charcoal);
   font-family: var(--font-sans);
   overflow-x: hidden;
-}
-
-/* Every reel section: exactly one viewport, always fully locked */
-.snap-section,
-.menu-snap-section {
-  height: 100vh;
-  height: 100svh;
-  width: 100vw;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  position: relative;
-  overflow: hidden;
 }
 
 /* Menu hero: diagonal / horizontal split panels */
@@ -135,6 +194,32 @@ body {
     0 2px 8px rgba(43, 36, 32, 0.08);
 }
 
+/* Readable body copy over dark photo scrims */
+.text-on-photo {
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.85),
+    0 2px 16px rgba(0, 0, 0, 0.55);
+}
+
+.text-on-photo-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.7;
+}
+
+@media (min-width: 1024px) {
+  .text-on-photo {
+    font-size: var(--text-body-lg);
+  }
+
+  .text-on-photo-lg {
+    font-size: var(--text-body-xl);
+  }
+}
+
 /* Zara-style nav hover: letter-spacing expansion, no boxes */
 .nav-link {
   transition: letter-spacing 0.35s ease, color 0.35s ease, opacity 0.35s ease;
@@ -142,16 +227,13 @@ body {
 .nav-link:hover {
   letter-spacing: 0.08em;
 }
+.nav-link:focus-visible {
+  outline: 2px solid var(--color-sunset-yellow);
+  outline-offset: 4px;
+  letter-spacing: 0.08em;
+}
 
-/* Menu focus: blur + dim the content while hovering the navigation on any page */
-#reel-main,
-body > main {
-  transition: filter 0.5s ease;
-}
-body.menu-blur #reel-main,
-body.menu-blur > main {
-  filter: blur(6px) brightness(0.95);
-}
+/* (menu-blur removed — top navbar no longer dims the page) */
 
 /* Loader pulse */
 @keyframes horizons-pulse {

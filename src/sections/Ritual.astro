@@ -1,15 +1,39 @@
 ---
-import SectionWrapper from '../components/SectionWrapper.astro';
+import SplitTitle from '../components/SplitTitle.astro';
+import Reveal from '../components/Reveal';
+import StoryImage from '../components/StoryImage';
 ---
 
-<!-- 2. The Ritual (Who We Are) -->
-<SectionWrapper
+<!-- Ritual — day phase: editorial text + growing photography -->
+<section
   id="ritual"
-  base="THE"
-  script="Ritual"
-  tone="a"
-  image="/images/gallery/03.jpg"
-  paragraphs={[
-    'The Sunset Ritual is our signature cadence: a daily pause where the sky turns amber and the glasses rise in unison. It is the reason guests return, the golden thread that connects every evening at Horizons.',
-  ]}
-/>
+  class="story-section ritual-phase-day relative bg-night py-24 md:py-32 lg:py-40"
+  data-ritual-phase="day"
+>
+  <div class="mx-auto grid max-w-7xl items-center gap-12 px-5 md:grid-cols-12 md:gap-14 md:px-10 lg:px-16">
+    <div class="md:col-span-5">
+      <Reveal client:visible y={24}>
+        <SplitTitle base="THE" script="Ritual" />
+      </Reveal>
+      <Reveal client:visible delay={0.12} y={20} className="mt-8 max-w-md">
+        <p class="text-on-photo font-light">
+          The Sunset Ritual is our signature cadence: a daily pause where the sky turns amber and the glasses rise in unison. It is the reason guests return, the golden thread that connects every evening at Horizons.
+        </p>
+      </Reveal>
+    </div>
+    <div class="md:col-span-7">
+      <Reveal client:visible delay={0.06} scale={0.97} className="relative">
+        <div
+          class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-night/50 via-transparent to-peach/10"
+          aria-hidden="true"
+        />
+        <StoryImage
+          client:visible
+          src="/images/gallery/03.jpg"
+          className="aspect-[4/5] w-full md:aspect-[5/6] lg:min-h-[68vh]"
+          fromScale={1.14}
+        />
+      </Reveal>
+    </div>
+  </div>
+</section>

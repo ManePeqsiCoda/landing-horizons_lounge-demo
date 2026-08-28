@@ -41,6 +41,12 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             style={{ flexBasis: 0 }}
             onMouseEnter={() => {setExpanded(i);}}
             onClick={() => setExpanded(isExpanded ? false : i)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setExpanded(isExpanded ? false : i);
+              }
+            }}
           >
             {/* Imagen: 100% del alto y ancho de la tarjeta */}
             <img

@@ -1,16 +1,66 @@
 ---
-import SectionWrapper from '../components/SectionWrapper.astro';
+import SplitTitle from '../components/SplitTitle.astro';
+import Reveal from '../components/Reveal';
+import StoryImage from '../components/StoryImage';
+
+const signatures = [
+  { name: 'Liquid Gold', note: 'Premium spirits · edible florals' },
+  { name: 'Island Press', note: 'Hand-pressed juices · tropics' },
+  { name: 'Happy Hour', note: 'Twice daily · raise a glass' },
+];
 ---
 
-<!-- 5. Liquid Gold (Mixology) -->
-<SectionWrapper
+<!-- Liquid Gold — dusk pour cards over growing bar photography -->
+<section
   id="mixology"
-  base="LIQUID"
-  script="Gold"
-  tone="b"
-  image="/images/gallery/01.jpg"
-  paragraphs={[
-    'The bar is the beating heart of Horizons. Our mixologists turn premium spirits, hand-pressed juices, and edible florals into cocktails that look like jewelry and taste like the tropics.',
-    'Signature mixes, reimagined classics, and a twice-daily happy hour ensure there is always a reason to raise a glass. Here, every pour is liquid gold.',
-  ]}
-/>
+  class="story-section ritual-phase-dusk relative min-h-[90vh] overflow-hidden"
+  data-ritual-phase="dusk"
+>
+  <div class="absolute inset-0">
+    <StoryImage
+      client:visible
+      src="/images/gallery/01.jpg"
+      className="h-full w-full"
+      fromScale={1.12}
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-night/55 via-ocean/25 to-night/85"
+      aria-hidden="true"
+    />
+    <div class="ritual-horizon absolute inset-x-0 top-[40%] z-[1] h-px" aria-hidden="true" />
+  </div>
+
+  <div class="relative z-10 mx-auto flex max-w-7xl flex-col px-5 py-24 md:flex-row md:items-end md:justify-between md:gap-12 md:px-10 md:py-32 lg:px-16 lg:py-40">
+    <div class="max-w-xl">
+      <Reveal client:visible y={22}>
+        <SplitTitle base="LIQUID" script="Gold" />
+      </Reveal>
+      <Reveal client:visible delay={0.1} y={16} className="mt-8">
+        <p class="text-on-photo font-light">
+          The bar is the beating heart of Horizons — cocktails that look like jewelry and taste like the tropics. Here, every pour is liquid gold.
+        </p>
+      </Reveal>
+      <Reveal client:visible delay={0.2} y={14} className="mt-8">
+        <a
+          href="/menu#mixology"
+          class="inline-flex border border-sunset-yellow bg-sunset-yellow px-8 py-3 text-[10px] font-semibold tracking-[0.22em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+        >
+          Explore mixology
+        </a>
+      </Reveal>
+    </div>
+
+    <ul class="mt-12 flex w-full max-w-md flex-col gap-3 md:mt-0" aria-label="Signature pours">
+      {
+        signatures.map((item, i) => (
+          <Reveal client:visible delay={0.14 + i * 0.08} y={20} as="li">
+            <div class="border border-sunset-yellow/35 bg-night/55 px-5 py-4 backdrop-blur-sm transition-colors hover:border-sunset-yellow/70">
+              <p class="font-serif text-xl text-sunset-yellow md:text-2xl">{item.name}</p>
+              <p class="mt-1 text-[10px] tracking-[0.22em] text-cream/70 uppercase">{item.note}</p>
+            </div>
+          </Reveal>
+        ))
+      }
+    </ul>
+  </div>
+</section>

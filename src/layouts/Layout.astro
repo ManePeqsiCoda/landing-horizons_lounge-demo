@@ -1,5 +1,6 @@
 ---
 import Loader from '../components/Loader.astro';
+import OpenTableNotice from '../components/OpenTableNotice';
 import '../styles/global.css';
 
 interface Props {
@@ -55,5 +56,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
   <body>
     <Loader />
     <slot />
+    <OpenTableNotice client:load />
   </body>
 </html>

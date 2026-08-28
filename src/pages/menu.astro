@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StickyMenu from '../components/StickyMenu';
+import ReserveSticky from '../components/ReserveSticky';
 import MenuReel from '../components/MenuReel';
 
 const title = 'Culinary & Mixology — Horizons Lounge Aruba';
@@ -10,5 +11,6 @@ const description =
 
 <Layout title={title} description={description} reel>
   <StickyMenu client:load pathname={Astro.url.pathname} />
+  <ReserveSticky client:load />
   <MenuReel client:load />
 </Layout>

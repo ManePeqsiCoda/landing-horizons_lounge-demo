@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StickyMenu from '../components/StickyMenu';
+import ReserveSticky from '../components/ReserveSticky';
 import GalleryWall from '../components/GalleryWall';
 import { galleryImages } from '../data/gallery';
 
@@ -22,6 +23,7 @@ const gallerySchema = {
 
 <Layout title={title} description={description} image={image}>
   <StickyMenu client:load pathname={Astro.url.pathname} />
+  <ReserveSticky client:load />
   <main>
     <GalleryWall client:load images={galleryImages} />
   </main>

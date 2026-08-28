@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import HorizonsLogo from './HorizonsLogo';
+import { RESERVE_PATH } from '../data/contact';
 
 interface NavLink {
   label: string;
@@ -13,38 +13,27 @@ interface StickyMenuProps {
   pathname?: string;
 }
 
-const REEL_MAIN_ID = 'reel-main';
-
-/** Blurs / restores the main content sitting behind the menu on any page. */
-function setPageBlur(on: boolean) {
-  document.body.classList.toggle('menu-blur', on);
-  // Keep the legacy reel target in sync so the home page still behaves exactly as before.
-  document.getElementById(REEL_MAIN_ID)?.classList.toggle('menu-blur', on);
-}
-
 function getLinks(isHome: boolean): NavLink[] {
   return [
-    { label: 'HOME', href: isHome ? '#hero' : '/' },
-    { label: 'GALLERY', href: '/gallery' },
-    { label: 'CULINARY & MIXOLOGY', href: '/menu' },
-    { label: 'EXPERIENCES', href: '/experiences' },
-    { label: 'RESERVE WITH US', href: '/reserve', accent: true },
-    { label: 'CONTACT', href: isHome ? '#footer' : '/#footer' },
+    { label: 'Home', href: isHome ? '#hero' : '/' },
+    { label: 'Gallery', href: '/gallery' },
+    { label: 'Menu', href: '/menu' },
+    { label: 'Experiences', href: '/experiences' },
+    { label: 'Reserve with us', href: RESERVE_PATH, accent: true },
+    { label: 'Contact', href: isHome ? '#footer' : '/#footer' },
   ];
 }
 
 /**
- * Zara-style navigation.
- * - Desktop: brand mark + vertical column at the right edge. Revealed when
- *   scrolling up. While scrolling down, a hamburger button stays visible
- *   instead of hiding the menu entirely.
- * - Mobile: hamburger button (large hit area) opens a full-screen curtain.
+ * Conventional top navbar — visible at page top and on scroll-up; hides on scroll-down.
+ * All primary links sit in the bar (no hamburger / side panel).
  */
 export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) {
-  const [open, setOpen] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
   const [pathname, setPathname] = useState(propPathname ?? '/');
   const lastScrollY = useRef(0);
+  const reduceMotion = useReducedMotion();
 
   const isHome = pathname === '/' || pathname === '/index.html';
   const LINKS = getLinks(isHome);
@@ -56,14 +45,25 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
   }, [propPathname]);
 
   useEffect(() => {
-    setPageBlur(open);
-    return () => setPageBlur(false);
-  }, [open]);
+    lastScrollY.current = window.scrollY;
 
-  useEffect(() => {
     const onScroll = () => {
       const current = window.scrollY;
-      setVisible(current < lastScrollY.current);
+      const delta = current - lastScrollY.current;
+      const nearTop = current < 32;
+      const scrollingUp = delta < -4;
+      const scrollingDown = delta > 6;
+
+      setScrolled(current > 16);
+
+      if (nearTop) {
+        setVisible(true);
+      } else if (scrollingDown) {
+        setVisible(false);
+      } else if (scrollingUp) {
+        setVisible(true);
+      }
+
       lastScrollY.current = current;
     };
 
@@ -71,105 +71,65 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const desktopVisible = 'md:translate-y-0 md:opacity-100';
-  const brandHidden = 'md:-translate-y-28 md:opacity-0 md:pointer-events-none';
-  const navHidden = 'md:-translate-y-full md:opacity-0 md:pointer-events-none';
-
   return (
-    <>
-      {/* Brand mark (top-left) */}
-      <a
-        href={isHome ? '#hero' : '/'}
-        className={`text-contrast fixed left-6 top-5 z-50 w-32 transition-transform duration-500 ease-out md:left-12 md:w-40 ${
-          visible ? desktopVisible : brandHidden
-        }`}
-        aria-label="Go to home"
-      >
-        <HorizonsLogo className="w-full" />
-      </a>
+    <motion.header
+      role="banner"
+      aria-hidden={!visible}
+      initial={false}
+      animate={{
+        y: visible ? 0 : '-110%',
+        opacity: visible ? 1 : 0,
+      }}
+      transition={
+        reduceMotion
+          ? { duration: 0.15 }
+          : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
+      }
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-300 ${
+        scrolled
+          ? 'border-cream/15 bg-night/92 shadow-[0_8px_32px_rgba(0,0,0,0.35)]'
+          : 'border-transparent bg-gradient-to-b from-night/70 to-transparent'
+      }`}
+      style={
+        scrolled
+          ? {
+              WebkitBackdropFilter: 'blur(14px) saturate(140%)',
+              backdropFilter: 'blur(14px) saturate(140%)',
+            }
+          : undefined
+      }
+    >
+      <div className="mx-auto flex h-16 max-w-[90rem] items-center gap-4 px-4 md:h-[4.25rem] md:gap-8 md:px-8 lg:px-12">
+        <a
+          href={isHome ? '#hero' : '/'}
+          className="shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+          aria-label="Horizons Lounge home"
+        >
+          <HorizonsLogo className="w-28 md:w-36" />
+        </a>
 
-      {/* Right-side vertical menu (desktop) */}
-      <nav
-        aria-label="Primary"
-        onMouseEnter={() => setPageBlur(true)}
-        onMouseLeave={() => setPageBlur(false)}
-        className={`fixed right-6 top-20 z-50 hidden transition-transform duration-500 ease-out md:right-12 md:block lg:top-24 ${
-          visible ? desktopVisible : navHidden
-        }`}
-      >
-        <ul className="flex flex-col items-end gap-4 lg:gap-5">
-          {LINKS.map((link) => (
-            <li key={link.label}>
-              <a
-                href={link.href}
-                className={`nav-link text-contrast font-serif text-xl tracking-wider lg:text-2xl ${
-                  link.accent ? 'text-sunset-yellow' : 'text-white'
-                }`}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-
-      {/* Menu trigger — always on mobile, appears on desktop while scrolling down */}
-      <button
-        type="button"
-        aria-label="Open menu"
-        aria-expanded={open}
-        onClick={() => setOpen(true)}
-        className={`text-contrast fixed right-4 top-4 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation transition-transform duration-500 ease-out md:right-12 ${
-          visible ? 'md:-translate-y-24 md:opacity-0 md:pointer-events-none' : ''
-        }`}
-      >
-        <span className="text-[10px] font-medium tracking-[0.25em] uppercase">
-          Menu
-        </span>
-        <Menu size={22} strokeWidth={1.5} />
-      </button>
-
-      {/* Mobile curtain menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-            className="fixed inset-0 z-[60] flex flex-col bg-night"
-          >
-            <div className="flex justify-end px-4 py-4">
-              <button
-                type="button"
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-                className="flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation"
-              >
-                <span className="text-[10px] font-medium tracking-[0.25em] uppercase">
-                  Close
-                </span>
-                <X size={22} strokeWidth={1.5} />
-              </button>
-            </div>
-            <ul className="flex flex-1 flex-col items-center justify-center gap-8 px-6 pb-12">
-              {LINKS.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className={`font-serif text-3xl tracking-wider ${
-                      link.accent ? 'text-sunset-yellow' : 'text-white'
-                    }`}
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+        <nav
+          aria-label="Primary"
+          className="min-w-0 flex-1 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <ul className="flex items-center justify-end gap-1 whitespace-nowrap md:gap-0.5 lg:gap-1">
+            {LINKS.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  className={`inline-flex px-2.5 py-2 text-[10px] font-semibold tracking-[0.16em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night md:px-3 md:text-[11px] lg:px-3.5 ${
+                    link.accent
+                      ? 'text-sunset-yellow hover:text-cream'
+                      : 'text-cream/85 hover:text-cream'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </motion.header>
   );
 }

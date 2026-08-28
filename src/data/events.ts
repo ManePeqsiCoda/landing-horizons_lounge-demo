@@ -1,3 +1,5 @@
+import { RESERVE_PATH } from './contact';
+
 export interface EventItem {
   id: string;
   image: string;
@@ -6,12 +8,12 @@ export interface EventItem {
   title: string;
   description: string;
   details: string[];
-  /** The dominant line of the date badge (e.g. "31" or "SUNSET"). */
   date: string;
-  /** The smaller uppercase line above the date (e.g. "FRIDAY" or "EVERY"). */
   dateKicker: string;
   cta: string;
   ctaHref: string;
+  /** Layout topology for scrolltelling */
+  layout?: 'media-right' | 'media-left' | 'immersive';
 }
 
 export const EVENTS: EventItem[] = [
@@ -28,7 +30,8 @@ export const EVENTS: EventItem[] = [
     date: 'SUNSET',
     dateKicker: 'EVERY',
     cta: 'Reserve a Spot',
-    ctaHref: '/reserve?event=sunset-ritual',
+    ctaHref: `${RESERVE_PATH}?event=sunset-ritual`,
+    layout: 'media-right',
   },
   {
     id: 'managers-cocktail-party',
@@ -43,7 +46,8 @@ export const EVENTS: EventItem[] = [
     date: '24',
     dateKicker: 'FRIDAY',
     cta: 'Join the Party',
-    ctaHref: '/reserve?event=managers-cocktail-party',
+    ctaHref: `${RESERVE_PATH}?event=managers-cocktail-party`,
+    layout: 'immersive',
   },
   {
     id: 'fajita-fridays',
@@ -58,6 +62,80 @@ export const EVENTS: EventItem[] = [
     date: '31',
     dateKicker: 'FRIDAY',
     cta: 'Book a Table',
-    ctaHref: '/reserve?event=fajita-fridays',
+    ctaHref: `${RESERVE_PATH}?event=fajita-fridays`,
+    layout: 'media-left',
+  },
+];
+
+/**
+ * High-quality Unsplash stills for the experiences gallery carousel.
+ * Queried for beach sunset, tropical cocktails, live terrace energy, and shared dining.
+ */
+export interface CarouselSlide {
+  src: string;
+  alt: string;
+  credit: string;
+  /** Headline shown while this slide is active */
+  title: string;
+  /** Short line that matches what the photo shows */
+  caption: string;
+}
+
+export const EVENT_CAROUSEL: CarouselSlide[] = [
+  {
+    src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Golden tropical beach and turquoise water at sunset',
+    credit: 'Unsplash',
+    title: 'Eagle Beach at gold hour',
+    caption: 'Turquoise water, soft sand, and the last light spilling across the shore.',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Cocktail with citrus garnish on a bar at dusk',
+    credit: 'Unsplash',
+    title: 'First pour of the evening',
+    caption: 'Citrus, ice, and a glass catching the dusk — the ritual begins at the bar.',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Palm silhouettes against a Caribbean sunset sky',
+    credit: 'Unsplash',
+    title: 'Palms against the sky',
+    caption: 'Silhouettes of fronds holding a Caribbean sunset in place.',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1514361892635-6b07e31e75f9?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Friends toasting colorful cocktails at a lively gathering',
+    credit: 'Unsplash',
+    title: 'Glasses raised together',
+    caption: 'Colorful cocktails meeting mid-air — the Social Vibe in one toast.',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Fine dining plates and wine glasses on a candlelit table',
+    credit: 'Unsplash',
+    title: 'A table set for nightfall',
+    caption: 'Plates, wine, and candlelight — dinner when the horizon turns indigo.',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Live music performance under warm stage lights',
+    credit: 'Unsplash',
+    title: 'Live under warm lights',
+    caption: 'A set that fills the terrace — sound, glow, and bodies leaning in.',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Shared Mexican-inspired feast with tortillas and salsas',
+    credit: 'Unsplash',
+    title: 'Shared, sizzling, generous',
+    caption: 'Tortillas, salsa, and platters made for passing down the table — Fajita Friday energy.',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=1800&q=85',
+    alt: 'Champagne flutes raised in a celebratory toast',
+    credit: 'Unsplash',
+    title: 'A toast to the night',
+    caption: 'Champagne catching the light as the evening tips into celebration.',
   },
 ];
