@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StickyMenu from '../components/StickyMenu';
+import ReserveSticky from '../components/ReserveSticky';
 import Events from '../sections/Events.astro';
 import Footer from '../sections/Footer.astro';
 
@@ -83,6 +84,7 @@ const structuredData = {
   <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 
   <StickyMenu client:load pathname={Astro.url.pathname} />
+  <ReserveSticky client:load />
 
   <main class="experiences-stage relative min-h-screen overflow-hidden bg-night text-cream">
     {/* Dark blurred background from existing gallery image */}

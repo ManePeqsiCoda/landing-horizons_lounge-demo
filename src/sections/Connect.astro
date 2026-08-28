@@ -1,5 +1,6 @@
 ---
 import SectionWrapper from '../components/SectionWrapper.astro';
+import { RESERVE_PATH, WHATSAPP_URL } from '../data/contact';
 ---
 
 <!-- 7. Connect (Direct/Indirect Channels) -->
@@ -11,19 +12,30 @@ import SectionWrapper from '../components/SectionWrapper.astro';
   image="/images/gallery/04.jpg"
   paragraphs={[
     'Securing your place at Horizons is effortless. Choose your moment — a sunset toast, a private dinner, a celebration — and let our team handle every detail.',
-    'Book through OpenTable for instant confirmation, or reach us directly on WhatsApp for a personal touch. The best evenings are the ones planned ahead.',
+    'Book through our reservation desk for a curated evening, or reach us on WhatsApp for a personal touch. The best evenings are the ones planned ahead.',
   ]}
 >
   <div class="flex flex-col items-center gap-4">
     <a
-      href="#"
-      class="border border-sunset-yellow px-10 py-3 text-xs font-semibold tracking-[0.25em] text-text-night uppercase transition-colors bg-sunset-yellow"
+      href={RESERVE_PATH}
+      class="border border-sunset-yellow bg-sunset-yellow px-10 py-4 text-xs font-semibold tracking-[0.25em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+    >
+      Reserve a table
+    </a>
+    <button
+      type="button"
+      data-opentable-demo
+      aria-label="Book on OpenTable (demo notice)"
+      class="border border-cream/40 px-10 py-3 text-xs font-semibold tracking-[0.25em] text-cream uppercase transition-colors hover:border-sunset-yellow hover:text-sunset-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
     >
       Book on OpenTable
-    </a>
+    </button>
     <a
-      href="#"
-      class="text-xs font-semibold tracking-[0.2em] text-cream/80 uppercase transition-colors hover:text-sunset-yellow"
+      href={WHATSAPP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Contact Horizons on WhatsApp"
+      class="text-xs font-semibold tracking-[0.2em] text-cream/80 uppercase transition-colors hover:text-sunset-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
     >
       WhatsApp us
     </a>

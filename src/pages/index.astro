@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import StickyMenu from '../components/StickyMenu';
+import ReserveSticky from '../components/ReserveSticky';
 import Hero from '../sections/Hero.astro';
 import Ritual from '../sections/Ritual.astro';
 import Experience from '../sections/Experience.astro';
@@ -20,6 +21,7 @@ import Footer from '../sections/Footer.astro';
     slot="head"
   />
   <StickyMenu client:load pathname={Astro.url.pathname} />
+  <ReserveSticky client:load homeReel />
   <main id="reel-main">
     <Hero />
     <Ritual />
