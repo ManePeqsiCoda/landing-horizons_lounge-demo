@@ -36,23 +36,41 @@ import Footer from '../sections/Footer.astro';
 <script>
   /**
    * Discrete "Reel" scroll: every gesture moves exactly one 100vh section
-   * and locks until the transition completes.
+   * and locks until the transition completes. Updates --ritual-progress
+   * for the day→night atmosphere across Sunset Ritual sections.
    */
-  const LOCK_MS = 950;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const LOCK_MS = reduceMotion ? 200 : 850;
   let locked = false;
+
+  const sectionCount = () => document.querySelectorAll('.snap-section').length;
+
+  const syncRitualProgress = () => {
+    const total = Math.max(sectionCount() - 1, 1);
+    const idx = Math.round(window.scrollY / window.innerHeight);
+    const progress = Math.min(Math.max(idx / total, 0), 1);
+    document.documentElement.style.setProperty('--ritual-progress', String(progress));
+  };
 
   const go = (dir: number) => {
     if (locked || dir === 0) return;
-    const total = document.querySelectorAll('.snap-section').length;
+    const total = sectionCount();
     const idx = Math.round(window.scrollY / window.innerHeight);
     const next = Math.min(Math.max(idx + dir, 0), total - 1);
     if (next === idx) return;
     locked = true;
-    window.scrollTo({ top: next * window.innerHeight, behavior: 'smooth' });
+    window.scrollTo({
+      top: next * window.innerHeight,
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    });
     window.setTimeout(() => {
       locked = false;
+      syncRitualProgress();
     }, LOCK_MS);
   };
+
+  syncRitualProgress();
+  window.addEventListener('scroll', syncRitualProgress, { passive: true });
 
   window.addEventListener(
     'wheel',

@@ -1,16 +1,36 @@
 ---
 import SectionWrapper from '../components/SectionWrapper.astro';
+
+const signatures = [
+  { name: 'Liquid Gold', note: 'Premium spirits · edible florals' },
+  { name: 'Island Press', note: 'Hand-pressed juices · tropics' },
+  { name: 'Happy Hour', note: 'Twice daily · raise a glass' },
+];
 ---
 
-<!-- 5. Liquid Gold (Mixology) -->
+<!-- 5. Liquid Gold — cocktail signature cards at dusk -->
 <SectionWrapper
   id="mixology"
   base="LIQUID"
   script="Gold"
-  tone="b"
+  phase="dusk"
+  layout="signatures"
   image="/images/gallery/01.jpg"
   paragraphs={[
-    'The bar is the beating heart of Horizons. Our mixologists turn premium spirits, hand-pressed juices, and edible florals into cocktails that look like jewelry and taste like the tropics.',
-    'Signature mixes, reimagined classics, and a twice-daily happy hour ensure there is always a reason to raise a glass. Here, every pour is liquid gold.',
+    'The bar is the beating heart of Horizons — cocktails that look like jewelry and taste like the tropics. Here, every pour is liquid gold.',
   ]}
-/>
+>
+  <ul
+    class="flex w-full max-w-lg flex-col gap-3 md:max-w-sm"
+    aria-label="Signature pours"
+  >
+    {
+      signatures.map((item) => (
+        <li class="border border-sunset-yellow/35 bg-night/50 px-5 py-4 backdrop-blur-sm transition-colors hover:border-sunset-yellow/70">
+          <p class="font-serif text-xl text-sunset-yellow md:text-2xl">{item.name}</p>
+          <p class="mt-1 text-[10px] tracking-[0.22em] text-cream/70 uppercase">{item.note}</p>
+        </li>
+      ))
+    }
+  </ul>
+</SectionWrapper>

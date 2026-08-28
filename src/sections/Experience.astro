@@ -2,16 +2,23 @@
 import SectionWrapper from '../components/SectionWrapper.astro';
 ---
 
-<!-- 3. The Experience (Services) -->
+<!-- 3. The Experience — golden hour -->
 <SectionWrapper
   id="experience"
   base="THE"
   script="Experience"
-  tone="b"
+  phase="golden"
+  layout="default"
   footnoteSize="lg"
   image="/images/gallery/10.jpg"
   paragraphs={[
-    'Every corner of Horizons is composed for atmosphere: soft ocean breezes, candlelight, and a soundscape that moves from sunset acoustic to midnight energy. The experience is immersive, intentional, and unmistakably Aruba.',
-    'Reserve your table by the water, settle into a private cabana, or let our hosts craft an evening that belongs only to you. Luxury here is not loud — it is felt.',
+    'Every corner of Horizons is composed for atmosphere: soft ocean breezes, candlelight, and a soundscape that moves from sunset acoustic to midnight energy.',
+    'Reserve your table by the water, settle into a private cabana, or let our hosts craft an evening that belongs only to you.',
   ]}
-/>
+>
+  <p
+    class="text-contrast max-w-xs text-center text-[10px] font-medium tracking-[0.35em] text-sunset-yellow uppercase md:max-w-sm md:text-xs"
+  >
+    Golden hour on Eagle Beach
+  </p>
+</SectionWrapper>

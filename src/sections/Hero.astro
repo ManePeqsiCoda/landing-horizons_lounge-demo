@@ -22,12 +22,16 @@ import SectionFootnote from '../components/SectionFootnote.astro';
   >
   </video>
 
-  <!-- Subtle dark vignette overlay for text legibility -->
+  <!-- Subtle warm day vignette — start of the ritual arc -->
   <div
-    class="absolute inset-0 bg-gradient-to-b from-night/55 via-night/30 to-night/70"
+    class="absolute inset-0 bg-gradient-to-b from-night/40 via-peach/10 to-night/65"
     aria-hidden="true"
   >
   </div>
+  <div
+    class="ritual-horizon pointer-events-none absolute inset-x-0 top-[44%] z-[1] h-px opacity-50"
+    aria-hidden="true"
+  />
 
   <!-- Top-left typographic lockup -->
   <div class="relative z-10 p-4 pt-10 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
@@ -47,12 +51,12 @@ import SectionFootnote from '../components/SectionFootnote.astro';
     </div>
   </div>
 
-  <!-- Bottom narrative -->
+  <!-- Bottom narrative — one short line, larger type -->
   <SectionFootnote
     paragraphs={[
-      'Step into Horizons Lounge, where the golden hour of Eagle Beach becomes a living ritual. Here, every sunset is framed by handcrafted cocktails, curated rhythms, and the unmistakable warmth of Aruba.',
-      'Whether you arrive for the view, the flavors, or the company, our terrace invites you to slow down and savor the moment. This is not just a lounge — it is the horizon itself, redesigned for the senses.',
+      'Eagle Beach golden hour — handcrafted cocktails, curated rhythms, and the warmth of Aruba.',
     ]}
+    size="lg"
   />
 </section>
 

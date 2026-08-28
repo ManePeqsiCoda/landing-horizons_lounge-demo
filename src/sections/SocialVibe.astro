@@ -1,16 +1,36 @@
 ---
 import SectionWrapper from '../components/SectionWrapper.astro';
+
+const beats = [
+  { label: 'Live', detail: 'Musicians as the sun drops' },
+  { label: 'Crowd', detail: 'The magnetic social stage' },
+  { label: 'Late', detail: 'Stay for the scene' },
+];
 ---
 
-<!-- 6. Social Vibe (Live Music & Events) -->
+<!-- 6. Social Vibe — rhythm strips into early night -->
 <SectionWrapper
   id="events"
   base="SOCIAL"
   script="Vibe"
-  tone="a"
+  phase="dusk"
+  layout="rhythm"
   image="/images/gallery/09.jpg"
   paragraphs={[
-    'When the sun sets, the rhythm rises. Live musicians, themed nights, and the natural energy of the crowd turn Horizons into the most magnetic social stage on Eagle Beach.',
-    'Come for the sunset, stay for the scene. From intimate conversations to late-night dancing, the vibe is always set to unforgettable.',
+    'When the sun sets, the rhythm rises. Come for the sunset, stay for the scene — from intimate conversations to late-night energy on Eagle Beach.',
   ]}
-/>
+>
+  <div
+    class="grid w-full max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3"
+    aria-label="Social rhythm"
+  >
+    {
+      beats.map((beat) => (
+        <div class="border border-ocean/40 bg-night/60 px-4 py-5 text-center backdrop-blur-sm md:py-6">
+          <p class="font-serif text-2xl text-cream md:text-3xl">{beat.label}</p>
+          <p class="mt-2 text-[10px] tracking-[0.2em] text-cream/65 uppercase">{beat.detail}</p>
+        </div>
+      ))
+    }
+  </div>
+</SectionWrapper>

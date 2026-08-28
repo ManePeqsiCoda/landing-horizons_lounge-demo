@@ -3,19 +3,20 @@ import SectionWrapper from '../components/SectionWrapper.astro';
 import { RESERVE_PATH, WHATSAPP_URL } from '../data/contact';
 ---
 
-<!-- 7. Connect (Direct/Indirect Channels) -->
+<!-- 7. Connect / Reserve — night phase, conversion -->
 <SectionWrapper
   id="connect"
   base="RESERVE"
   script="Now"
-  tone="b"
+  phase="night"
+  layout="default"
   image="/images/gallery/04.jpg"
   paragraphs={[
     'Securing your place at Horizons is effortless. Choose your moment — a sunset toast, a private dinner, a celebration — and let our team handle every detail.',
-    'Book through our reservation desk for a curated evening, or reach us on WhatsApp for a personal touch. The best evenings are the ones planned ahead.',
+    'Book through our reservation desk for a curated evening, or reach us on WhatsApp for a personal touch.',
   ]}
 >
-  <div class="flex flex-col items-center gap-4">
+  <div class="flex flex-col items-center gap-4 pb-8">
     <a
       href={RESERVE_PATH}
       class="border border-sunset-yellow bg-sunset-yellow px-10 py-4 text-xs font-semibold tracking-[0.25em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"

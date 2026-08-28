@@ -2,15 +2,29 @@
 import SectionWrapper from '../components/SectionWrapper.astro';
 ---
 
-<!-- 4. Culinary Art (Specialty Offerings) -->
+<!-- 4. Culinary Art — split format under golden→dusk light -->
 <SectionWrapper
   id="culinary"
   base="CULINARY"
   script="Art"
-  tone="a"
+  phase="golden"
+  layout="split"
   image="/images/gallery/07.jpg"
   paragraphs={[
-    'Our kitchen is a meeting point between island harvest and global technique. From delicate sushi and plant-forward bowls to flame-kissed flatbreads, every plate is made to share and made to impress.',
-    'We source the freshest local catch, the ripest tropical fruits, and the boldest spices of the Caribbean. The result is a culinary story that unfolds with every bite.',
+    'Our kitchen meets island harvest and global technique — sushi, plant-forward bowls, flame-kissed flatbreads made to share.',
   ]}
-/>
+>
+  <aside
+    class="ritual-split-panel w-full max-w-md border border-cream/15 bg-night/55 p-5 backdrop-blur-md md:p-7"
+    aria-label="Culinary highlights"
+  >
+    <p class="text-[10px] font-semibold tracking-[0.28em] text-sunset-orange uppercase">
+      From the pass
+    </p>
+    <ul class="mt-4 space-y-3 font-sans text-sm leading-relaxed text-cream/90 md:text-base">
+      <li class="border-b border-cream/10 pb-3">Local catch, tropical fruit, Caribbean spice</li>
+      <li class="border-b border-cream/10 pb-3">Plates designed for the table, not the feed</li>
+      <li>A culinary story that unfolds with every bite</li>
+    </ul>
+  </aside>
+</SectionWrapper>
