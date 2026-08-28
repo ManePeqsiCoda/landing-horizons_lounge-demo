@@ -25,6 +25,23 @@ export default function MenuReel() {
     reducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
+  // Deep-link from home CTAs: /menu#culinary | /menu#plates | /menu#drinks | /menu#mixology
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, '').toLowerCase();
+    if (!hash) return;
+
+    if (hash === 'culinary' || hash === 'plates') {
+      setCategory('plates');
+      setSelectedPlateSubcategory(null);
+      return;
+    }
+
+    if (hash === 'drinks' || hash === 'mixology') {
+      setCategory('drinks');
+      setSelectedPlateSubcategory(null);
+    }
+  }, []);
+
   const plateSubcategory = selectedPlateSubcategory
     ? plateSubcategories.find((s) => s.id === selectedPlateSubcategory)
     : null;
@@ -53,12 +70,20 @@ export default function MenuReel() {
   };
 
   // Scroll automático a la nueva slide cuando cambia la selección,
-  // respetando prefers-reduced-motion.
+  // respetando prefers-reduced-motion. Also covers hash deep-links on first paint.
   useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, '').toLowerCase();
+    const deepLinked =
+      hash === 'culinary' ||
+      hash === 'plates' ||
+      hash === 'drinks' ||
+      hash === 'mixology';
+
     if (isInitialMount.current) {
       isInitialMount.current = false;
-      return;
+      if (!deepLinked || category === null) return;
     }
+
     const target =
       category === null
         ? 0
@@ -67,8 +92,11 @@ export default function MenuReel() {
           : selectedPlateSubcategory
             ? 2
             : 1;
-    if (target > 0) scrollToSlide(target);
-  }, [category, selectedPlateSubcategory]);
+    if (target > 0) {
+      // Wait a frame so the plates/drinks section is in the DOM.
+      window.requestAnimationFrame(() => scrollToSlide(target));
+    }
+  }, [category, selectedPlateSubcategory, slideCount]);
 
   const handleSelectDrinks = () => {
     if (category === 'drinks') {

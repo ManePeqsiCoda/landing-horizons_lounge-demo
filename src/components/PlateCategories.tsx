@@ -23,7 +23,7 @@ export default function PlateCategories({
 }: PlateCategoriesProps) {
   return (
     <section
-      id="plate-categories"
+      id="culinary"
       className="menu-snap-section flex w-full flex-col bg-night"
       aria-label="Select a plate subcategory"
     >
