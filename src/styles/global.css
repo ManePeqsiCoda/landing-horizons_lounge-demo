@@ -69,11 +69,13 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Sunset Ritual day→night atmosphere (driven by reel section index) */
-html[data-reel] {
-  --ritual-progress: 0;
+/* Continuous-scroll storytelling sections (home) */
+.story-section {
+  position: relative;
+  width: 100%;
 }
 
+/* Sunset Ritual day→night atmosphere accents */
 .ritual-horizon {
   background: linear-gradient(
     90deg,
@@ -115,13 +117,22 @@ html[data-reel] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ritual-section img,
-  .ritual-section .absolute {
-    transition: none !important;
+  .story-section img {
+    transform: none !important;
   }
 }
 
-/* Discrete "Reel" scroll only on the landing (data-reel), not on /admin */
+/* Menu reel only — keep snap for /menu experience */
+.menu-snap-section {
+  height: 100vh;
+  height: 100svh;
+  width: 100vw;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  position: relative;
+  overflow: hidden;
+}
+
 html[data-reel] {
   scroll-snap-type: y mandatory;
 }
@@ -131,18 +142,6 @@ body {
   color: var(--color-warm-charcoal);
   font-family: var(--font-sans);
   overflow-x: hidden;
-}
-
-/* Every reel section: exactly one viewport, always fully locked */
-.snap-section,
-.menu-snap-section {
-  height: 100vh;
-  height: 100svh;
-  width: 100vw;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-  position: relative;
-  overflow: hidden;
 }
 
 /* Menu hero: diagonal / horizontal split panels */
@@ -236,10 +235,12 @@ body {
 
 /* Menu focus: blur + dim the content while hovering the navigation on any page */
 #reel-main,
+#home-main,
 body > main {
   transition: filter 0.5s ease;
 }
 body.menu-blur #reel-main,
+body.menu-blur #home-main,
 body.menu-blur > main {
   filter: blur(6px) brightness(0.95);
 }

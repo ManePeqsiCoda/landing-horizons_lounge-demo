@@ -19,8 +19,9 @@ const REEL_MAIN_ID = 'reel-main';
 /** Blurs / restores the main content sitting behind the menu on any page. */
 function setPageBlur(on: boolean) {
   document.body.classList.toggle('menu-blur', on);
-  // Keep the legacy reel target in sync so the home page still behaves exactly as before.
+  // Keep the home main target in sync so blur still works after reel removal.
   document.getElementById(REEL_MAIN_ID)?.classList.toggle('menu-blur', on);
+  document.getElementById('home-main')?.classList.toggle('menu-blur', on);
 }
 
 function getLinks(isHome: boolean): NavLink[] {

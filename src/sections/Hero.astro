@@ -1,14 +1,13 @@
 ---
 import SplitTitle from '../components/SplitTitle.astro';
-import SectionFootnote from '../components/SectionFootnote.astro';
+import Reveal from '../components/Reveal';
 ---
 
-<!--
-  1. Landing Hero — cinematic sunset video background.
-  No menu visible here; StickyMenu fades in after this frame.
--->
-  <section id="hero" class="snap-section relative flex h-svh min-h-svh flex-col justify-between overflow-hidden">
-  <!-- Cinematic background video: plays once, no controls, starts after loader -->
+<!-- Hero — full-bleed cinematic start; continuous scroll (not a locked slide) -->
+<section
+  id="hero"
+  class="story-section relative flex min-h-[100svh] flex-col justify-between overflow-hidden"
+>
   <video
     id="hero-video"
     src="/cinematic.mp4"
@@ -22,42 +21,32 @@ import SectionFootnote from '../components/SectionFootnote.astro';
   >
   </video>
 
-  <!-- Subtle warm day vignette — start of the ritual arc -->
   <div
-    class="absolute inset-0 bg-gradient-to-b from-night/40 via-peach/10 to-night/65"
+    class="absolute inset-0 bg-gradient-to-b from-night/40 via-peach/10 to-night/70"
     aria-hidden="true"
-  >
-  </div>
+  />
   <div
     class="ritual-horizon pointer-events-none absolute inset-x-0 top-[44%] z-[1] h-px opacity-50"
     aria-hidden="true"
   />
 
-  <!-- Top-left typographic lockup -->
   <div class="relative z-10 p-4 pt-10 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
     <SplitTitle base="HORIZONS" script="Lounge" />
   </div>
 
-  <!-- Center scroll cue -->
-  <div
-    class="relative z-10 flex flex-1 items-center justify-center"
-    aria-hidden="true"
-  >
-    <div class="text-center">
-      <p class="text-contrast text-[10px] tracking-[0.3em] text-cream/80 uppercase">
-        Scroll
+  <div class="relative z-10 flex flex-1 items-end px-5 pb-16 md:px-12 md:pb-20 lg:px-16 lg:pb-24">
+    <Reveal client:visible y={20} className="max-w-xl">
+      <p class="text-on-photo text-on-photo-lg font-light">
+        Eagle Beach golden hour — handcrafted cocktails, curated rhythms, and the warmth of Aruba.
       </p>
-      <div class="mx-auto mt-2 h-10 w-px bg-gradient-to-b from-cream/70 to-transparent"></div>
-    </div>
+      <p
+        class="mt-8 text-[10px] tracking-[0.3em] text-cream/70 uppercase"
+        aria-hidden="true"
+      >
+        Scroll to enter the ritual
+      </p>
+    </Reveal>
   </div>
-
-  <!-- Bottom narrative — one short line, larger type -->
-  <SectionFootnote
-    paragraphs={[
-      'Eagle Beach golden hour — handcrafted cocktails, curated rhythms, and the warmth of Aruba.',
-    ]}
-    size="lg"
-  />
 </section>
 
 <script is:inline>
@@ -69,28 +58,22 @@ import SectionFootnote from '../components/SectionFootnote.astro';
       video.currentTime = 0;
       var playPromise = video.play();
       if (playPromise && typeof playPromise.catch === 'function') {
-        playPromise.catch(function () {
-          // Autoplay blocked or already handled; keep poster visible.
-        });
+        playPromise.catch(function () {});
       }
     }
 
     var loader = document.getElementById('horizons-loader');
-
     if (!loader) {
-      // Loader already dismissed; play immediately.
       startPlayback();
       return;
     }
 
-    // Wait for the loader to be removed from the DOM, then play from the start.
     var observer = new MutationObserver(function () {
       if (!document.getElementById('horizons-loader')) {
         observer.disconnect();
         startPlayback();
       }
     });
-
     observer.observe(document.body, { childList: true, subtree: true });
   })();
 </script>
