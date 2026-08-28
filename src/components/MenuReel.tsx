@@ -191,7 +191,7 @@ export default function MenuReel() {
 
       {category === 'drinks' && (
         <section
-          id="drinks"
+          id="mixology"
           className="menu-snap-section flex w-full flex-col bg-night"
           aria-label="Drinks"
         >
