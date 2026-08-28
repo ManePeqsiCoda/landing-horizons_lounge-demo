@@ -102,7 +102,7 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
             <li key={link.label}>
               <a
                 href={link.href}
-                className={`nav-link text-contrast font-serif text-xl tracking-wider lg:text-2xl ${
+                className={`nav-link text-contrast font-serif text-xl tracking-wider focus-visible:outline-none lg:text-2xl ${
                   link.accent ? 'text-sunset-yellow' : 'text-white'
                 }`}
               >
@@ -158,7 +158,7 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
                   <a
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className={`font-serif text-3xl tracking-wider ${
+                    className={`font-serif text-3xl tracking-wider focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-4 focus-visible:ring-offset-night ${
                       link.accent ? 'text-sunset-yellow' : 'text-white'
                     }`}
                   >

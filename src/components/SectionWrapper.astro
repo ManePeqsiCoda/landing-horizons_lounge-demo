@@ -20,18 +20,20 @@ interface Props {
   paragraphs: string[];
   tone?: 'a' | 'b';
   image?: string;
+  /** Footnote body size — `lg` for senior-friendly sections. */
+  footnoteSize?: 'default' | 'lg';
 }
 
-const { id, base, script, paragraphs, tone = 'a', image } = Astro.props;
+const { id, base, script, paragraphs, tone = 'a', image, footnoteSize = 'default' } = Astro.props;
 
 const overlayGradients = {
-  a: 'from-night/55 via-warm-charcoal/10 to-night/65',
-  b: 'from-night/50 via-terracotta/10 to-night/60',
+  a: 'from-night/65 via-warm-charcoal/25 to-night/75',
+  b: 'from-night/60 via-terracotta/20 to-night/70',
 };
 
 const fallbackGradients = {
-  a: 'from-night/80 via-warm-charcoal/60 to-night',
-  b: 'from-warm-charcoal/80 via-terracotta/40 to-night',
+  a: 'from-night/85 via-warm-charcoal/65 to-night',
+  b: 'from-warm-charcoal/85 via-terracotta/45 to-night',
 };
 ---
 
@@ -59,8 +61,12 @@ const fallbackGradients = {
     )
   }
 
-  {/* Top-left typographic lockup */}
+  {/* Top-left typographic lockup — local scrim for title contrast */}
   <div class="relative z-10 p-4 pt-10 md:p-12 md:pt-20 lg:p-16 lg:pt-24">
+    <div
+      class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-night/50 via-night/20 to-transparent"
+      aria-hidden="true"
+    />
     <SplitTitle base={base} script={script} />
   </div>
 
@@ -70,5 +76,5 @@ const fallbackGradients = {
   </div>
 
   {/* Full-width bottom narrative */}
-  <SectionFootnote paragraphs={paragraphs} />
+  <SectionFootnote paragraphs={paragraphs} size={footnoteSize} />
 </section>
