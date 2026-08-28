@@ -50,19 +50,46 @@ const structuredData = {
   <StickyMenu client:load pathname={Astro.url.pathname} />
 
   <main
-    class="reserve-stage relative min-h-screen overflow-hidden bg-night text-cream"
-    style="background-image: url('/images/sunset.png');"
+    id="reserve-main"
+    class="reserve-stage relative min-h-screen overflow-x-hidden bg-night text-cream"
   >
-    {/* Deep atmospheric blur layers */}
-    <div class="reserve-bg-blur absolute inset-0 scale-110 bg-cover bg-center bg-no-repeat" aria-hidden="true" />
-    <div class="reserve-vignette absolute inset-0" aria-hidden="true" />
-    <div class="reserve-light-leak absolute inset-0" aria-hidden="true" />
-    <div class="reserve-grain absolute inset-0 opacity-40" aria-hidden="true" />
+    {/* Atmospheric background — blur stays on this layer only, never on form content */}
+    <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div class="reserve-bg-blur absolute inset-0 scale-110 bg-cover bg-center bg-no-repeat" />
+      <div class="reserve-vignette absolute inset-0" />
+      <div class="reserve-light-leak absolute inset-0" />
+      <div class="reserve-grain absolute inset-0 opacity-40" />
+    </div>
 
     {/* Content */}
     <div class="reserve-content relative z-10 flex min-h-screen flex-col justify-start px-5 pt-28 pb-12 md:px-10 md:pt-32 lg:px-16 lg:pt-36">
       <div class="mx-auto w-full max-w-7xl">
-        <div class="reserve-form-panel">
+        <header class="mb-8 max-w-2xl md:mb-10">
+          <h1 class="font-serif text-[clamp(2.5rem,5vw,3.75rem)] font-bold tracking-tight text-cream">
+            Reserve your table
+          </h1>
+          <p class="mt-3 text-on-photo font-light">
+            Book directly with Horizons, or continue with OpenTable when the integration ships.
+          </p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a
+              href="#reserve-form"
+              class="inline-flex border border-sunset-yellow bg-sunset-yellow px-6 py-3 text-[10px] font-semibold tracking-[0.2em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+            >
+              Reserve with us
+            </a>
+            <button
+              type="button"
+              data-opentable-demo
+              aria-label="Book on OpenTable (demo notice)"
+              class="inline-flex border border-cream/35 bg-night/40 px-6 py-3 text-[10px] font-semibold tracking-[0.2em] text-cream uppercase backdrop-blur-sm transition-colors hover:border-sunset-yellow hover:text-sunset-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+            >
+              Reserve with OpenTable
+            </button>
+          </div>
+        </header>
+
+        <div id="reserve-form" class="reserve-form-panel scroll-mt-28">
           <ReservationForm stripePublishableKey={stripePublishableKey} client:load />
         </div>
       </div>
@@ -72,29 +99,32 @@ const structuredData = {
 
 <style is:global>
   .reserve-stage {
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background-color: var(--color-night);
   }
 
   .reserve-bg-blur {
     background-image: url('/images/sunset.png');
-    filter: blur(28px) saturate(1.15) brightness(0.85);
+    background-size: cover;
+    background-position: center;
+    filter: blur(28px) saturate(1.15) brightness(0.55);
     transform: scale(1.12);
+    /* Isolate filter so it cannot affect the form stacking context */
+    isolation: isolate;
+    will-change: transform;
   }
 
   .reserve-vignette {
     background:
-      radial-gradient(circle at 20% 30%, rgba(255, 122, 69, 0.18) 0%, transparent 45%),
-      radial-gradient(circle at 80% 70%, rgba(199, 91, 57, 0.14) 0%, transparent 40%),
-      linear-gradient(135deg, rgba(11, 11, 15, 0.72) 0%, rgba(43, 36, 32, 0.55) 50%, rgba(11, 11, 15, 0.78) 100%);
+      radial-gradient(circle at 20% 30%, rgba(255, 122, 69, 0.14) 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(199, 91, 57, 0.1) 0%, transparent 40%),
+      linear-gradient(135deg, rgba(11, 11, 15, 0.78) 0%, rgba(43, 36, 32, 0.62) 50%, rgba(11, 11, 15, 0.88) 100%);
   }
 
   .reserve-light-leak {
     background: radial-gradient(
       ellipse at 70% 20%,
-      rgba(255, 215, 0, 0.12) 0%,
-      rgba(255, 122, 69, 0.06) 25%,
+      rgba(255, 215, 0, 0.1) 0%,
+      rgba(255, 122, 69, 0.05) 25%,
       transparent 55%
     );
     mix-blend-mode: screen;
@@ -106,44 +136,15 @@ const structuredData = {
     pointer-events: none;
   }
 
-  .reserve-kicker {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--color-sunset-orange);
-  }
-
-  .reserve-headline {
-    font-family: var(--font-serif);
-    font-size: clamp(2.75rem, 6vw, 4.5rem);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    color: var(--color-cream);
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-  }
-
-  .reserve-lead {
-    font-family: var(--font-sans);
-    font-size: 1.05rem;
-    font-weight: 400;
-    line-height: 1.65;
-    color: rgba(253, 248, 241, 0.72);
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
-  }
-
   .reserve-form-panel {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(32px) saturate(160%);
-    -webkit-backdrop-filter: blur(32px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 1.5rem;
-    box-shadow:
-      0 24px 80px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    background: var(--color-night);
+    border: 1px solid rgba(253, 248, 241, 0.22);
+    border-radius: 0;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
     padding: 1.5rem;
+    color: var(--color-cream);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   @media (min-width: 768px) {
@@ -182,7 +183,7 @@ const structuredData = {
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(253, 248, 241, 0.65);
+    color: rgba(253, 248, 241, 0.85);
   }
 
   @media (min-width: 768px) {
@@ -205,40 +206,48 @@ const structuredData = {
   .reserve-input,
   .reserve-select {
     width: 100%;
+    min-height: 3.5rem;
     height: 3.5rem;
     appearance: none;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 0.875rem;
+    background: rgba(253, 248, 241, 0.1);
+    border: 1px solid rgba(253, 248, 241, 0.28);
+    border-radius: 0;
     color: #fdf8f1;
     font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 500;
     padding: 0 1rem;
     outline: none;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  textarea.reserve-input {
+    height: auto;
+    min-height: 5.5rem;
+    padding: 0.875rem 1rem;
+    line-height: 1.5;
+    resize: vertical;
   }
 
   .reserve-input::placeholder {
-    color: rgba(253, 248, 241, 0.35);
+    color: rgba(253, 248, 241, 0.45);
   }
 
   .reserve-input:hover,
   .reserve-select:hover {
-    background: rgba(255, 255, 255, 0.11);
-    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(253, 248, 241, 0.14);
+    border-color: rgba(253, 248, 241, 0.4);
   }
 
   .reserve-input:focus,
   .reserve-select:focus {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(253, 248, 241, 0.16);
     border-color: var(--color-sunset-orange);
-    box-shadow: 0 0 0 3px rgba(255, 122, 69, 0.18);
+    box-shadow: 0 0 0 3px rgba(255, 122, 69, 0.22);
   }
 
   .reserve-select {
     color-scheme: dark;
-    background-color: rgba(255, 255, 255, 0.09);
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23fdf8f1' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: right 1rem center;
     background-repeat: no-repeat;
@@ -246,7 +255,7 @@ const structuredData = {
     padding-right: 2.75rem;
   }
 
-.reserve-select-trigger {
+  .reserve-select-trigger {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -254,9 +263,9 @@ const structuredData = {
     width: 100%;
     height: 3.5rem;
     appearance: none;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 0.875rem;
+    background: rgba(253, 248, 241, 0.1);
+    border: 1px solid rgba(253, 248, 241, 0.28);
+    border-radius: 0;
     color: #fdf8f1;
     font-family: var(--font-sans);
     font-size: 1rem;
@@ -264,19 +273,19 @@ const structuredData = {
     padding: 0 1rem;
     outline: none;
     text-align: left;
-    transition: all 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
   }
 
   .reserve-select-trigger:hover {
-    background: rgba(255, 255, 255, 0.11);
-    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(253, 248, 241, 0.14);
+    border-color: rgba(253, 248, 241, 0.4);
   }
 
   .reserve-select-trigger:focus-visible {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(253, 248, 241, 0.16);
     border-color: var(--color-sunset-orange);
-    box-shadow: 0 0 0 3px rgba(255, 122, 69, 0.18);
+    box-shadow: 0 0 0 3px rgba(255, 122, 69, 0.22);
   }
 
   .reserve-select-trigger[aria-expanded="true"] {
@@ -300,16 +309,22 @@ const structuredData = {
     flex-shrink: 0;
     width: 3.5rem;
     height: 3.5rem;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(253, 248, 241, 0.1);
+    border: 1px solid rgba(253, 248, 241, 0.28);
+    border-radius: 0;
     color: #fdf8f1;
-    transition: all 0.18s ease;
+    transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
   }
 
   .reserve-stepper-btn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(253, 248, 241, 0.16);
     border-color: var(--color-sunset-orange);
     color: var(--color-sunset-yellow);
+  }
+
+  .reserve-stepper-btn:focus-visible {
+    outline: 2px solid var(--color-sunset-yellow);
+    outline-offset: 2px;
   }
 
   .reserve-stepper-btn:disabled {
@@ -324,9 +339,9 @@ const structuredData = {
     width: 100%;
     height: 3.5rem;
     text-align: center;
-    background: rgba(255, 255, 255, 0.05);
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(253, 248, 241, 0.08);
+    border-top: 1px solid rgba(253, 248, 241, 0.28);
+    border-bottom: 1px solid rgba(253, 248, 241, 0.28);
     border-left: none;
     border-right: none;
     color: #fdf8f1;
@@ -344,50 +359,39 @@ const structuredData = {
 
   .reserve-submit-button {
     width: 100%;
-    border-radius: 9999px;
-    background: linear-gradient(
-      135deg,
-      #fff9e6 0%,
-      var(--color-sunset-yellow) 40%,
-      #ffcf33 100%
-    );
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    color: var(--color-warm-charcoal);
+    border-radius: 0;
+    background: var(--color-sunset-yellow);
+    border: 1px solid var(--color-sunset-yellow);
+    color: var(--color-night);
     font-family: var(--font-sans);
-    font-size: 0.9375rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    padding: 1.25rem 2rem;
-    box-shadow:
-      0 10px 32px rgba(255, 215, 0, 0.35),
-      0 0 24px rgba(255, 215, 0, 0.18),
-      inset 0 1px 0 rgba(255, 255, 255, 0.65);
-    transition: all 0.25s ease;
+    padding: 1.15rem 2rem;
+    box-shadow: 0 10px 32px rgba(255, 215, 0, 0.22);
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
     cursor: pointer;
   }
 
   .reserve-submit-button:hover:not(:disabled) {
     transform: translateY(-2px);
-    background: linear-gradient(
-      135deg,
-      #fff 0%,
-      #fff9e6 45%,
-      var(--color-sunset-yellow) 100%
-    );
-    border-color: #fff;
-    box-shadow:
-      0 16px 44px rgba(255, 215, 0, 0.45),
-      0 0 32px rgba(255, 215, 0, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    background: var(--color-cream);
+    border-color: var(--color-cream);
+  }
+
+  .reserve-submit-button:focus-visible {
+    outline: 2px solid var(--color-sunset-yellow);
+    outline-offset: 3px;
   }
 
   .reserve-submit-button:disabled {
-    opacity: 0.35;
-    background: linear-gradient(135deg, #5c5649 0%, #3f3830 100%);
-    border-color: rgba(255, 255, 255, 0.12);
-    color: rgba(253, 248, 241, 0.45);
+    opacity: 0.4;
+    background: color-mix(in srgb, var(--color-warm-charcoal) 80%, transparent);
+    border-color: color-mix(in srgb, var(--color-cream) 15%, transparent);
+    color: color-mix(in srgb, var(--color-cream) 45%, transparent);
     box-shadow: none;
     cursor: not-allowed;
+    transform: none;
   }
 </style>

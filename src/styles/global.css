@@ -233,17 +233,7 @@ body {
   letter-spacing: 0.08em;
 }
 
-/* Menu focus: blur + dim the content while hovering the navigation on any page */
-#reel-main,
-#home-main,
-body > main {
-  transition: filter 0.5s ease;
-}
-body.menu-blur #reel-main,
-body.menu-blur #home-main,
-body.menu-blur > main {
-  filter: blur(6px) brightness(0.95);
-}
+/* (menu-blur removed — top navbar no longer dims the page) */
 
 /* Loader pulse */
 @keyframes horizons-pulse {

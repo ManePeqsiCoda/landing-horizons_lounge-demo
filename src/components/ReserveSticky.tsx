@@ -9,9 +9,11 @@ interface ReserveStickyProps {
 
 /**
  * Persistent Reserve CTAs: primary → internal /reserve, secondary → OpenTable demo notice.
+ * Auto-hides while the experiences EventCarousel is pinned so it does not cover captions.
  */
 export default function ReserveSticky({ homeReel = false }: ReserveStickyProps) {
   const [visible, setVisible] = useState(!homeReel);
+  const [carouselActive, setCarouselActive] = useState(false);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -29,17 +31,53 @@ export default function ReserveSticky({ homeReel = false }: ReserveStickyProps) 
     return () => window.removeEventListener('scroll', onScroll);
   }, [homeReel]);
 
-  // Hide on the reserve page itself
   useEffect(() => {
     if (window.location.pathname.startsWith('/reserve')) {
       setVisible(false);
     }
   }, []);
 
+  useEffect(() => {
+    const carousel = document.getElementById('event-carousel');
+    if (!carousel) return;
+
+    const sync = () => {
+      const pinned = document.documentElement.classList.contains('carousel-pinned');
+      const attr = carousel.getAttribute('data-carousel-active') === 'true';
+      setCarouselActive(pinned || attr);
+    };
+
+    sync();
+
+    const mo = new MutationObserver(sync);
+    mo.observe(carousel, { attributes: true, attributeFilter: ['data-carousel-active'] });
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        // Tall pin-spacer keeps the section intersecting while the gallery runs
+        if (entry.isIntersecting && entry.intersectionRatio > 0.35) {
+          sync();
+        } else if (!entry.isIntersecting) {
+          setCarouselActive(false);
+        }
+      },
+      { threshold: [0, 0.35, 0.6] },
+    );
+    io.observe(carousel);
+
+    return () => {
+      mo.disconnect();
+      io.disconnect();
+    };
+  }, []);
+
+  const show = visible && !carouselActive;
+
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[70] flex justify-center p-3 md:p-4">
       <AnimatePresence>
-        {visible && (
+        {show && (
           <motion.div
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}

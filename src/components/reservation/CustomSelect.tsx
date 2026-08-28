@@ -139,7 +139,7 @@ export default function CustomSelect({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="absolute z-50 mt-2 max-h-64 w-full overflow-auto rounded-xl border border-cream/20 bg-sunset-panel/98 p-1 shadow-2xl backdrop-blur-xl"
+            className="absolute z-50 mt-2 max-h-64 w-full overflow-auto border border-cream/20 bg-sunset-panel p-1 shadow-2xl"
           >
             {options.map((option, index) => {
               const isSelected = option.value === value;
@@ -152,7 +152,7 @@ export default function CustomSelect({
                   data-active={isHighlighted}
                   onClick={() => selectOption(index)}
                   onMouseEnter={() => setHighlightedIndex(index)}
-                  className={`cursor-pointer rounded-lg px-4 py-3 text-sm font-medium transition-colors ${
+                  className={`cursor-pointer px-4 py-3 text-sm font-medium transition-colors ${
                     isSelected
                       ? 'bg-sunset-orange/15 text-sunset-yellow'
                       : isHighlighted

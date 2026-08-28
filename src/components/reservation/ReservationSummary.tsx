@@ -40,7 +40,7 @@ export default function ReservationSummary({
     <div className="sticky top-6 space-y-4 lg:top-8">
       <motion.div
         layout
-        className="rounded-2xl border border-cream/15 bg-cream/8 p-6 shadow-2xl backdrop-blur-xl"
+        className="border border-cream/15 bg-[#171310] p-6 shadow-2xl"
       >
         <div className="flex items-center gap-2">
           <Sparkles size={16} strokeWidth={1.5} className="text-sunset-yellow" />
@@ -94,7 +94,7 @@ export default function ReservationSummary({
       </motion.div>
 
       <div
-        className={`rounded-xl border border-cream/10 p-4 backdrop-blur-md transition-colors duration-300 ${
+        className={`border border-cream/15 p-4 transition-colors duration-300 ${
           isComplete ? 'bg-emerald-500/10' : 'bg-cream/5'
         }`}
       >
