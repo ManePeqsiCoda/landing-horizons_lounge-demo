@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { OPENTABLE_DEMO_MESSAGE } from '../data/contact';
+import { OPENTABLE_DEMO_MESSAGE, RESERVE_PATH } from '../data/contact';
 
 const DISMISS_MS = 6500;
 
@@ -73,7 +73,7 @@ export default function OpenTableNotice() {
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <a
-                href="/reserve"
+                href={RESERVE_PATH}
                 className="inline-flex border border-sunset-yellow bg-sunset-yellow px-4 py-2 text-[10px] font-semibold tracking-[0.2em] text-night uppercase transition-colors hover:bg-transparent hover:text-sunset-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
               >
                 Reserve here instead

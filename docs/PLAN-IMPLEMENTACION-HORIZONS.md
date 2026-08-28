@@ -8,7 +8,8 @@
 **Fecha del plan:** 28 de agosto de 2026  
 **Rama de trabajo propuesta:** `fix/correcciones-cliente` (desde `main`)
 
-> **Fase 2 en curso** (rama `fix/correcciones-cliente`).  
+> **Fase 2 — P0/P1/P2 ejecutables cerrados** (rama `fix/correcciones-cliente`).  
+> Pendiente solo insumos cliente: WhatsApp, teléfono, redes, copy legal.  
 > **Decisiones de aprobación (28 ago 2026):**  
 > 1. Plan aprobado.  
 > 2. OpenTable **no** se integra: CTAs disparan toast/card demo (`OpenTableNotice`).  
@@ -188,9 +189,9 @@ Antes de editar, verificar usos:
 | P2-1 Redes | ☐ | ☑ | ☐ |
 | P2-2 Tel/email | ☐ | ☑ | ☐ |
 | P2-3 Legal | ☐ | ☑ | ☐ |
-| P2-4 Flujo Book único | ☐ | ☐ OpenTable URL | ☐ |
-| P2-5 Focus residual | ☐ | ☐ | ☐ |
-| Deuda `w-100` / `#171310` / logo Footer | ☐ | ☐ | ☐ si no se toca archivo |
+| P2-4 Flujo Book único | ☑ | ☐ OpenTable = demo toast | ☐ |
+| P2-5 Focus residual | ☑ | ☐ | ☐ |
+| Deuda `w-100` / `#171310` / logo Footer | ☑ (`w-100`, panel token) | ☐ | ☐ logo Footer diferido |
 
 ---
 

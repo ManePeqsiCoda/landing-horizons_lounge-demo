@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import HorizonsLogo from './HorizonsLogo';
+import { RESERVE_PATH } from '../data/contact';
 
 interface NavLink {
   label: string;
@@ -28,7 +29,7 @@ function getLinks(isHome: boolean): NavLink[] {
     { label: 'GALLERY', href: '/gallery' },
     { label: 'CULINARY & MIXOLOGY', href: '/menu' },
     { label: 'EXPERIENCES', href: '/experiences' },
-    { label: 'RESERVE WITH US', href: '/reserve', accent: true },
+    { label: 'RESERVE WITH US', href: RESERVE_PATH, accent: true },
     { label: 'CONTACT', href: isHome ? '#footer' : '/#footer' },
   ];
 }
@@ -119,7 +120,7 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
         aria-label="Open menu"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className={`text-contrast fixed right-4 top-4 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation transition-transform duration-500 ease-out md:right-12 ${
+        className={`text-contrast fixed right-4 top-4 z-50 flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation transition-transform duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night md:right-12 ${
           visible ? 'md:-translate-y-24 md:opacity-0 md:pointer-events-none' : ''
         }`}
       >
@@ -144,7 +145,7 @@ export default function StickyMenu({ pathname: propPathname }: StickyMenuProps) 
                 type="button"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
-                className="flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation"
+                className="flex cursor-pointer items-center gap-2 rounded-full bg-night/60 px-4 py-2 text-white backdrop-blur-sm touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
               >
                 <span className="text-[10px] font-medium tracking-[0.25em] uppercase">
                   Close

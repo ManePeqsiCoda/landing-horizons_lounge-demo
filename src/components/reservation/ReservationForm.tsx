@@ -121,7 +121,7 @@ function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean)
           <CreditCard size={16} strokeWidth={1.5} className='mx-2 text-center'/>
           Card Details
         </span>
-        <div className="reserve-control reserve-card-element rounded-xl border border-cream/15 bg-cream/8 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/12 w-100 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
+        <div className="reserve-control reserve-card-element w-full rounded-xl border border-cream/15 bg-cream/10 px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/15 focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.15)]">
           <CardElement
             id="card-element"
             options={cardOptions}

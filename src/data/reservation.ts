@@ -1,4 +1,6 @@
-export const RESERVATION_EMAIL = 'reservations@horizonsaruba.com';
+import { EMAIL } from './contact';
+
+export const RESERVATION_EMAIL = EMAIL;
 export const DEPOSIT_AMOUNT = 25;
 export const DEPOSIT_CURRENCY = 'USD';
 

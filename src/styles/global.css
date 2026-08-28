@@ -48,6 +48,8 @@
   --color-terracotta: #c75b39;
   --color-warm-charcoal: #2b2420;
   --color-shell: #faf3ea;
+  /* Dropdown / elevated panels on dark UI */
+  --color-sunset-panel: #171310;
 
   --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", Georgia, serif;

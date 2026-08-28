@@ -1,3 +1,5 @@
+import { RESERVE_PATH } from './contact';
+
 export interface EventItem {
   id: string;
   image: string;
@@ -28,7 +30,7 @@ export const EVENTS: EventItem[] = [
     date: 'SUNSET',
     dateKicker: 'EVERY',
     cta: 'Reserve a Spot',
-    ctaHref: '/reserve?event=sunset-ritual',
+    ctaHref: `${RESERVE_PATH}?event=sunset-ritual`,
   },
   {
     id: 'managers-cocktail-party',
@@ -43,7 +45,7 @@ export const EVENTS: EventItem[] = [
     date: '24',
     dateKicker: 'FRIDAY',
     cta: 'Join the Party',
-    ctaHref: '/reserve?event=managers-cocktail-party',
+    ctaHref: `${RESERVE_PATH}?event=managers-cocktail-party`,
   },
   {
     id: 'fajita-fridays',
@@ -58,6 +60,6 @@ export const EVENTS: EventItem[] = [
     date: '31',
     dateKicker: 'FRIDAY',
     cta: 'Book a Table',
-    ctaHref: '/reserve?event=fajita-fridays',
+    ctaHref: `${RESERVE_PATH}?event=fajita-fridays`,
   },
 ];

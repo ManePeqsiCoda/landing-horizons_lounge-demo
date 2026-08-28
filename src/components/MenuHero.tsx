@@ -20,7 +20,7 @@ export default function MenuHero({ onSelectDrinks, onSelectPlates }: MenuHeroPro
         type="button"
         onClick={onSelectDrinks}
         aria-label="View drinks"
-        className="menu-triangle drinks-area group absolute inset-0 z-10 flex items-start justify-start transition-colors duration-500 hover:bg-white/[0.03]"
+        className="menu-triangle drinks-area group absolute inset-0 z-10 flex items-start justify-start transition-colors duration-500 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sunset-yellow"
         style={{
           backgroundImage: 'url(/images/gallery/01.jpg)',
           backgroundSize: 'cover',
@@ -43,7 +43,7 @@ export default function MenuHero({ onSelectDrinks, onSelectPlates }: MenuHeroPro
         type="button"
         onClick={onSelectPlates}
         aria-label="View plates"
-        className="menu-triangle plates-area group absolute inset-0 z-10 flex items-end justify-end transition-colors duration-500 hover:bg-white/[0.03]"
+        className="menu-triangle plates-area group absolute inset-0 z-10 flex items-end justify-end transition-colors duration-500 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-sunset-yellow"
         style={{
           backgroundImage: 'url(/images/gallery/06.jpg)',
           backgroundSize: 'cover',
