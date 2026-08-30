@@ -1697,7 +1697,7 @@ video {
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.25s ease, background-color 0.25s ease;
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 @media (min-width: 700px) {
   .plates__tab {
@@ -1708,6 +1708,15 @@ video {
 }
 .plates__tab:hover {
   border-color: var(--line-strong);
+  transform: translateY(-3px);
+}
+.plates__tab-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 5.5rem;
+  border-radius: calc(var(--radius-md) - 6px);
+  overflow: hidden;
 }
 .plates__tab[aria-selected='true'] {
   border-color: var(--color-pine);
@@ -1717,9 +1726,12 @@ video {
 .plates__tab-img {
   width: 100%;
   height: 100%;
-  min-height: 5.5rem;
   object-fit: cover;
-  border-radius: calc(var(--radius-md) - 6px);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.plates__tab:hover .plates__tab-img,
+.plates__tab[aria-selected='true'] .plates__tab-img {
+  transform: scale(1.07);
 }
 .plates__tab-name {
   font-size: var(--text-body-lg);
@@ -1774,6 +1786,18 @@ video {
   padding: 1.1rem;
   background: var(--color-ivory);
   align-items: center;
+  transition: background-color 0.3s ease;
+}
+.plate-item:hover {
+  background: var(--color-ivory-alt);
+}
+.plate-item__media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 7rem;
+  border-radius: calc(var(--radius-md) - 6px);
+  overflow: hidden;
 }
 @media (min-width: 640px) {
   .plate-item {
@@ -1784,9 +1808,82 @@ video {
 .plate-item__img {
   width: 100%;
   height: 100%;
-  min-height: 7rem;
   object-fit: cover;
-  border-radius: calc(var(--radius-md) - 6px);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.plate-item:hover .plate-item__img {
+  transform: scale(1.08);
+}
+
+/* Staggered entrance: plays on scroll-in and replays on every tab switch
+   (the panel toggles display none -> grid, restarting CSS animations). */
+@keyframes plate-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes plate-item-img-in {
+  from {
+    transform: scale(1.16);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item {
+  animation: plate-item-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item__img {
+  animation: plate-item-img-in 1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(1),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(1) .plate-item__img {
+  animation-delay: 0.05s;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(2),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(2) .plate-item__img {
+  animation-delay: 0.12s;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(3),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(3) .plate-item__img {
+  animation-delay: 0.19s;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(4),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(4) .plate-item__img {
+  animation-delay: 0.26s;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(5),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(5) .plate-item__img {
+  animation-delay: 0.33s;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(6),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(6) .plate-item__img {
+  animation-delay: 0.4s;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(7),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(7) .plate-item__img {
+  animation-delay: 0.47s;
+}
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(8),
+.plates--inview .plates__panel:not([hidden]) .plate-item:nth-child(8) .plate-item__img {
+  animation-delay: 0.54s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .plates--inview .plates__panel:not([hidden]) .plate-item,
+  .plates--inview .plates__panel:not([hidden]) .plate-item__img {
+    animation: none;
+  }
+  .plates__tab,
+  .plates__tab-img,
+  .plate-item,
+  .plate-item__img {
+    transition: none;
+  }
 }
 .plate-item__body {
   display: grid;

@@ -32,7 +32,9 @@ import { plateSubcategories } from '../../data/menu';
           data-plates-tab={cat.id}
           data-reveal-item
         >
-          <img class="plates__tab-img" src={cat.image} alt="" loading="lazy" decoding="async" />
+          <span class="plates__tab-media">
+            <img class="plates__tab-img" src={cat.image} alt="" loading="lazy" decoding="async" />
+          </span>
           <span>
             <h3 class="plates__tab-name">{cat.name}</h3>
             <span class="plates__tab-count">{cat.items.length} plates · from ${Math.min(...cat.items.map((it) => it.price))}</span>
@@ -56,7 +58,9 @@ import { plateSubcategories } from '../../data/menu';
         <div class="plates__grid">
           {cat.items.map((item) => (
             <article class="plate-item">
-              <img class="plate-item__img" src={item.image} alt={item.name} loading="lazy" decoding="async" />
+              <span class="plate-item__media">
+                <img class="plate-item__img" src={item.image} alt={item.name} loading="lazy" decoding="async" />
+              </span>
               <div class="plate-item__body">
                 <div class="plate-item__top">
                   <h4 class="plate-item__name">{item.name}</h4>
@@ -76,8 +80,27 @@ import { plateSubcategories } from '../../data/menu';
 </section>
 
 <script>
+  const section = document.querySelector<HTMLElement>('.plates');
   const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-plates-tab]'));
   const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-plates-panel]'));
+
+  // Gate the entrance animation on scroll-in; CSS replays it on every
+  // tab switch because the panel toggles display none -> grid.
+  if (section && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          section.classList.add('plates--inview');
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12 },
+    );
+    io.observe(section);
+  } else {
+    section?.classList.add('plates--inview');
+  }
+
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
       const id = tab.dataset.platesTab;
