@@ -63,18 +63,18 @@ export default function OpenTableNotice() {
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
             transition={{ duration: reduceMotion ? 0.15 : 0.28, ease: 'easeOut' }}
-            className="pointer-events-auto max-w-sm border border-cream/20 bg-night/95 p-5 text-cream shadow-[0_16px_48px_rgba(0,0,0,0.45)] backdrop-blur-md"
+            className="pointer-events-auto max-w-sm border border-ivory/20 bg-teal-night/95 p-5 text-ivory shadow-[0_16px_48px_rgba(6,44,51,0.45)] backdrop-blur-md"
           >
-            <p className="text-[10px] font-semibold tracking-[0.28em] text-sunset-yellow uppercase">
+            <p className="text-[13px] font-semibold tracking-[0.28em] text-sunflower uppercase">
               OpenTable — prototype
             </p>
-            <p className="mt-3 font-sans text-sm leading-relaxed text-cream/90">
+            <p className="mt-3 font-sans text-base leading-relaxed text-ivory/90">
               {OPENTABLE_DEMO_MESSAGE}
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-3">
               <a
                 href={RESERVE_PATH}
-                className="inline-flex border border-sunset-yellow bg-sunset-yellow px-4 py-2 text-[10px] font-semibold tracking-[0.2em] text-night uppercase transition-colors hover:bg-transparent hover:text-sunset-yellow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+                className="inline-flex border border-sunflower bg-sunflower px-4 py-2 text-[13px] font-semibold tracking-[0.2em] text-pine uppercase transition-colors hover:bg-transparent hover:text-sunflower focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunflower focus-visible:ring-offset-2 focus-visible:ring-offset-teal-night"
               >
                 Reserve here instead
               </a>
@@ -82,7 +82,7 @@ export default function OpenTableNotice() {
                 ref={closeBtnRef}
                 type="button"
                 onClick={dismiss}
-                className="text-[10px] font-semibold tracking-[0.2em] text-cream/70 uppercase transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
+                className="text-[13px] font-semibold tracking-[0.2em] text-ivory/85 uppercase transition-colors hover:text-ivory focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunflower focus-visible:ring-offset-2 focus-visible:ring-offset-teal-night"
               >
                 Dismiss
               </button>

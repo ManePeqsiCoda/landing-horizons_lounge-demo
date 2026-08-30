@@ -124,7 +124,7 @@ export default function CustomSelect({
         <ChevronDown
           size={18}
           strokeWidth={1.5}
-          className={`shrink-0 text-cream/60 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+          className={`shrink-0 text-ivory/85 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         />
       </button>
       <input type="hidden" name={name} value={value} />
@@ -139,7 +139,7 @@ export default function CustomSelect({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="absolute z-50 mt-2 max-h-64 w-full overflow-auto border border-cream/20 bg-sunset-panel p-1 shadow-2xl"
+            className="absolute z-50 mt-2 max-h-64 w-full overflow-auto border border-ivory/20 bg-pine-deep p-1 shadow-2xl"
           >
             {options.map((option, index) => {
               const isSelected = option.value === value;
@@ -154,10 +154,10 @@ export default function CustomSelect({
                   onMouseEnter={() => setHighlightedIndex(index)}
                   className={`cursor-pointer px-4 py-3 text-sm font-medium transition-colors ${
                     isSelected
-                      ? 'bg-sunset-orange/15 text-sunset-yellow'
+                      ? 'bg-coral/15 text-sunflower'
                       : isHighlighted
-                        ? 'bg-cream/10 text-sunset-orange'
-                        : 'text-cream hover:bg-cream/10 hover:text-sunset-orange'
+                        ? 'bg-ivory/10 text-coral'
+                        : 'text-ivory hover:bg-ivory/10 hover:text-coral'
                   }`}
                 >
                   {option.label}

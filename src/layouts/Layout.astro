@@ -7,7 +7,6 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
-  reel?: boolean;
   robots?: string;
 }
 
@@ -15,7 +14,6 @@ const {
   title = 'Horizons Lounge Aruba — Sunset Ritual',
   description = 'Horizons Lounge at Amsterdam Manor, Aruba. Signature cocktails, sushi, live music and the most iconic sunset ritual on Eagle Beach.',
   image = '/images/horizons-logo.svg',
-  reel = false,
   robots = 'index, follow',
 } = Astro.props;
 
@@ -23,8 +21,24 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
 ---
 
 <!doctype html>
-<html lang="en" {...reel ? { 'data-reel': '' } : {}}>
+<html lang="en">
   <head>
+    <!--
+      DIRECTION CONTRACT — Horizons Lounge redesign (2026-08-29)
+      THESIS: The sunset ritual told with Amsterdam Manor's editorial grammar —
+      one sans family (Satoshi) at extreme scale contrast, saturated color
+      blocks, 1px hairlines. Never a deck of slides.
+      OWN-WORLD: Sunset palette (ivory → sunflower → dusk → teal-night) and the
+      horizon line-art motif. Sister of Amsterdam Manor, never its twin.
+      STORY: Dusk arrives in acts — Ritual (ivory) → Culinary (sunflower) →
+      Nights (teal-night) → Social (photo) → Hotel (teal) → Gallery (ivory).
+      FIRST VIEWPORT: Full-bleed cinematic hero, 2-line display headline,
+      reservation bar docked at the bottom. A guest can book in one gesture.
+      FORM: Radius 8px controls / 16px media / 99px floating pills. Buttons
+      min-height 56px. Body ≥18px, labels ≥13px, WCAG AA via text-safe tokens.
+      FINISH: GSAP scroll motion (reveal/split/image-wipe/counters), sunflower
+      scroll-progress, ::selection + focus ring from the palette, skip link.
+    -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content={robots} />
@@ -47,15 +61,20 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
 
-    <!-- LCP: preload brand asset -->
-    <link rel="preload" as="image" href="/images/horizons-logo.svg" />
+    <!-- Fonts: Satoshi self-hosted -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/satoshi-500.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/satoshi-400.woff2" crossorigin />
 
     <!-- Page-specific head injections -->
     <slot name="head" />
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <Loader />
     <slot />
     <OpenTableNotice client:load />
+    <script>
+      import '../scripts/motion';
+    </script>
   </body>
 </html>

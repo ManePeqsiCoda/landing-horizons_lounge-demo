@@ -1,0 +1,90 @@
+---
+/**
+ * The Kitchen — category explorer. The old vertical category cards return
+ * as image tabs; the active category opens a hairline grid of product
+ * cards with photography, description, tags and tabular prices.
+ */
+import { plateSubcategories } from '../../data/menu';
+---
+
+<section class="plates" id="culinary" aria-labelledby="plates-title">
+  <div class="page-pad">
+    <div class="plates__head">
+      <div>
+        <p class="section-label" data-reveal>The Kitchen</p>
+        <h2 class="plates__title display-copy" id="plates-title" data-split>Island fusion, plated with intent</h2>
+      </div>
+      <p class="plates__lead lead-copy" data-reveal>
+        Three families of plates — coastal entries, fusion mains and the
+        specialty sushi &amp; plant-based program. Pick a family to explore it.
+      </p>
+    </div>
+
+    <div class="plates__tabs" role="tablist" aria-label="Menu categories" data-reveal-stagger>
+      {plateSubcategories.map((cat, i) => (
+        <button
+          type="button"
+          role="tab"
+          class="plates__tab"
+          id={`tab-${cat.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-controls={`panel-${cat.id}`}
+          data-plates-tab={cat.id}
+          data-reveal-item
+        >
+          <img class="plates__tab-img" src={cat.image} alt="" loading="lazy" decoding="async" />
+          <span>
+            <h3 class="plates__tab-name">{cat.name}</h3>
+            <span class="plates__tab-count">{cat.items.length} plates · from ${Math.min(...cat.items.map((it) => it.price))}</span>
+          </span>
+          <svg class="plates__tab-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      ))}
+    </div>
+
+    {plateSubcategories.map((cat, i) => (
+      <div
+        class="plates__panel"
+        id={`panel-${cat.id}`}
+        role="tabpanel"
+        aria-labelledby={`tab-${cat.id}`}
+        hidden={i !== 0}
+        data-plates-panel={cat.id}
+      >
+        <div class="plates__grid">
+          {cat.items.map((item) => (
+            <article class="plate-item">
+              <img class="plate-item__img" src={item.image} alt={item.name} loading="lazy" decoding="async" />
+              <div class="plate-item__body">
+                <div class="plate-item__top">
+                  <h4 class="plate-item__name">{item.name}</h4>
+                  <span class="plate-item__price">${item.price}</span>
+                </div>
+                <p class="plate-item__desc">{item.description}</p>
+                <span class="plate-item__tags">
+                  {item.tags.map((tag) => <span class="plate-item__tag">{tag}</span>)}
+                </span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-plates-tab]'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-plates-panel]'));
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const id = tab.dataset.platesTab;
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+      panels.forEach((p) => {
+        p.hidden = p.dataset.platesPanel !== id;
+      });
+    });
+  });
+</script>

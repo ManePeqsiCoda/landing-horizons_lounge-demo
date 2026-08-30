@@ -1,64 +1,67 @@
 ---
-import SplitTitle from '../components/SplitTitle.astro';
-import Reveal from '../components/Reveal';
-import StoryImage from '../components/StoryImage';
-
-const plates = [
-  'Local catch, tropical fruit, Caribbean spice',
-  'Plates designed for the table, not the feed',
-  'A culinary story that unfolds with every bite',
-];
+/**
+ * Culinary & Mixology — full sunflower block (mirror of Amsterdam's yellow
+ * Dining section): two full-bleed media cards with pine hairlines.
+ */
 ---
 
-<!-- Culinary — cascade: wide media then narrative rail -->
-<section
-  id="culinary"
-  class="story-section ritual-phase-golden relative bg-night py-24 md:py-32 lg:py-40"
-  data-ritual-phase="golden"
->
-  <div class="mx-auto max-w-7xl px-5 md:px-10 lg:px-16">
-    <Reveal client:visible y={20} className="max-w-3xl">
-      <SplitTitle base="CULINARY" script="Art" />
-    </Reveal>
+<section class="culinary horizon-motif" aria-labelledby="culinary-title">
+  <div class="page-pad">
+    <div class="culinary__head">
+      <div>
+        <p class="section-label" data-reveal>Culinary &amp; Mixology</p>
+        <h2 class="culinary__title display-copy" id="culinary-title" data-split>
+          Crafted for golden light
+        </h2>
+      </div>
+      <p class="culinary__lead lead-copy" data-reveal>
+        A kitchen that plates the Caribbean with intent, and a bar that pours
+        the sunset back into the glass. Menus change with the island; the
+        ritual does not.
+      </p>
+    </div>
 
-    <div class="mt-12 grid gap-8 md:mt-16 md:grid-cols-12 md:gap-10">
-      <Reveal client:visible delay={0.05} scale={0.98} className="relative md:col-span-8">
-        <div
-          class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-night/55 via-terracotta/10 to-transparent"
-          aria-hidden="true"
+    <div class="culinary__cards" data-reveal-stagger>
+      <a href="/menu#culinary" class="culinary-card" data-reveal-item>
+        <img
+          src="/images/plates/signature-entree.jpg"
+          alt="Chef's signature entrée with golden butter sauce"
+          loading="lazy"
+          decoding="async"
         />
-        <StoryImage
-          client:visible
-          src="/images/gallery/07.jpg"
-          className="aspect-[16/10] w-full md:min-h-[52vh] md:aspect-auto"
-          fromScale={1.08}
+        <span class="culinary-card__shade" aria-hidden="true"></span>
+        <span class="culinary-card__body">
+          <h3 class="culinary-card__name">The Kitchen</h3>
+          <span class="culinary-card__meta">
+            Island fusion, sushi, plant-based — from $17
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+        </span>
+      </a>
+      <a href="/menu#drinks" class="culinary-card" data-reveal-item>
+        <img
+          src="/images/drinks/tropical-mixology.jpg"
+          alt="Tropical mixology creations at the Horizons bar"
+          loading="lazy"
+          decoding="async"
         />
-      </Reveal>
+        <span class="culinary-card__shade" aria-hidden="true"></span>
+        <span class="culinary-card__body">
+          <h3 class="culinary-card__name">The Bar</h3>
+          <span class="culinary-card__meta">
+            Signature cocktails, tropical mixology — from $12
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+        </span>
+      </a>
+    </div>
 
-      <Reveal client:visible delay={0.14} y={28} className="flex flex-col justify-end md:col-span-4">
-        <p class="text-on-photo font-light">
-          Our kitchen meets island harvest and global technique — sushi, plant-forward bowls, flame-kissed flatbreads made to share.
-        </p>
-        <ul class="mt-8 space-y-4 border-t border-cream/15 pt-6">
-          {
-            plates.map((line, i) => (
-              <li class="text-on-photo border-b border-cream/10 pb-4 text-sm font-light last:border-0 md:text-base">
-                <Reveal client:visible delay={0.18 + i * 0.06} y={12} as="span">
-                  {line}
-                </Reveal>
-              </li>
-            ))
-          }
-        </ul>
-        <Reveal client:visible delay={0.36} y={14} className="mt-8">
-          <a
-            href="/menu#culinary"
-            class="inline-flex border border-sunset-yellow bg-sunset-yellow px-8 py-3 text-[10px] font-semibold tracking-[0.22em] text-night uppercase transition-colors hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sunset-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-night"
-          >
-            View culinary &amp; mixology
-          </a>
-        </Reveal>
-      </Reveal>
+    <div class="culinary__cta" data-reveal>
+      <a href="/menu" class="btn btn--pine">View the full menu</a>
     </div>
   </div>
 </section>

@@ -1,0 +1,58 @@
+---
+/**
+ * Nights & Happy Hours — teal-night editorial list with hairlines
+ * (mirror of Amsterdam's Experiences list). Times carry the information;
+ * thumbs expand on hover (desktop).
+ */
+import { EVENTS } from '../data/events';
+
+const ROWS = EVENTS.map((event) => ({
+  href: `/experiences#${event.id}`,
+  time: event.id === 'sunset-ritual' ? 'Daily · 6 PM' : 'Fridays',
+  name: event.title,
+  detail: event.kicker,
+  image: event.image,
+  imageAlt: event.imageAlt,
+}));
+---
+
+<section class="nights horizon-motif horizon-motif--on-dark" aria-labelledby="nights-title">
+  <div class="page-pad">
+    <div class="nights__head">
+      <div>
+        <p class="section-label" data-reveal style="color: var(--color-amber-light);">Nights &amp; Happy Hours</p>
+        <h2 class="nights__title display-copy" id="nights-title" data-split>
+          The week at Horizons
+        </h2>
+      </div>
+      <p class="nights__lead lead-copy" data-reveal>
+        Three ways to meet the Aruba sunset — from the quiet magic of the
+        daily ritual to the lively hum of Fajita Fridays.
+      </p>
+    </div>
+
+    <div class="nights__list" data-reveal-stagger>
+      {ROWS.map((row) => (
+        <a href={row.href} class="night-row" data-reveal-item>
+          <span class="night-row__time">{row.time}</span>
+          <h3 class="night-row__name">{row.name}</h3>
+          <span class="night-row__detail">{row.detail}</span>
+          <span class="night-row__thumb" aria-hidden="true">
+            <img src={row.image} alt="" loading="lazy" decoding="async" />
+          </span>
+          <svg class="night-row__arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7 17L17 7M9 7h8v8" />
+          </svg>
+        </a>
+      ))}
+    </div>
+
+    <div class="nights__note" data-reveal>
+      <p class="nights__hh">
+        Happy Hour twice daily — <strong>5:30–6:30 PM</strong> at sunset and
+        <strong> 9:00–10:00 PM</strong> late.
+      </p>
+      <a href="/experiences" class="btn btn--ghost-light">All experiences</a>
+    </div>
+  </div>
+</section>

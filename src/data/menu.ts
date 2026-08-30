@@ -1,14 +1,14 @@
 /**
- * Datos del menú — Horizons Lounge Aruba.
- * Imágenes: fotografía local en /public/images/plates y /public/images/gallery
- * para garantizar que carguen sin depender de servicios externos.
+ * Menu data — Horizons Lounge Aruba.
+ * Images: local photography in /public/images/plates and /public/images/gallery
+ * so everything loads without external services.
  */
 
 export interface MenuItem {
   id: string;
   name: string;
   description: string;
-  /** Precio en USD. */
+  /** Price in USD. */
   price: number;
   tags: string[];
   featured?: boolean;
@@ -18,7 +18,7 @@ export interface MenuItem {
 export interface PlateSubcategory {
   id: string;
   name: string;
-  /** Etiqueta corta para la tarjeta vertical. */
+  /** Short label for the vertical card. */
   shortLabel: string;
   image: string;
   items: MenuItem[];
@@ -30,7 +30,7 @@ export const drinks: MenuItem[] = [
     name: 'Signature Cocktails',
     featured: true,
     description:
-      'Creaciones exclusivas de nuestro bar team, inspiradas en la paleta del atardecer arubiano: cítricos brillantes, rones añejos y toques efervescentes que capturan el espíritu del Sunset Ritual.',
+      'Exclusive creations from our bar team, inspired by the palette of the Aruban sunset: bright citrus, aged rums and sparkling touches that capture the spirit of the Sunset Ritual.',
     price: 19,
     tags: ['Horizons Exclusive', 'Sunset Ritual', 'House Favorite'],
     image: '/images/drinks/signature-cocktail.jpg',
@@ -40,7 +40,7 @@ export const drinks: MenuItem[] = [
     name: 'Tropical Mixology',
     featured: true,
     description:
-      'Técnicas contemporáneas aplicadas a frutas de la isla — piña asada, coco fresco, maracuyá y tamarindo — para una carta que huele y sabe a Caribe en cada sorbo.',
+      'Contemporary techniques applied to island fruits — roasted pineapple, fresh coconut, passion fruit and tamarind — for a menu that smells and tastes like the Caribbean in every sip.',
     price: 18,
     tags: ['Island Fruits', 'Craft', 'Tropical'],
     image: '/images/drinks/tropical-mixology.jpg',
@@ -50,7 +50,7 @@ export const drinks: MenuItem[] = [
     name: 'Margaritas',
     featured: true,
     description:
-      'Tequilas y mezcales seleccionados, cítricos exprimidos al momento y un borde de sal de mar que evoca la brisa de Eagle Beach. Clásicas, de fruta o con un twist de agave ahumado.',
+      'Selected tequilas and mezcals, freshly squeezed citrus and a sea-salt rim that evokes the Eagle Beach breeze. Classic, fruit-forward, or with a smoked-agave twist.',
     price: 17,
     tags: ['Tequila', 'Smoked Salt', 'Citrus Forward'],
     image: '/images/drinks/margarita.jpg',
@@ -60,7 +60,7 @@ export const drinks: MenuItem[] = [
     name: 'Mojitos',
     featured: true,
     description:
-      'Ron premium, hierbabuena local, lima y azúcar de caña sobre hielo triturado. Refrescantes, aromáticos y perfectos para el mediodía bajo el sol de Aruba.',
+      'Premium rum, local hierbabuena mint, lime and cane sugar over crushed ice. Refreshing, aromatic, and perfect for midday under the Aruba sun.',
     price: 16,
     tags: ['Rum', 'Mint', 'Poolside'],
     image: '/images/drinks/mojito.jpg',
@@ -70,7 +70,7 @@ export const drinks: MenuItem[] = [
     name: 'Espresso Martinis',
     featured: true,
     description:
-      'El clásico nocturno reinterpretado con espresso arubano recién preparado, vodka premium y un delicado licor de café. La energía que necesitas antes de la cena o la fiesta.',
+      'The nighttime classic reinterpreted with freshly pulled Aruban espresso, premium vodka and a delicate coffee liqueur. The energy you need before dinner or the party.',
     price: 18,
     tags: ['Coffee', 'After Dinner', 'Nightcap'],
     image: '/images/drinks/espresso-martini.jpg',
@@ -80,7 +80,7 @@ export const drinks: MenuItem[] = [
     name: 'Tropical Old Fashioneds',
     featured: true,
     description:
-      'Whisky infusionado con especias caribeñas, bitter aromático, un toque de miel local y cáscara de naranja flameada. Elegancia atemporal con alma tropical.',
+      'Whisky infused with Caribbean spices, aromatic bitters, a touch of local honey and a flamed orange peel. Timeless elegance with a tropical soul.',
     price: 19,
     tags: ['Whisky', 'Spiced', 'Smoked'],
     image: '/images/drinks/tropical-old-fashioned.jpg',
@@ -90,14 +90,14 @@ export const drinks: MenuItem[] = [
     name: 'Twice-daily Happy Hour',
     featured: true,
     description:
-      'Dos momentos al día para brindar: atardecer y media noche. Selección de cócteles, vinos y cervezas artesanales a precios especiales, porque el ritual debe repetirse.',
+      'Two moments a day to toast: sunset and late night. A selection of cocktails, wines and craft beers at special prices — because the ritual deserves an encore.',
     price: 12,
     tags: ['Sunset', 'Late Night', 'Value'],
     image: '/images/drinks/happy-hour.jpg',
   },
 ];
 
-/** Subcategorías de PLATES con sus respectivos ítems. */
+/** PLATES subcategories with their items. */
 export const plateSubcategories: PlateSubcategory[] = [
   {
     id: 'entries',
@@ -109,7 +109,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'tuna-tartare',
         name: 'Tuna Tartare',
         description:
-          'Atún fresco cortado a mano, aguacate, pepino, ajonjolí tostado y un toque cítrico de yuzu. Ligero, fresco y elegante.',
+          'Hand-cut fresh tuna, avocado, cucumber, toasted sesame and a citrus touch of yuzu. Light, fresh and elegant.',
         price: 21,
         tags: ['Raw', 'Fresh', 'Sharing'],
         image: '/images/gallery/07.jpg',
@@ -118,7 +118,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'crispy-calamari',
         name: 'Crispy Calamari',
         description:
-          'Calamari dorado y crujiente servido con alioli de ajo asado y limón. Un clásico costero con twist caribeño.',
+          'Golden, crispy calamari served with roasted-garlic aioli and lemon. A coastal classic with a Caribbean twist.',
         price: 18,
         tags: ['Crispy', 'Seafood', 'Shareable'],
         image: '/images/plates/crispy-calamari.jpg',
@@ -127,7 +127,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'tropical-ceviche',
         name: 'Tropical Ceviche',
         description:
-          'Pescado del día marinado en lima, leche de tigre, mango, chile serrano y cilantro. Frescura tropical en cada bocado.',
+          'Catch of the day marinated in lime, leche de tigre, mango, serrano chile and cilantro. Tropical freshness in every bite.',
         price: 19,
         tags: ['Citrus', 'Local Fish', 'Gluten-free'],
         image: '/images/gallery/06.jpg',
@@ -144,7 +144,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'aruba-flatbread',
         name: 'Aruba Flatbread',
         description:
-          'Masa fina y crujiente con queso de cabra local, tomates cherry confitados, albahaca y reducción de balsámico.',
+          'Thin, crispy crust with local goat cheese, confit cherry tomatoes, basil and a balsamic reduction.',
         price: 22,
         tags: ['Flatbread', 'Vegetarian', 'Sharing'],
         image: '/images/plates/aruba-flatbread.jpg',
@@ -153,7 +153,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'eagle-beach-burger',
         name: 'Eagle Beach Burger',
         description:
-          'Carne premium, queso cheddar maduro, cebolla caramelizada, tomate, lechuga y salsa secreta en brioche tostado.',
+          'Premium beef, aged cheddar, caramelized onion, tomato, lettuce and secret sauce on a toasted brioche bun.',
         price: 24,
         tags: ['Gourmet', 'Burger', 'Comfort'],
         image: '/images/plates/eagle-beach-burger.jpg',
@@ -162,7 +162,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'caribbean-tacos',
         name: 'Caribbean Tacos',
         description:
-          'Tres tacos de pescado crocante o pollo jerk con repollo, salsa de piña picante y cilantro. Sabores de la isla.',
+          'Three crispy fish or jerk chicken tacos with cabbage, spicy pineapple salsa and cilantro. Island flavors.',
         price: 20,
         tags: ['Tacos', 'Spicy', 'Street Food'],
         image: '/images/plates/caribbean-tacos.jpg',
@@ -171,7 +171,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'loaded-nachos',
         name: 'Loaded Nachos',
         description:
-          'Totopos cubiertos con queso fundido, jalapeños, frijoles, guacamole, pico de gallo y crema agria. Para compartir.',
+          'Tortilla chips layered with melted cheese, jalapeños, beans, guacamole, pico de gallo and sour cream. Made for sharing.',
         price: 19,
         tags: ['Nachos', 'Sharing', 'Cheesy'],
         image: '/images/gallery/05.jpg',
@@ -180,7 +180,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'coconut-shrimp',
         name: 'Coconut Shrimp',
         description:
-          'Camarones empanizados en coco tostado, servidos con salsa de mango y chile. Crujiente, dulce y tropical.',
+          'Shrimp breaded in toasted coconut, served with a mango-chile sauce. Crispy, sweet and tropical.',
         price: 23,
         tags: ['Shrimp', 'Crispy', 'Tropical'],
         image: '/images/plates/coconut-shrimp.jpg',
@@ -189,7 +189,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'tuna-nachos',
         name: 'Tuna Nachos',
         description:
-          'Wontons crujientes cubiertos con atún fresco, aguacate, salsa de sriracha-mayonesa y cebollín.',
+          'Crispy wontons topped with fresh tuna, avocado, sriracha-mayo and scallions.',
         price: 25,
         tags: ['Tuna', 'Wonton', 'Premium'],
         image: '/images/gallery/05.jpg',
@@ -198,7 +198,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'pasta-aruba',
         name: 'Pasta Aruba',
         description:
-          'Pasta fresca con langostinos, tomates cherry, ajo, vino blanco y un toque de chile. Elegancia mediterránea con vista al mar.',
+          'Fresh pasta with prawns, cherry tomatoes, garlic, white wine and a touch of chile. Mediterranean elegance with an ocean view.',
         price: 28,
         tags: ['Pasta', 'Seafood', 'Mediterranean'],
         image: '/images/plates/pasta-aruba.jpg',
@@ -207,7 +207,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'fresh-island-salad',
         name: 'Fresh Island Salad',
         description:
-          'Mix de hojas verdes, aguacate, mango, nueces caramelizadas, queso feta y vinagreta de maracuyá.',
+          'Mixed greens, avocado, mango, candied nuts, feta and a passion-fruit vinaigrette.',
         price: 17,
         tags: ['Salad', 'Fresh', 'Vegetarian'],
         image: '/images/plates/fresh-island-salad.jpg',
@@ -216,7 +216,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'signature-entree',
         name: 'Signature Entrée',
         description:
-          'Plato insignia del chef: filete de pescado fresco en salsa de mantequilla dorada con vegetales de temporada y puré de batata.',
+          "The chef's flagship dish: fresh fish fillet in golden butter sauce with seasonal vegetables and sweet-potato purée.",
         price: 34,
         tags: ['Chef Favorite', 'Signature', 'Fine Dining'],
         image: '/images/plates/signature-entree.jpg',
@@ -233,7 +233,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'handcrafted-sushi',
         name: 'Handcrafted Sushi',
         description:
-          'Selección de nigiri y sashimi elaborados con pescado fresco del día, arroz sazonado y wasabi natural.',
+          "A selection of nigiri and sashimi made with the day's freshest catch, seasoned rice and natural wasabi.",
         price: 26,
         tags: ['Sushi', 'Raw', 'Artisan'],
         image: '/images/plates/handcrafted-sushi.jpg',
@@ -242,7 +242,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'sunset-sushi-roll',
         name: 'Sunset Sushi Roll',
         description:
-          'Roll especial del horizonte con atún picante, aguacate, mango, tobiko y un toque de sriracha-mayonesa.',
+          "The horizon's special roll with spicy tuna, avocado, mango, tobiko and a touch of sriracha-mayo.",
         price: 24,
         tags: ['Signature Roll', 'Spicy', 'Mango'],
         image: '/images/plates/sushi-platter.jpg',
@@ -251,7 +251,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'vegan-poke-bowl',
         name: 'Vegan Poke Bowl',
         description:
-          'Bowl vegano con quinoa, tofu marinado, edamame, aguacate, pepino, zanahoria y aderezo de sésamo.',
+          'Vegan bowl with quinoa, marinated tofu, edamame, avocado, cucumber, carrot and sesame dressing.',
         price: 21,
         tags: ['Vegan', 'Healthy', 'Bowl'],
         image: '/images/gallery/07.jpg',
@@ -260,7 +260,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'vegetarian-tasting',
         name: 'Vegetarian Tasting',
         description:
-          'Selección de cuatro preparaciones vegetarianas que celebran los vegetales locales de Aruba.',
+          'A selection of four vegetarian preparations celebrating Aruba’s local produce.',
         price: 29,
         tags: ['Vegetarian', 'Tasting', 'Local'],
         image: '/images/plates/vegetarian-tasting.jpg',
@@ -269,7 +269,7 @@ export const plateSubcategories: PlateSubcategory[] = [
         id: 'gluten-free-seafood',
         name: 'Gluten-free Seafood',
         description:
-          'Mariscos a la plancha con vegetales frescos, hierbas aromáticas y aceite de oliva. Sin gluten, sin concesiones.',
+          'Grilled seafood with fresh vegetables, aromatic herbs and olive oil. Gluten-free, no compromises.',
         price: 32,
         tags: ['Gluten-free', 'Seafood', 'Grilled'],
         image: '/images/plates/gluten-free-seafood.jpg',

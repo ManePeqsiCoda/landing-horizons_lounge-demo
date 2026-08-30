@@ -1,39 +1,51 @@
 ---
-import SplitTitle from '../components/SplitTitle.astro';
-import Reveal from '../components/Reveal';
-import StoryImage from '../components/StoryImage';
+/**
+ * The Ritual — ivory editorial block: display + lead (2fr/1fr), then a
+ * collage of photo / stat / photo. The 2× stat is the double daily
+ * Happy Hour, counted up with GSAP.
+ */
 ---
 
-<!-- Ritual — day phase: editorial text + growing photography -->
-<section
-  id="ritual"
-  class="story-section ritual-phase-day relative bg-night py-24 md:py-32 lg:py-40"
-  data-ritual-phase="day"
->
-  <div class="mx-auto grid max-w-7xl items-center gap-12 px-5 md:grid-cols-12 md:gap-14 md:px-10 lg:px-16">
-    <div class="md:col-span-5">
-      <Reveal client:visible y={24}>
-        <SplitTitle base="THE" script="Ritual" />
-      </Reveal>
-      <Reveal client:visible delay={0.12} y={20} className="mt-8 max-w-md">
-        <p class="text-on-photo font-light">
-          The Sunset Ritual is our signature cadence: a daily pause where the sky turns amber and the glasses rise in unison. It is the reason guests return, the golden thread that connects every evening at Horizons.
-        </p>
-      </Reveal>
+<section class="ritual horizon-motif" id="ritual" aria-labelledby="ritual-title">
+  <div class="page-pad">
+    <div class="ritual__head">
+      <div>
+        <p class="section-label" data-reveal>The Sunset Ritual</p>
+        <h2 class="ritual__title display-copy" id="ritual-title" data-split>
+          Golden hour is a daily ceremony here
+        </h2>
+      </div>
+      <p class="ritual__lead lead-copy" data-reveal>
+        At Horizons, sunset is not a moment — it is a ritual. The light turns,
+        the first pour lands, and Eagle Beach slows into its warmest hour.
+        We built the lounge around that pause, and we repeat it twice a day.
+      </p>
     </div>
-    <div class="md:col-span-7">
-      <Reveal client:visible delay={0.06} scale={0.97} className="relative">
-        <div
-          class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-night/50 via-transparent to-peach/10"
-          aria-hidden="true"
-        />
-        <StoryImage
-          client:visible
+
+    <div class="ritual__collage" data-reveal-stagger>
+      <div class="ritual__media" data-reveal-item data-image-reveal>
+        <img
           src="/images/gallery/03.jpg"
-          className="aspect-[4/5] w-full md:aspect-[5/6] lg:min-h-[68vh]"
-          fromScale={1.14}
+          alt="Couple enjoying the sunset lounge atmosphere at golden hour"
+          loading="lazy"
+          decoding="async"
         />
-      </Reveal>
+      </div>
+      <div class="ritual__stat" data-reveal-item>
+        <span class="ritual__stat-number"><span data-story-count="2">0</span>×</span>
+        <p class="ritual__stat-caption">
+          Happy Hour, every single day — 5:30–6:30 PM at sunset and again
+          9:00–10:00 PM under the stars.
+        </p>
+      </div>
+      <div class="ritual__media" data-reveal-item data-image-reveal>
+        <img
+          src="/images/drinks/signature-cocktail.jpg"
+          alt="Signature cocktail served during golden hour at Horizons Lounge"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
     </div>
   </div>
 </section>

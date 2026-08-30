@@ -1,100 +1,31 @@
 ---
 /**
- * Horizons brand loader.
- * Full ritual on first visit of the session; brief/skip on internal navigations
- * so page-to-page transitions feel fast. Respects prefers-reduced-motion.
+ * Minimal brand loader: teal-night veil + horizon mark, 280ms fade.
+ * Skipped on return navigations within the session and under reduced motion.
  */
 ---
 
-<div
-  id="horizons-loader"
-  class="fixed inset-0 z-[100] transition-opacity duration-500"
-  role="status"
-  aria-label="Loading Horizons Lounge"
-  data-loader
->
-  <img
-    src="/images/sunset.png"
-    alt=""
-    class="absolute inset-0 h-full w-full object-cover"
-    aria-hidden="true"
-    draggable="false"
-  />
-
-  <div
-    class="absolute inset-0 bg-night/35 backdrop-blur-xl"
+<div id="horizons-loader" class="loader" role="status" aria-label="Loading Horizons Lounge" data-loader>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 200 120"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
     aria-hidden="true"
   >
-  </div>
-
-  <div class="absolute inset-0 flex items-center justify-center p-6">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 500 160"
-      width="100%"
-      height="auto"
-      class="loader-pulse w-[70vw] max-w-2xl select-none md:w-[50vw]"
-      aria-label="Horizons Lounge"
-    >
-      <defs>
-        <radialGradient id="loader-sun-gradient" cx="35%" cy="35%" r="65%">
-          <stop offset="0%" stop-color="#FFF000" />
-          <stop offset="60%" stop-color="#FFCC00" />
-          <stop offset="100%" stop-color="#FFA500" />
-        </radialGradient>
-
-        <mask id="loader-top-mask">
-          <rect width="500" height="160" fill="white" />
-          <path d="M 20,88 Q 250,70 480,98 L 480,160 L 20,160 Z" fill="black" />
-        </mask>
-
-        <mask id="loader-bottom-mask">
-          <rect width="500" height="160" fill="black" />
-          <path d="M 20,88 Q 250,70 480,98 L 480,160 L 20,160 Z" fill="white" />
-        </mask>
-      </defs>
-
-      <circle cx="395" cy="75" r="42" fill="url(#loader-sun-gradient)" />
-
-      <g mask="url(#loader-top-mask)">
-        <text
-          x="250"
-          y="85"
-          font-family="'Outfit', ui-sans-serif, system-ui, sans-serif"
-          font-size="46"
-          font-weight="300"
-          letter-spacing="9"
-          fill="#fdf8f1"
-          text-anchor="middle"
-        >
-          HORIZONS
-        </text>
-      </g>
-
-      <path
-        d="M 30,88 Q 250,70 470,98"
-        stroke="#fdf8f1"
-        stroke-width="1.5"
-        fill="none"
-        stroke-linecap="round"
-      />
-
-      <g mask="url(#loader-bottom-mask)" transform="translate(0, 168) scale(1, -1)">
-        <text
-          x="250"
-          y="85"
-          font-family="'Outfit', ui-sans-serif, system-ui, sans-serif"
-          font-size="46"
-          font-weight="300"
-          letter-spacing="9"
-          fill="#00B4D8"
-          text-anchor="middle"
-        >
-          HORIZONS
-        </text>
-      </g>
-    </svg>
-  </div>
+    <path d="M8 78 H192" />
+    <path d="M62 78 A38 38 0 0 1 138 78" />
+    <path d="M100 22 V34" />
+    <path d="M66 34 L74 44" />
+    <path d="M134 34 L126 44" />
+    <path d="M44 52 L56 58" />
+    <path d="M156 52 L144 58" />
+    <path d="M28 94 H112" />
+    <path d="M132 94 H172" />
+    <path d="M52 106 H148" />
+  </svg>
 </div>
 
 <script is:inline>
@@ -113,27 +44,21 @@
       seen = window.sessionStorage.getItem(SESSION_KEY) === '1';
     } catch (e) {}
 
-    var FIRST_VISIT_MS = 1200;
-    var RETURN_VISIT_MS = 280;
-    var FADE_MS = reduceMotion ? 120 : 450;
-
-    var holdMs = reduceMotion ? 0 : seen ? RETURN_VISIT_MS : FIRST_VISIT_MS;
+    if (reduceMotion) {
+      loader.remove();
+      return;
+    }
 
     function dismiss() {
-      loader.classList.add('opacity-0', 'pointer-events-none');
+      loader.classList.add('is-done');
       window.setTimeout(function () {
         if (loader && loader.parentNode) loader.remove();
-      }, FADE_MS);
+      }, 320);
       try {
         window.sessionStorage.setItem(SESSION_KEY, '1');
       } catch (e) {}
     }
 
-    if (holdMs <= 0) {
-      dismiss();
-      return;
-    }
-
-    window.setTimeout(dismiss, holdMs);
+    window.setTimeout(dismiss, seen ? 120 : 600);
   })();
 </script>

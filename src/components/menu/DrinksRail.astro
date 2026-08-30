@@ -1,0 +1,80 @@
+---
+/**
+ * The Bar — expanding pour rail. The old reel's signature interaction,
+ * rebuilt with the new grammar: hairline gaps, radius-md, Satoshi, on a
+ * dusk block that belongs to Horizons alone. Hover expands on desktop;
+ * tap/click toggles everywhere; first card active by default.
+ */
+import { drinks } from '../../data/menu';
+---
+
+<section class="pour horizon-motif horizon-motif--on-dark" id="drinks" aria-labelledby="pour-title">
+  <div class="page-pad">
+    <div class="pour__head">
+      <div>
+        <p class="section-label" data-reveal style="color: var(--color-amber-light);">The Bar</p>
+        <h2 class="pour__title display-copy" id="pour-title" data-split>Poured against the horizon</h2>
+      </div>
+      <p class="pour__lead lead-copy" data-reveal>
+        Seven signatures that trace the evening — from the first golden pour
+        to the late-night espresso. House signatures are $12 during Happy Hour.
+      </p>
+    </div>
+
+    <div class="pour__rail" data-pour-rail data-reveal role="list" aria-label="Drinks menu">
+      {drinks.map((item, i) => (
+        <button
+          type="button"
+          role="listitem"
+          class:list={['pour-card', i === 0 && 'is-active']}
+          data-pour-card
+          aria-pressed={i === 0 ? 'true' : 'false'}
+        >
+          <img src={item.image} alt={item.name} loading="lazy" decoding="async" />
+          <span class="pour-card__veil" aria-hidden="true"></span>
+          <span class="pour-card__tab" aria-hidden="true">
+            <span class="pour-card__tab-name">{item.name}</span>
+            <span class="pour-card__tab-price">${item.price}</span>
+          </span>
+          <span class="pour-card__body">
+            <h3 class="pour-card__name">{item.name}</h3>
+            <p class="pour-card__desc">{item.description}</p>
+            <span class="pour-card__meta">
+              <span class="pour-card__price">${item.price}</span>
+              <span class="pour-card__tags">{item.tags.slice(0, 2).join(' · ')}</span>
+            </span>
+          </span>
+          <span class="sr-only">{item.name}, ${item.price}. {item.description}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const rail = document.querySelector('[data-pour-rail]');
+  if (rail) {
+    const cards = Array.from(rail.querySelectorAll<HTMLElement>('[data-pour-card]'));
+    const canHover = window.matchMedia('(hover: hover) and (min-width: 900px)').matches;
+
+    const activate = (target: HTMLElement) => {
+      cards.forEach((c) => {
+        const active = c === target;
+        c.classList.toggle('is-active', active);
+        c.setAttribute('aria-pressed', String(active));
+      });
+    };
+
+    cards.forEach((card) => {
+      // Single source of truth: .is-active. Hover moves it on desktop,
+      // tap/click moves it everywhere (touch included).
+      if (canHover) {
+        card.addEventListener('pointerenter', (e) => {
+          if ((e as PointerEvent).pointerType !== 'touch') activate(card);
+        });
+      }
+      card.addEventListener('click', () => activate(card));
+      card.addEventListener('focus', () => activate(card));
+    });
+  }
+</script>

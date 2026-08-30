@@ -1,8 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StickyMenu from '../components/StickyMenu';
-import ReserveSticky from '../components/ReserveSticky';
-import GalleryWall from '../components/GalleryWall';
+import Header from '../components/Header.astro';
+import Footer from '../sections/Footer.astro';
 import { galleryImages } from '../data/gallery';
 
 const title = 'Gallery — Horizons Lounge Aruba';
@@ -19,14 +18,162 @@ const gallerySchema = {
   url: `${siteOrigin}/gallery`,
   image: galleryImages.map((img) => new URL(img.src, siteOrigin).toString()),
 };
+
+const categories = [
+  { id: 'all', label: 'All' },
+  { id: 'sunset', label: 'Sunset' },
+  { id: 'drinks', label: 'Drinks' },
+  { id: 'food', label: 'Food' },
+  { id: 'vibe', label: 'Vibe' },
+];
 ---
 
 <Layout title={title} description={description} image={image}>
-  <StickyMenu client:load pathname={Astro.url.pathname} />
-  <ReserveSticky client:load />
-  <main>
-    <GalleryWall client:load images={galleryImages} />
-  </main>
-</Layout>
+  <Header pathname={Astro.url.pathname} />
+  <main id="main">
+    <section class="interior-hero page-pad">
+      <p class="section-label" data-reveal>Gallery</p>
+      <h1 class="interior-hero__title display-copy" data-split>Postcards from the horizon</h1>
+      <p class="interior-hero__lead lead-copy" data-reveal>
+        Sunsets, cocktails, sushi and live music — a curated visual journey
+        through the Sunset Ritual at Amsterdam Manor.
+      </p>
+      <div class="chip-row" style="margin-top: 2.25rem;" role="group" aria-label="Filter gallery by category" data-reveal>
+        {categories.map((cat) => (
+          <button type="button" class="chip" data-filter={cat.id} aria-pressed={cat.id === 'all' ? 'true' : 'false'}>
+            {cat.label}
+          </button>
+        ))}
+      </div>
+    </section>
 
-<script type="application/ld+json" set:html={JSON.stringify(gallerySchema)} />
+    <section class="page-pad" style="padding-bottom: clamp(4rem, 8vw, 7rem);" aria-label="Gallery images">
+      <div class="wall" data-wall>
+        {galleryImages.map((img, i) => (
+          <button
+            type="button"
+            class="wall__item"
+            data-category={img.category}
+            data-index={i}
+            aria-label={`Open image: ${img.alt}`}
+          >
+            <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+            <span class="wall__item-caption">{img.alt}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button type="button" class="lightbox__close" data-lightbox-close aria-label="Close viewer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+    <button type="button" class="lightbox__prev" data-lightbox-prev aria-label="Previous image">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+    </button>
+    <figure class="lightbox__figure">
+      <img data-lightbox-img src="" alt="" />
+      <figcaption class="lightbox__caption" data-lightbox-caption></figcaption>
+    </figure>
+    <button type="button" class="lightbox__next" data-lightbox-next aria-label="Next image">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" />
+      </svg>
+    </button>
+  </div>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(gallerySchema)} />
+
+  <script>
+    const wall = document.querySelector('[data-wall]');
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.wall__item'));
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const filter = chip.dataset.filter ?? 'all';
+        chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+        items.forEach((item) => {
+          const show = filter === 'all' || item.dataset.category === filter;
+          item.classList.toggle('is-hidden', !show);
+        });
+      });
+    });
+
+    /* Lightbox */
+    const lightbox = document.querySelector<HTMLElement>('[data-lightbox]');
+    const lbImg = document.querySelector<HTMLImageElement>('[data-lightbox-img]');
+    const lbCaption = document.querySelector<HTMLElement>('[data-lightbox-caption]');
+    const lbClose = document.querySelector<HTMLButtonElement>('[data-lightbox-close]');
+    const lbPrev = document.querySelector<HTMLButtonElement>('[data-lightbox-prev]');
+    const lbNext = document.querySelector<HTMLButtonElement>('[data-lightbox-next]');
+    let current = 0;
+    let lastFocused: HTMLElement | null = null;
+
+    const visibleItems = () => items.filter((i) => !i.classList.contains('is-hidden'));
+
+    const showImage = (item: HTMLElement) => {
+      const img = item.querySelector('img');
+      if (!img || !lbImg || !lbCaption) return;
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCaption.textContent = img.alt;
+      current = visibleItems().indexOf(item);
+    };
+
+    const openLightbox = (item: HTMLElement) => {
+      if (!lightbox) return;
+      lastFocused = document.activeElement as HTMLElement;
+      showImage(item);
+      lightbox.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      lbClose?.focus();
+    };
+
+    const closeLightbox = () => {
+      lightbox?.classList.remove('is-open');
+      document.body.style.overflow = '';
+      lastFocused?.focus();
+    };
+
+    const step = (delta: number) => {
+      const vis = visibleItems();
+      if (!vis.length) return;
+      current = (current + delta + vis.length) % vis.length;
+      showImage(vis[current]);
+    };
+
+    items.forEach((item) => item.addEventListener('click', () => openLightbox(item)));
+    lbClose?.addEventListener('click', closeLightbox);
+    lbPrev?.addEventListener('click', () => step(-1));
+    lbNext?.addEventListener('click', () => step(1));
+    lightbox?.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (!lightbox?.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'Tab') {
+        const focusables = [lbClose, lbPrev, lbNext].filter(Boolean) as HTMLElement[];
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+  </script>
+</Layout>

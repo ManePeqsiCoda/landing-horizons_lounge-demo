@@ -104,7 +104,7 @@ function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean)
 
   if (!stripe || !elements) {
     return (
-      <div className="border border-cream/15 bg-cream/[0.06] px-4 py-3 text-sm text-cream/70">
+      <div className="border border-ivory/15 bg-ivory/[0.06] px-4 py-3 text-base text-ivory/85">
         Connecting secure card fields…
       </div>
     );
@@ -117,7 +117,7 @@ function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean)
           <CreditCard size={16} strokeWidth={1.5} className="mx-2 text-center" />
           Card Details
         </span>
-        <div className="reserve-control reserve-card-element w-full border border-cream/22 bg-cream/[0.08] px-4 py-4 transition focus-within:border-sunset-orange focus-within:bg-cream/[0.12] focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.18)]">
+        <div className="reserve-control reserve-card-element w-full border border-ivory/22 bg-ivory/[0.08] px-4 py-4 transition focus-within:border-coral focus-within:bg-ivory/[0.12] focus-within:shadow-[0_0_0_3px_rgba(255,122,69,0.18)]">
           <CardElement
             id="card-element"
             options={cardOptions}
@@ -125,7 +125,7 @@ function StripeCardSection({ onCardChange }: { onCardChange: (complete: boolean)
           />
         </div>
       </label>
-      <p className="text-xs font-medium text-cream/45">
+      <p className="text-xs font-medium text-ivory/45">
         Test card — 4242 4242 4242 4242, any future date, any CVC.
       </p>
     </div>
@@ -202,7 +202,7 @@ function DemoCardSection({ onCardChange }: { onCardChange: (complete: boolean) =
           />
         </div>
       </div>
-      <p className="text-xs font-medium text-cream/45">
+      <p className="text-xs font-medium text-ivory/45">
         Prototype demo — deposit is simulated. No real charge is made.
       </p>
     </div>
@@ -243,10 +243,40 @@ function InnerForm({
   );
 
   useEffect(() => {
-    const eventParam = new URLSearchParams(window.location.search).get('event');
-    if (eventParam && RESERVATION_EVENTS.some((e) => e.id === eventParam)) {
-      setForm((prev) => ({ ...prev, eventId: eventParam }));
-    }
+    const params = new URLSearchParams(window.location.search);
+    const eventParam = params.get('event');
+    const dateParam = params.get('date');
+    const timeParam = params.get('time');
+    const guestsParam = params.get('guests');
+
+    setForm((prev) => {
+      const next = { ...prev };
+      if (eventParam && RESERVATION_EVENTS.some((e) => e.id === eventParam)) {
+        next.eventId = eventParam;
+      }
+      if (dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam) && dateParam >= todayInputValue()) {
+        next.date = dateParam;
+      }
+      if (timeParam) {
+        // Hero bar sends 12h labels ("5:30 PM"); the form uses 24h slots.
+        const match = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(timeParam);
+        if (match) {
+          let h = Number(match[1]) % 12;
+          if (match[3].toUpperCase() === 'PM') h += 12;
+          const slot = `${String(h).padStart(2, '0')}:${match[2]}`;
+          if ((TIME_SLOTS as readonly string[]).includes(slot)) next.time = slot;
+        } else if ((TIME_SLOTS as readonly string[]).includes(timeParam)) {
+          next.time = timeParam;
+        }
+      }
+      if (guestsParam) {
+        const g = Number(guestsParam);
+        if (Number.isFinite(g)) {
+          next.guests = Math.max(MIN_GUESTS, Math.min(MAX_GUESTS, g));
+        }
+      }
+      return next;
+    });
   }, []);
 
   useEffect(() => {
@@ -340,11 +370,11 @@ function InnerForm({
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="border border-cream/15 bg-night/80 p-8 text-center shadow-2xl md:p-12"
+        className="border border-ivory/15 bg-teal-night/80 p-8 text-center shadow-2xl md:p-12"
       >
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-sunset-yellow/20 shadow-[0_0_40px_rgba(255,215,0,0.25)]">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-sunflower/20 shadow-[0_0_40px_rgba(255,215,0,0.25)]">
           <svg
-            className="h-10 w-10 text-sunset-yellow"
+            className="h-10 w-10 text-sunflower"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -353,21 +383,21 @@ function InnerForm({
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="mt-6 font-serif text-3xl font-bold tracking-tight text-cream md:text-4xl">
+        <h2 className="mt-6 font-serif text-3xl font-bold tracking-tight text-ivory md:text-4xl">
           Reservation Ready
         </h2>
-        <p className="mx-auto mt-3 max-w-md text-base leading-relaxed text-cream/70">
+        <p className="mx-auto mt-3 max-w-md text-base leading-relaxed text-ivory/85">
           Your demo deposit of{' '}
-          <strong className="text-sunset-yellow">${DEPOSIT_AMOUNT} {DEPOSIT_CURRENCY}</strong> has
+          <strong className="text-sunflower">${DEPOSIT_AMOUNT} {DEPOSIT_CURRENCY}</strong> has
           been authorized. We are preparing your request to send to Horizons Lounge.
         </p>
         <a
           href={buildMailto(form, paymentMethodId)}
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-sunset-yellow px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-warm-charcoal shadow-lg transition-all hover:-translate-y-0.5 hover:bg-cream hover:shadow-xl"
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-sunflower px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-pine shadow-lg transition-all hover:-translate-y-0.5 hover:bg-ivory hover:shadow-xl"
         >
           Send request via email
         </a>
-        <p className="mt-4 text-xs text-cream/45">
+        <p className="mt-4 text-xs text-ivory/45">
           If your email client did not open automatically, click the button above.
         </p>
       </motion.div>
@@ -545,7 +575,7 @@ function InnerForm({
           </label>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="h-px bg-cream/10" />
+        <motion.div variants={itemVariants} className="h-px bg-ivory/10" />
 
         <motion.div variants={itemVariants}>
           {demoMode ? (
@@ -580,7 +610,7 @@ function InnerForm({
           >
             {status === 'processing' ? (
               <span className="flex items-center justify-center gap-2">
-                <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-cream/30 border-t-cream" />
+                <span className="inline-block h-5 w-5 animate-spin rounded-full border-2 border-ivory/30 border-t-ivory" />
                 Processing…
               </span>
             ) : (

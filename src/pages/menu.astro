@@ -1,16 +1,70 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StickyMenu from '../components/StickyMenu';
-import ReserveSticky from '../components/ReserveSticky';
-import MenuReel from '../components/MenuReel';
+import Header from '../components/Header.astro';
+import Footer from '../sections/Footer.astro';
+import DrinksRail from '../components/menu/DrinksRail.astro';
+import PlatesExplorer from '../components/menu/PlatesExplorer.astro';
+import { RESERVE_PATH } from '../data/contact';
 
 const title = 'Culinary & Mixology — Horizons Lounge Aruba';
 const description =
   'Explore the drinks and plates menu at Horizons Lounge Aruba. Signature cocktails, sushi, plant-based dishes and the sunset ritual at Amsterdam Manor.';
 ---
 
-<Layout title={title} description={description} reel>
-  <StickyMenu client:load pathname={Astro.url.pathname} />
-  <ReserveSticky client:load />
-  <MenuReel client:load />
+<Layout title={title} description={description}>
+  <Header pathname={Astro.url.pathname} />
+  <main id="main">
+    <section class="interior-hero page-pad">
+      <p class="section-label" data-reveal>Culinary &amp; Mixology</p>
+      <h1 class="interior-hero__title display-copy" data-split>The menu</h1>
+      <p class="interior-hero__lead lead-copy" data-reveal>
+        Signature cocktails poured against the horizon, and island-fusion
+        plates built for golden hour — priced in USD.
+      </p>
+      <div class="interior-hero__meta" data-reveal>
+        <span>Happy Hour <strong>5:30–6:30 PM</strong> &amp; <strong>9:00–10:00 PM</strong></span>
+        <span><a href="#drinks" style="color: inherit; text-decoration: underline; text-underline-offset: 0.3em;">The Bar</a></span>
+        <span><a href="#culinary" style="color: inherit; text-decoration: underline; text-underline-offset: 0.3em;">The Kitchen</a></span>
+      </div>
+    </section>
+
+    <DrinksRail />
+
+    {/* Happy Hour block — sunflower, between bar and kitchen */}
+    <section class="page-pad" aria-labelledby="hh-title" style="padding-block: clamp(3rem, 6vw, 5rem); background: var(--color-ivory);">
+      <div class="hh-block horizon-motif" data-reveal>
+        <div>
+          <p class="section-label">Twice daily</p>
+          <h2 class="hh-block__title display-copy" id="hh-title">Happy Hour</h2>
+        </div>
+        <div class="hh-block__slot">
+          <span class="hh-block__time">5:30–6:30</span>
+          <span class="hh-block__label">PM — the sunset round, as the light turns</span>
+        </div>
+        <div class="hh-block__slot">
+          <span class="hh-block__time">9:00–10:00</span>
+          <span class="hh-block__label">PM — the late round, under the stars</span>
+        </div>
+      </div>
+    </section>
+
+    <PlatesExplorer />
+
+    {/* Closing CTA — teal-night block */}
+    <section class="page-pad" style="padding-bottom: clamp(5rem, 9vw, 8rem); background: var(--color-ivory);">
+      <div class="hh-block" data-reveal style="background: var(--color-teal-night); color: var(--color-ivory);">
+        <div>
+          <p class="section-label" style="color: var(--color-amber-light);">Tonight</p>
+          <h2 class="hh-block__title display-copy">Your table is waiting</h2>
+        </div>
+        <p style="margin: 0; color: var(--color-on-dark-dim); font-size: var(--text-body-lg); max-width: 24rem;">
+          Reserve for golden hour and the first pour is on the horizon, not on the clock.
+        </p>
+        <div style="display: flex; align-items: center; justify-content: flex-start;">
+          <a href={RESERVE_PATH} class="btn btn--sun">Reserve a table</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
 </Layout>

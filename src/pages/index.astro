@@ -1,35 +1,28 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StickyMenu from '../components/StickyMenu';
-import ReserveSticky from '../components/ReserveSticky';
+import Header from '../components/Header.astro';
+import ReservePill from '../components/ReservePill.astro';
 import Hero from '../sections/Hero.astro';
 import Ritual from '../sections/Ritual.astro';
-import Experience from '../sections/Experience.astro';
 import Culinary from '../sections/Culinary.astro';
-import LiquidGold from '../sections/LiquidGold.astro';
-import SocialVibe from '../sections/SocialVibe.astro';
-import Connect from '../sections/Connect.astro';
+import Nights from '../sections/Nights.astro';
+import Social from '../sections/Social.astro';
+import Hotel from '../sections/Hotel.astro';
+import Mosaic from '../sections/Mosaic.astro';
 import Footer from '../sections/Footer.astro';
 ---
 
-<!-- Continuous-scroll home — Sunset Ritual storytelling (not reel / snap slides) -->
 <Layout>
-  <link
-    rel="preload"
-    as="image"
-    href="/images/sunset.png"
-    slot="head"
-  />
-  <StickyMenu client:load pathname={Astro.url.pathname} />
-  <ReserveSticky client:load homeReel />
-  <main id="home-main">
+  <Header pathname={Astro.url.pathname} media />
+  <ReservePill />
+  <main id="main">
     <Hero />
     <Ritual />
-    <Experience />
     <Culinary />
-    <LiquidGold />
-    <SocialVibe />
-    <Connect />
-    <Footer />
+    <Nights />
+    <Social />
+    <Hotel />
+    <Mosaic />
   </main>
+  <Footer />
 </Layout>

@@ -1,0 +1,50 @@
+---
+/**
+ * Gallery preview — ivory mosaic (Amsterdam gallery grammar): asymmetric
+ * 3-column grid, one wide card, captions on hover, link to /gallery.
+ */
+import { galleryImages } from '../data/gallery';
+
+const picks = [
+  { ...galleryImages[0], wide: true },
+  { ...galleryImages[3], wide: false },
+  { ...galleryImages[6], wide: false },
+  { ...galleryImages[7], wide: false },
+  { ...galleryImages[9], wide: true },
+];
+---
+
+<section class="mosaic" aria-labelledby="mosaic-title">
+  <div class="page-pad">
+    <div class="mosaic__head">
+      <div>
+        <p class="section-label" data-reveal>Gallery</p>
+        <h2 class="mosaic__title display-copy" id="mosaic-title" data-split>
+          Postcards from the horizon
+        </h2>
+      </div>
+      <p class="lead-copy" data-reveal style="color: var(--color-on-light-dim);">
+        Golden light, raised glasses and the terrace in full voice — a glimpse
+        of the evening before it is yours.
+      </p>
+    </div>
+
+    <div class="mosaic__grid" data-reveal-stagger>
+      {picks.map((img) => (
+        <a
+          href="/gallery"
+          class:list={['mosaic__item', img.wide && 'mosaic__item--wide']}
+          data-reveal-item
+          data-image-reveal
+        >
+          <img src={img.src} alt={img.alt} loading="lazy" decoding="async" />
+          <span class="mosaic__item-caption">{img.alt}</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="mosaic__cta" data-reveal>
+      <a href="/gallery" class="btn btn--ghost-dark">View the full gallery</a>
+    </div>
+  </div>
+</section>

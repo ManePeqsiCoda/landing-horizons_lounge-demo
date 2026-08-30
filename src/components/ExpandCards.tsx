@@ -37,7 +37,7 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             tabIndex={0}
             aria-expanded={isExpanded}
             aria-label={`${item.name} — $${item.price}`}
-            className={`group relative cursor-pointer overflow-hidden rounded-none outline-none transition-all duration-500 ease-in-out focus-visible:ring-2 focus-visible:ring-sunset-yellow ${flexClass}`}
+            className={`group relative cursor-pointer overflow-hidden rounded-none outline-none transition-all duration-500 ease-in-out focus-visible:ring-2 focus-visible:ring-sunflower ${flexClass}`}
             style={{ flexBasis: 0 }}
             onMouseEnter={() => {setExpanded(i);}}
             onClick={() => setExpanded(isExpanded ? false : i)}
@@ -57,13 +57,13 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
             />
 
             {/* Veladura para legibilidad del texto */}
-            <div className="absolute inset-0 bg-gradient-to-t from-night/75 via-night/15 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-teal-night/75 via-teal-night/15 to-transparent" />
 
             {/* Título de tarjetas colapsadas — horizontal en móvil, vertical en desktop */}
             {!isExpanded && (
               <div className="absolute inset-0 flex items-center justify-center px-2 text-center">
                 <span
-                  className="text-contrast text-4xl font-normal leading-none tracking-[0.04em] text-sunset-yellow [writing-mode:horizontal-tb] md:text-5xl lg:text-5xl lg:[writing-mode:vertical-rl] lg:[transform:rotate(180deg)]"
+                  className="text-contrast text-4xl font-normal leading-none tracking-[0.04em] text-sunflower [writing-mode:horizontal-tb] md:text-5xl lg:text-5xl lg:[writing-mode:vertical-rl] lg:[transform:rotate(180deg)]"
                   style={{ fontFamily: "'Billa Mount', 'Brush Script MT', cursive" }}
                 >
                   {item.name}
@@ -73,7 +73,7 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
 
             {/* Título horizontal + info — solo tarjeta expandida */}
             <div
-              className={`absolute inset-x-0 bottom-0 border-t border-white/10 bg-gradient-to-t from-night/80 via-night/50 to-transparent p-5 backdrop-blur-sm transition-all duration-500 ease-out md:p-6 ${
+              className={`absolute inset-x-0 bottom-0 border-t border-white/10 bg-gradient-to-t from-teal-night/80 via-teal-night/50 to-transparent p-5 backdrop-blur-sm transition-all duration-500 ease-out md:p-6 ${
                 isExpanded
                   ? 'translate-y-0 opacity-100'
                   : 'pointer-events-none translate-y-4 opacity-0'
@@ -83,7 +83,7 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
                 <h3 className="text-contrast font-serif text-xl text-white md:text-2xl">
                   {item.name}
                 </h3>
-                <span className="font-sans text-sm font-medium tracking-[0.2em] text-sunset-yellow">
+                <span className="font-sans text-sm font-medium tracking-[0.2em] text-sunflower">
                   ${item.price}
                 </span>
               </div>
@@ -94,14 +94,14 @@ export default function ExpandCards({ items, defaultExpanded = false }: ExpandCa
                   isExpanded ? 'mt-3 max-h-48 opacity-100' : 'mt-0 max-h-0 opacity-0'
                 }`}
               >
-                <p className="text-shadow-brief font-display text-sm font-light leading-relaxed text-cream/90 md:text-base">
+                <p className="text-shadow-brief font-display text-sm font-light leading-relaxed text-ivory/90 md:text-base">
                   {item.description}
                 </p>
                 <ul className="mt-3 flex flex-wrap gap-2">
                   {item.tags.map((tag) => (
                     <li
                       key={tag}
-                      className="rounded-full border border-white/30 px-3 py-1 font-sans text-[10px] font-medium tracking-[0.15em] text-white/70 uppercase"
+                      className="rounded-full border border-white/30 px-3 py-1 font-sans text-[13px] font-medium tracking-[0.15em] text-white/85 uppercase"
                     >
                       {tag}
                     </li>

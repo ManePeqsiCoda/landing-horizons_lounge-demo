@@ -1,0 +1,114 @@
+---
+/**
+ * Site header — 3-state glass (default ivory / on-media pine / scrolled),
+ * flat nav, Reserve CTA, full-screen teal-night mobile overlay.
+ */
+import { RESERVE_PATH } from '../data/contact';
+
+interface Props {
+  pathname: string;
+  /** Page opens over a full-bleed media hero. */
+  media?: boolean;
+}
+
+const { pathname, media = false } = Astro.props;
+
+const NAV = [
+  { href: '/', label: 'Home' },
+  { href: '/menu', label: 'Menu' },
+  { href: '/experiences', label: 'Experiences' },
+  { href: '/gallery', label: 'Gallery' },
+];
+
+const isCurrent = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
+---
+
+<header class:list={['site-header', media && 'is-on-media']} data-header>
+  <a href="/" class="site-header__brand" aria-label="Horizons Lounge — home">
+    <img src="/images/horizons-logo.svg" alt="" width="32" height="32" />
+    <span class="site-header__brand-name">Horizons Lounge</span>
+  </a>
+
+  <nav class="site-header__nav" aria-label="Primary">
+    {NAV.map((item) => (
+      <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+        {item.label}
+      </a>
+    ))}
+  </nav>
+
+  <div class="site-header__actions">
+    <a href={RESERVE_PATH} class="btn btn--sun site-header__cta">
+      Reserve
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 17L17 7M9 7h8v8" />
+      </svg>
+    </a>
+    <button type="button" class="site-header__burger" aria-label="Open menu" aria-expanded="false" data-nav-open>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M3 7h18M3 12h18M3 17h18" />
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="nav-overlay" data-nav-overlay aria-hidden="true">
+  <div class="nav-overlay__top">
+    <a href="/" class="site-header__brand" aria-label="Horizons Lounge — home">
+      <img src="/images/horizons-logo.svg" alt="" width="32" height="32" />
+      <span class="site-header__brand-name">Horizons Lounge</span>
+    </a>
+    <button type="button" class="nav-overlay__close" aria-label="Close menu" data-nav-close>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+  </div>
+
+  <nav class="nav-overlay__nav" aria-label="Mobile">
+    {NAV.map((item) => (
+      <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+        {item.label}
+        <span aria-hidden="true">↗</span>
+      </a>
+    ))}
+    <a href={RESERVE_PATH}>
+      Reserve
+      <span aria-hidden="true">↗</span>
+    </a>
+  </nav>
+
+  <div class="nav-overlay__foot">
+    <span>Happy Hour · 5:30–6:30 PM &amp; 9:00–10:00 PM</span>
+    <span>Eagle Beach · Amsterdam Manor</span>
+  </div>
+</div>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  const overlay = document.querySelector('[data-nav-overlay]');
+  const openBtn = document.querySelector('[data-nav-open]');
+  const closeBtn = document.querySelector('[data-nav-close]');
+
+  const onScroll = () => {
+    header?.classList.toggle('is-scrolled', window.scrollY > 32);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    overlay?.classList.toggle('is-open', open);
+    overlay?.setAttribute('aria-hidden', String(!open));
+    openBtn?.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) closeBtn?.focus();
+  };
+
+  openBtn?.addEventListener('click', () => setOpen(true));
+  closeBtn?.addEventListener('click', () => setOpen(false));
+  overlay?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay?.classList.contains('is-open')) setOpen(false);
+  });
+</script>

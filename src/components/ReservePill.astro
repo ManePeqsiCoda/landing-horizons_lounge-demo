@@ -1,0 +1,25 @@
+---
+/**
+ * Floating reserve pill — appears after the hero scrolls out of view.
+ * Hidden on the reserve page itself (pages choose to include it).
+ */
+import { RESERVE_PATH } from '../data/contact';
+---
+
+<a href={RESERVE_PATH} class="reserve-pill" data-reserve-pill>
+  Reserve
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M7 17L17 7M9 7h8v8" />
+  </svg>
+</a>
+
+<script>
+  const pill = document.querySelector('[data-reserve-pill]');
+  if (pill) {
+    const onScroll = () => {
+      pill.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.85);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>
